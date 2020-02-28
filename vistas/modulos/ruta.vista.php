@@ -482,30 +482,25 @@
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
           </div>
-           <input type="text" class="form-control form-control-lg" placeholder="Ingresar Codigo" readonly>
+          <input type="text" class="form-control form-control-lg" placeholder="Ingresar Codigo" readonly>
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
           </div>
-           <input type="text" class="form-control form-control-lg" placeholder="Ingresar Nombre">
+          <input type="text" class="form-control form-control-lg" placeholder="Ingresar Nombre">
         </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <!-- select -->
-            <div class="form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-              </div>
-              <select class="form-control form-control-lg">
-                <option>option 1</option>
-                <option>option 2</option>
-                <option>option 3</option>
-                <option>option 4</option>
-                <option>option 5</option>
-              </select>
-            </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
           </div>
+          <select class="form-control form-control-lg">
+            <option>option 1</option>
+            <option>option 2</option>
+            <option>option 3</option>
+            <option>option 4</option>
+            <option>option 5</option>
+          </select>
         </div>
       </div>
       <div class="modal-footer justify-content-between">
