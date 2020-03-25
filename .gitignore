@@ -1,3 +1,6 @@
 #omitir archivos de la carpeta artefactos
 #
 /artefactos/
+
+#omitir archivo cofig
+/modelos/cofig.php
