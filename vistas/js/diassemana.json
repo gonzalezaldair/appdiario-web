@@ -1,0 +1,9 @@
+[
+    {"name": "Domingo", "code": 0},
+    {"name": "Lunes", "code": 1},
+    {"name": "Martes", "code": 2},
+    {"name": "Miercoles", "code": 3},
+    {"name": "Jueves", "code": 4},
+    {"name": "Viernes", "code": 5},
+    {"name": "Sabado", "code": 6}
+]
