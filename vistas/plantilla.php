@@ -18,7 +18,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Theme style -->
   <link rel="stylesheet" href="vistas/dist/css/adminlte.min.css">
   <!-- DataTables -->
-  <link rel="stylesheet" href="vistas/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+  <link rel="stylesheet" href="vistas/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="vistas/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="vistas/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
@@ -62,6 +63,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
  ?>
 
+
+ <!--=====================================
+  PLUGINS DE JAVASCRIPT
+  ======================================-->
+
 <!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
@@ -69,22 +75,53 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- Bootstrap 4 -->
 <script src="vistas/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- DataTables -->
-<script src="vistas/plugins/datatables/jquery.dataTables.js"></script>
-<script src="vistas/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<script src="vistas/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="vistas/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="vistas/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="vistas/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <!-- AdminLTE App -->
 <script src="vistas/dist/js/adminlte.min.js"></script>
 
+<!--=====================================
+  SCRIPT JAVASCRIPT PERSONALIZADOS
+  ======================================-->
+
+
+<script src="vistas/js/plantilla.js"></script>
+<script src="vistas/js/clientes.js"></script>
+<script src="vistas/js/rutas.js"></script>
+<script src="vistas/js/forma-pago.js"></script>
+<script src="vistas/js/cobros.js"></script>
+<script src="vistas/js/prestamo.js"></script>
+
 
 <script>
-  $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
+  $(function() {
+    $(".tablas").DataTable({
+      "language": {
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+          "sFirst": "Primero",
+          "sLast": "Último",
+          "sNext": "Siguiente",
+          "sPrevious": "Anterior"
+        },
+        "oAria": {
+          "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        }
+      }
     });
   });
 </script>
