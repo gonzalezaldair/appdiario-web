@@ -3,6 +3,9 @@
 require_once '../modelos/clientes.modelo.php';
 require_once '../controladores/clientes.controlador.php';
 
+require_once '../modelos/rutas.modelo.php';
+require_once '../controladores/rutas.controlador.php';
+
 class MostrarClientes{
 
 	public function TablaClientes()
@@ -26,14 +29,51 @@ class MostrarClientes{
 		for($i = 0; $i < count($clientes); $i++)
 		{
 			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdcliente' clienteid='".$clientes[$i]["cli_Id"]."' clientecedula='".$clientes[$i]["cli_Cedula"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-warning btnnuevoprestamo' clienteid='".$clientes[$i]["cli_Id"]."' clientecedula='".$clientes[$i]["cli_Cedula"]."'><i class='fas fa-dollar-sign'></i></i></button><button type='button' class='btn btn-danger btneliminarcliente' clienteid='".$clientes[$i]["cli_Id"]."'><i class='fas fa-trash'></i></button></div>";
+
+			$item = "rut_Id";
+    		$valor = $clientes[$i]["cli_RUTA"];
+    		$Rutas = RutasControlador::ctrMostrarRutas($item, $valor);
+    		$dia = "";
+    		switch ($clientes[$i]["cli_DiaCobro"]) {
+    			case 0:
+    				$dia = "Domingo";
+    				break;
+    			case 1:
+    				$dia = "Lunes";
+    				break;
+    			case 2:
+    				$dia = "Martes";
+    				break;
+    			case 3:
+    				$dia = "Miercoles";
+    				break;
+    			case 4:
+    				$dia = "Jueves";
+    				break;
+    			case 5:
+    				$dia = "Viernes";
+    				break;
+    			case 6:
+    				$dia = "Sabado";
+    				break;
+
+    			default:
+    				$dia = "Domingo";
+    				break;
+    		}
+    		if ($clientes[$i]["cli_Activo"] == 1) {
+    			$estado = "<span class='badge badge-success'>Activo</span>";
+    		}else{
+    			$estado = "<span class='badge badge-danger'>Inactivo</span>";
+    		}
 			$datosJson .='[
 			      "'.$clientes[$i]["cli_Cedula"].'",
 			      "'.$clientes[$i]["cli_Nombre"].'",
 			      "'.$clientes[$i]["cli_Direccion"].'",
 			      "'.$clientes[$i]["cli_Correo"].'",
-			      "'.$clientes[$i]["cli_RUTA"].'",
-			      "'.$clientes[$i]["cli_DiaCobro"].'",
-			      "'.$clientes[$i]["cli_Activo"].'",
+			      "'.$Rutas["rut_Nombre"].'",
+			      "'.$dia.'",
+			      "'.$estado.'",
 			      "'.$botones.'"
 			    ],';
 		}

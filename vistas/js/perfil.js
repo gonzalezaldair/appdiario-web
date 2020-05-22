@@ -1,38 +1,28 @@
-
-
 /*=============================================
-CORRECCIÓN BOTONERAS OCULTAS BACKEND
+CARGAR LA TABLA DINÁMICA DE ABONOS
 =============================================*/
 /*
-if(window.matchMedia("(max-width:767px)").matches){
+$.ajax({
 
-	$("body").removeClass('sidebar-collapse');
+	url: "ajax/perfil.ajax.php",
+	success: function(respuesta) {
 
-}else{
+		console.log("respuesta", respuesta);
 
-	$("body").addClass('sidebar-collapse');
-}*/
+	}
 
-
-$("#buscarmenu").on('keyup', function(event) {
-	event.preventDefault();
-	/* Act on the event */
-	let value = $(this).val().toLowerCase();
-	console.log("value", value);
-
-	$(".nav-sidebar li a").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-
-});
-
+})*/
 
 /*=============================================
-Data Table
+CARGAR LA TABLA DINÁMICA DE CLIENTES
 =============================================*/
 
-$(".tablas").DataTable({
 
+$('#tablaperfil').DataTable( {
+    "ajax": "ajax/perfil.ajax.php",
+    "deferRender": true,
+	"retrieve": true,
+	"processing": true,
 	"language": {
 
 		"sProcessing":     "Procesando...",
@@ -59,30 +49,4 @@ $(".tablas").DataTable({
 		}
 
 	}
-
-});
-
-
-
-/*=============================================
-ACTIVAR SIDEBAR
-=============================================*/
-
-$(document).on("click", ".sidebar li", function(){
-
-	localStorage.setItem("botonera", $(this).children().attr("href"));
-
-})
-
-if(localStorage.getItem("botonera") == null){
-
-	$(".sidebar li").removeClass("active");
-	$(".sidebar li a[href='inicio']").addClass("active")
-
-}else{
-
-	$(".sidebar li").removeClass("active");
-
-	$("a[href='"+localStorage.getItem("botonera")+"']").addClass("active")
-
-}
+} );

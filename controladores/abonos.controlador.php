@@ -12,7 +12,7 @@ class AbonosControlador{
 
 	public static function ctrMostrarAbonos($item, $valor){
 
-		$tabla = "cobro";
+		$tabla = "abono";
 
 		$respuesta = AbonosModelo::mdlMostrarAbonos($tabla, $item, $valor);
 

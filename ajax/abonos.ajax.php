@@ -1,7 +1,7 @@
 <?php
 
-require_once '../modelos/cobros.modelo.php';
-require_once '../controladores/cobros.controlador.php';
+require_once '../modelos/abonos.modelo.php';
+require_once '../controladores/abonos.controlador.php';
 
 class MostrarAbonos{
 
@@ -25,13 +25,12 @@ class MostrarAbonos{
 
 		for($i = 0; $i < count($Abonos); $i++)
 		{
-			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdcobro' cobid='".$Abonos[$i]["cob_Id"]."' cobcodigo='".$Abonos[$i]["cob_Codigo"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarcobro' cobid='".$Abonos[$i]["cob_Id"]."'><i class='fas fa-trash'></i></button></div>";
+			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdabono' aboid='".$Abonos[$i]["abo_Id"]."' aboprestamo='".$Abonos[$i]["abo_PRESTAMO"]."' ><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarabono' aboid='".$Abonos[$i]["abo_Id"]."' aboprestamo='".$Abonos[$i]["abo_PRESTAMO"]."' ><i class='fas fa-trash'></i></button></div>";
+			$monto =number_format($Abonos[$i]["abo_Monto"], 2, ",",".");
 			$datosJson .='[
-			      "'.$Abonos[$i]["cob_Id"].'",
-			      "'.$Abonos[$i]["cob_Codigo"].'",
-			      "'.$Abonos[$i]["cob_Nombre"].'",
-			      "'.$Abonos[$i]["cob_Fecha"].'",
-			      "'.$Abonos[$i]["cob_Activo"].'",
+			      "'.$Abonos[$i]["abo_PRESTAMO"].'",
+			      "'.$monto.'",
+			      "'.$Abonos[$i]["abo_Fecha"].'",
 			      "'.$botones.'"
 			    ],';
 		}

@@ -20,5 +20,17 @@ class PrestamosControlador{
 
 	}
 
+	/*=============================================
+	MOSTRAR DATATABLES PRESTAMOS
+	=============================================*/
+
+	public static function ctrdatatableprestamos(){
+
+		$respuesta = PrestamosModelo::mdldatatableprestamos();
+
+		return $respuesta;
+
+	}
+
 
 }

@@ -8,10 +8,8 @@ class MostrarPrestamos{
 	public function TablaPrestamos()
 	{
 
-		$item = null;
-    	$valor = null;
-
-    	$Prestamos = PrestamosControlador::ctrMostrarPrestamos($item, $valor);
+    	$Prestamos = PrestamosControlador::ctrdatatableprestamos();
+    	//var_dump($Prestamos);
 
     	if (count($Prestamos) == 0) {
 
@@ -25,16 +23,27 @@ class MostrarPrestamos{
 
 		for($i = 0; $i < count($Prestamos); $i++)
 		{
-			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdprestamo' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-warning btnabono' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-dollar-sign'></i></i></button><button type='button' class='btn btn-danger btneliminarprestamo' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-trash'></i></button></div>";
+			if ($Prestamos[$i]["Saldo"] == 0) {
+				$saldo = $Prestamos[$i]["pre_MontoInteres"];
+			}else{
+				$saldo = $Prestamos[$i]["Saldo"];
+			}
+			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdprestamo' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-warning btnabono' saldo='".$saldo."' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-dollar-sign'></i></i></button><button type='button' class='btn btn-danger btneliminarprestamo' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-trash'></i></button></div>";
+			$interes = number_format($Prestamos[$i]["interes"], 2, ",",".");
+			$prestado = number_format($Prestamos[$i]["pre_MontoPrestado"], 2, ",",".");
+			$prestadointeres = number_format($Prestamos[$i]["pre_MontoInteres"], 2, ",",".");
+			$saldo = number_format($saldo, 2, ",",".");
 			$datosJson .='[
 			      "'.$Prestamos[$i]["pre_Fecha"].'",
-			      "'.$Prestamos[$i]["pre_CLIENTE"].'",
-			      "'.$Prestamos[$i]["pre_FormaPago"].'",
-			      "'.$Prestamos[$i]["pre_Interes"].'",
-			      "'.$Prestamos[$i]["pre_MontoPrestado"].'",
+			      "'.$Prestamos[$i]["cli_Nombre"].'",
+			      "'.$Prestamos[$i]["frm_Nombre"].'",
+			      "'.$interes.'",
+			      "'.$prestado.'",
+			      "'.$prestadointeres.'",
 			      "'.$Prestamos[$i]["pre_Cuotas"].'",
 			      "'.$Prestamos[$i]["pre_Observaciones"].'",
-			      "'.$Prestamos[$i]["pre_USUARIO"].'",
+			      "'.$Prestamos[$i]["usu_Nombre"].'",
+			      "'.$saldo.'",
 			      "'.$botones.'"
 			    ],';
 		}

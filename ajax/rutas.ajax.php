@@ -2,6 +2,8 @@
 
 require_once '../modelos/rutas.modelo.php';
 require_once '../controladores/rutas.controlador.php';
+require_once '../modelos/cobros.modelo.php';
+require_once '../controladores/cobros.controlador.php';
 
 class MostrarRutas{
 
@@ -26,11 +28,12 @@ class MostrarRutas{
 		for($i = 0; $i < count($Rutas); $i++)
 		{
 			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdruta' rutid='".$Rutas[$i]["rut_Id"]."' rutcodigo='".$Rutas[$i]["rut_Codigo"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarruta' rutid='".$Rutas[$i]["rut_Id"]."'><i class='fas fa-trash'></i></button></div>";
+			$cobro = CobrosControlador::ctrMostrarCobros("cob_Id", $Rutas[$i]["rut_COBRO"]);
 			$datosJson .='[
 			      "'.$Rutas[$i]["rut_Id"].'",
 			      "'.$Rutas[$i]["rut_Codigo"].'",
 			      "'.$Rutas[$i]["rut_Nombre"].'",
-			      "'.$Rutas[$i]["rut_COBRO"].'",
+			      "'.$cobro["cob_Nombre"].'",
 			      "'.$botones.'"
 			    ],';
 		}

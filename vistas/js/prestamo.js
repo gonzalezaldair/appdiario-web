@@ -146,7 +146,20 @@ $('#tablaPrestamos').on('click', '.btnupdprestamo', function(event) {
 
 $('#tablaPrestamos').on('click', '.btnabono', function(event) {
 	event.preventDefault();
+	$("#prestamosabonoSuma").val(0);
 	const prestamoid = $(this).attr('prestamoid');
+	const saldo = $(this).attr('saldo');
 	$("#prestamoabonoid").val(prestamoid);
+	$("#prestamosabonosaldo").val(saldo);
 	$("#modal-nuevo-abono").modal("show");
+});
+
+$("#prestamosabonoSuma").on('change', function(event) {
+	event.preventDefault();
+	/* Act on the event */
+	const abono = $(this).val();
+	const saldo = $(".btnabono").attr('saldo');
+
+	$("#prestamosabonosaldo").val(saldo - abono);
+
 });
