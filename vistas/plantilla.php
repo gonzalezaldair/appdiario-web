@@ -42,6 +42,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $_GET["action"] == "rol" ||
             $_GET["action"] == "ruta" ||
             $_GET["action"] == "salir" ||
+            $_GET["action"] == "perfil" ||
             $_GET["action"] == "usuarios"
 
             ) {
@@ -93,6 +94,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="vistas/js/forma-pago.js"></script>
 <script src="vistas/js/cobros.js"></script>
 <script src="vistas/js/prestamo.js"></script>
+<script src="vistas/js/usuario.js"></script>
+<script src="vistas/js/abonos.js"></script>
+<script src="vistas/js/perfil.js"></script>
 
 
 <script>

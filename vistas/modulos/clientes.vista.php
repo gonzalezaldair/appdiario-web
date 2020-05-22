@@ -34,7 +34,7 @@
                   <th>Direccion</th>
                   <th>Correo</th>
                   <th>Ruta</th>
-                  <th>Cobro</th>
+                  <th>Dia Cobro</th>
                   <th>Activo</th>
                   <th>Acciones</th>
                 </tr>

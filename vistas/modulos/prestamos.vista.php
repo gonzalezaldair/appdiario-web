@@ -26,17 +26,19 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <table id="tablaPrestamos" class="table table-bordered table-hover dt-responsive">
+              <table style="width: 100%;" id="tablaPrestamos" class="table table-bordered table-hover dt-responsive">
                 <thead>
                 <tr>
                   <th>Fecha</th>
                   <th>Cliente</th>
                   <th>Forma Pago</th>
                   <th>Interes</th>
-                  <th>Monto Prestado</th>
+                  <th>Prestado</th>
+                  <th>Total</th>
                   <th>Cuotas</th>
                   <th>Observaciones</th>
                   <th>Cobrador</th>
+                  <th>Saldo</th>
                   <th>Acciones</th>
                 </tr>
                 </thead>
@@ -150,9 +152,15 @@
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
           </div>
           <input id="prestamosabonoSuma" type="number" class="form-control form-control-lg" placeholder="Ingresar Suma">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+          </div>
+          <input id="prestamosabonosaldo" type="number" class="form-control form-control-lg" placeholder="Ingresar Saldo" readonly>
         </div>
       </div>
       <div class="modal-footer justify-content-between">
