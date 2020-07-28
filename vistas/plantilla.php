@@ -88,15 +88,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
   ======================================-->
 
 
-<script src="vistas/js/plantilla.js"></script>
-<script src="vistas/js/clientes.js"></script>
-<script src="vistas/js/rutas.js"></script>
-<script src="vistas/js/forma-pago.js"></script>
-<script src="vistas/js/cobros.js"></script>
-<script src="vistas/js/prestamo.js"></script>
-<script src="vistas/js/usuario.js"></script>
-<script src="vistas/js/abonos.js"></script>
-<script src="vistas/js/perfil.js"></script>
+<script src="vistas/js/plantilla.js?v=<?php echo filemtime("vistas/js/plantilla.js"); ?>"></script>
+<script src="vistas/js/clientes.js?v=<?php echo filemtime("vistas/js/clientes.js"); ?>"></script>
+<script src="vistas/js/rutas.js?v=<?php echo filemtime("vistas/js/rutas.js"); ?>"></script>
+<script src="vistas/js/forma-pago.js?v=<?php echo filemtime("vistas/js/forma-pago.js"); ?>"></script>
+<script src="vistas/js/cobros.js?v=<?php echo filemtime("vistas/js/cobros.js"); ?>"></script>
+<script src="vistas/js/prestamo.js?v=<?php echo filemtime("vistas/js/prestamo.js"); ?>"></script>
+<script src="vistas/js/usuario.js?v=<?php echo filemtime("vistas/js/usuario.js"); ?>"></script>
+<script src="vistas/js/abonos.js?v=<?php echo filemtime("vistas/js/abonos.js"); ?>"></script>
+<script src="vistas/js/perfil.js?v=<?php echo filemtime("vistas/js/perfil.js"); ?>"></script>
 
 
 <script>

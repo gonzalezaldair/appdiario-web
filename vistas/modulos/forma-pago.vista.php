@@ -32,6 +32,7 @@
                   <th>Id</th>
                   <th>Codigo</th>
                   <th>Nombre</th>
+                  <th>Estado</th>
                   <th>Acciones</th>
                 </tr>
                 </thead>
@@ -71,10 +72,19 @@
           </div>
            <input id="FormaPagonombre" type="text" class="form-control form-control-lg" placeholder="Ingresar Nombre">
         </div>
+        <div class="input-group mb-3 selectrutaActivo" style="display:none;">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+          </div>
+          <select id="FormaPagoActivo" class="form-control form-control-lg">
+            <option value="0">Inactivo</option>
+            <option value="1">Activo</option>
+          </select>
+        </div>
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-        <button type="button" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-primary btn-guardar-formapago">Guardar</button>
       </div>
     </div>
     <!-- /.modal-content -->

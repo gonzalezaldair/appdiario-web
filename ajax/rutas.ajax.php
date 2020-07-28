@@ -29,11 +29,13 @@ class MostrarRutas{
 		{
 			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdruta' rutid='".$Rutas[$i]["rut_Id"]."' rutcodigo='".$Rutas[$i]["rut_Codigo"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarruta' rutid='".$Rutas[$i]["rut_Id"]."'><i class='fas fa-trash'></i></button></div>";
 			$cobro = CobrosControlador::ctrMostrarCobros("cob_Id", $Rutas[$i]["rut_COBRO"]);
+			$activo = ($Rutas[$i]["rut_Activo"] == 1) ? "<span class='badge badge-success'>Activo</span>" : "<span class='badge badge-danger'>Inactivo</span>" ;
 			$datosJson .='[
 			      "'.$Rutas[$i]["rut_Id"].'",
 			      "'.$Rutas[$i]["rut_Codigo"].'",
 			      "'.$Rutas[$i]["rut_Nombre"].'",
 			      "'.$cobro["cob_Nombre"].'",
+			      "'.$activo.'",
 			      "'.$botones.'"
 			    ],';
 		}
@@ -65,10 +67,20 @@ switch ($acc) {
 		$ver = new MostrarRutas();
 		$ver -> TablaRutas();
 		break;
+	case 'add':
+		$traer = RutasControlador::ctrguardarRutas();
+		echo json_encode($traer);
+		break;
 	case 'traer':
 		$item = "rut_Id";
 		$valor = trim($_POST["rutid"]);
 		$traer = RutasControlador::ctrMostrarRutas($item, $valor);
+		echo json_encode($traer);
+		break;
+	case 'eliminarruta':
+		$item = "rut_Id";
+		$valor = trim($_POST["rutid"]);
+		$traer = RutasControlador::ctrEliminarRutas($item, $valor);
 		echo json_encode($traer);
 		break;
 	case 'comborutas':
@@ -76,6 +88,12 @@ switch ($acc) {
 		$valor = null;
 		$comborutas = RutasControlador::ctrMostrarRutas($item, $valor);
 		echo json_encode($comborutas);
+		break;
+	case 'consecutivo':
+		$consecutivo = RutasControlador::ctrConsecutivo();
+		$numero = intval(substr($consecutivo[0], 4)+1);
+		$prefijo = substr($consecutivo[0], 0,4);
+		echo json_encode($prefijo.$numero);
 		break;
 	default:
 		# code...

@@ -18,7 +18,6 @@ $("#buscarmenu").on('keyup', function(event) {
 	event.preventDefault();
 	/* Act on the event */
 	let value = $(this).val().toLowerCase();
-	console.log("value", value);
 
 	$(".nav-sidebar li a").filter(function() {
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
