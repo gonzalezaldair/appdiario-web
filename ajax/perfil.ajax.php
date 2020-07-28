@@ -26,9 +26,12 @@ class MostrarPerfil{
 		for($i = 0; $i < count($Perfil); $i++)
 		{
 			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdperfil' perfilid='".$Perfil[$i]["per_Id"]."' perfilcodigo='".$Perfil[$i]["per_Codigo"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarperfil' perfilid='".$Perfil[$i]["per_Id"]."'><i class='fas fa-trash'></i></button></div>";
+			$activo = ($Perfil[$i]["per_Activo"] == 1) ? "<span class='badge badge-success'>Activo</span>" : "<span class='badge badge-danger'>Inactivo</span>" ;
 			$datosJson .='[
+			      "'.$Perfil[$i]["per_Id"].'",
 			      "'.$Perfil[$i]["per_Codigo"].'",
 			      "'.$Perfil[$i]["per_Nombre"].'",
+			      "'.$activo.'",
 			      "'.$botones.'"
 			    ],';
 		}
@@ -60,9 +63,13 @@ switch ($acc) {
 		$ver = new MostrarPerfil();
 		$ver -> TablaPerfil();
 		break;
+	case 'add':
+		$add = PerfilControlador::ctrguardarPerfil();
+		echo json_encode($add);
+		break;
 	case 'traer':
-		$item = "cli_Id";
-		$valor = trim($_POST["clienteid"]);
+		$item = "per_Id";
+		$valor = trim($_POST["perid"]);
 		$traer = PerfilControlador::ctrMostrarPerfil($item, $valor);
 		echo json_encode($traer);
 		break;
@@ -71,6 +78,12 @@ switch ($acc) {
 		$valor = null;
 		$traer = PerfilControlador::ctrMostrarPerfil($item, $valor);
 		echo json_encode($traer);
+		break;
+	case 'consecutivo':
+		$consecutivo = PerfilControlador::ctrConsecutivo();
+		$numero = intval(substr($consecutivo[0], 4)+1);
+		$prefijo = substr($consecutivo[0], 0,4);
+		echo json_encode($prefijo.$numero);
 		break;
 
 	default:

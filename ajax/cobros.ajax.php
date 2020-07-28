@@ -26,12 +26,13 @@ class MostrarCobros{
 		for($i = 0; $i < count($Cobros); $i++)
 		{
 			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdcobro' cobid='".$Cobros[$i]["cob_Id"]."' cobcodigo='".$Cobros[$i]["cob_Codigo"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarcobro' cobid='".$Cobros[$i]["cob_Id"]."'><i class='fas fa-trash'></i></button></div>";
+			$activo = ($Cobros[$i]["cob_Activo"] == 'Y') ? "<span class='badge badge-success'>Activo</span>" : "<span class='badge badge-danger'>Inactivo</span>" ;
 			$datosJson .='[
 			      "'.$Cobros[$i]["cob_Id"].'",
 			      "'.$Cobros[$i]["cob_Codigo"].'",
 			      "'.$Cobros[$i]["cob_Nombre"].'",
 			      "'.$Cobros[$i]["cob_Fecha"].'",
-			      "'.$Cobros[$i]["cob_Activo"].'",
+			      "'.$activo.'",
 			      "'.$botones.'"
 			    ],';
 		}
@@ -69,11 +70,21 @@ switch ($acc) {
 		$traer = CobrosControlador::ctrMostrarCobros($item, $valor);
 		echo json_encode($traer);
 		break;
+	case 'add':
+		$traer = CobrosControlador::ctrGuardarCobros();
+		echo json_encode($traer);
+		break;
 	case 'comboCobros':
 		$item = null;
 		$valor = null;
 		$comboCobros = CobrosControlador::ctrMostrarCobros($item, $valor);
 		echo json_encode($comboCobros);
+		break;
+	case 'consecutivo':
+		$consecutivo = CobrosControlador::ctrConsecutivo();
+		$numero = intval(substr($consecutivo[0], 4)+1);
+		$prefijo = substr($consecutivo[0], 0,4);
+		echo json_encode($prefijo.$numero);
 		break;
 	default:
 		# code...
