@@ -59,6 +59,11 @@ $("#btnmodalnuevoprestamo").on('click', function(event) {
 	$("#prestamoObservaciones").val("");
 	$("#prestamoUsuario").val("");
 
+	$("#modal-nuevo-prestamo .modal-title").text("Nuevo Prestamo");
+	$("#modal-nuevo-prestamo .modal-header").removeClass('bg-success');
+	$("#modal-nuevo-prestamo .modal-header").addClass('bg-primary');
+	$(".input-codigo").hide();
+
 
 });
 
@@ -104,7 +109,7 @@ $('#tablaPrestamos').DataTable( {
 
 
 /*=============================================
-	ACTUALIZAR CLIENTES
+	ACTUALIZAR PRESTAMOS
 =============================================*/
 
 
@@ -112,31 +117,35 @@ $('#tablaPrestamos').on('click', '.btnupdprestamo', function(event) {
 	event.preventDefault();
 	const prestamoid = $(this).attr('prestamoid');
 	let datos = new FormData();
-    datos.append("prestamoid", prestamoid);
-    datos.append("acc", "traer");
+	datos.append("prestamoid", prestamoid);
+	datos.append("acc", "traer");
 	$.ajax({
-		url:"ajax/prestamos.ajax.php",
-      	method: "POST",
-      	data: datos,
-      	cache: false,
-      	contentType: false,
-      	processData: false,
-      	dataType:"json",
-	})
-	.done(function(respuesta) {
-		$("#prestamoId").val(respuesta["pre_Id"]);
-		$("#prestamoCliente").val(respuesta["pre_CLIENTE"]);
-		$("#prestamoFormaPago").val(respuesta["pre_FormaPago"]);
-		$("#prestamoInteres").val(respuesta["pre_Interes"]);
-		$("#prestamoMontoPrestado").val(respuesta["pre_MontoPrestado"]);
-		$("#prestamoCuotas").val(respuesta["pre_Cuotas"]);
-		$("#prestamoObservaciones").val(respuesta["pre_Observaciones"]);
-		$("#prestamoUsuario").val(respuesta["pre_USUARIO"]);
-		$("#modal-nuevo-prestamo").modal("show");
-	})
-	.fail(function(respuesta) {
-		console.log("error ",respuesta);
-	});
+			url: "ajax/prestamos.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+		.done(function(respuesta) {
+			$("#prestamoId").val(respuesta["pre_Id"]);
+			$("#prestamoCliente").val(respuesta["pre_CLIENTE"]);
+			$("#prestamoFormaPago").val(respuesta["pre_FormaPago"]);
+			$("#prestamoInteres").val(respuesta["pre_Interes"]);
+			$("#prestamoMontoPrestado").val(respuesta["pre_MontoPrestado"]);
+			$("#prestamoCuotas").val(respuesta["pre_Cuotas"]);
+			$("#prestamoObservaciones").val(respuesta["pre_Observaciones"]);
+			$("#prestamoUsuario").val(respuesta["pre_USUARIO"]);
+			$(".input-codigo").show();
+			$("#modal-nuevo-prestamo .modal-title").text("Editar Prestamo");
+			$("#modal-nuevo-prestamo .modal-header").addClass('bg-success');
+			$("#modal-nuevo-prestamo .modal-header").removeClass('bg-primary');
+			$("#modal-nuevo-prestamo").modal("show");
+		})
+		.fail(function(respuesta) {
+			console.log("error ", respuesta);
+		});
 
 });
 

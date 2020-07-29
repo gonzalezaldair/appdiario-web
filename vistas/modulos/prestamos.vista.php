@@ -66,15 +66,15 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 input-codigo">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-fingerprint"></i></span>
           </div>
           <input id="prestamoId" type="text" class="form-control form-control-lg" placeholder="Ingresar Codigo" readonly>
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-receipt"></i></span>
           </div>
           <select id="prestamoFormaPago" class="form-control form-control-lg">
           </select>
@@ -93,31 +93,31 @@
         </div>-->
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
           </div>
           <input type="text" id="prestamoCliente" class="form-control form-control-lg" placeholder="Ingresar Cedula">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-money-check-alt"></i></span>
           </div>
           <input id="prestamoMontoPrestado" type="text" class="form-control form-control-lg" placeholder="Ingresar Suma">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-comments-dollar"></i></span>
           </div>
           <input id="prestamoInteres" type="text" class="form-control form-control-lg" placeholder="Ingresar Interes">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-sort-numeric-up"></i></span>
           </div>
           <input id="prestamoCuotas" type="text" class="form-control form-control-lg" placeholder="Ingresar Cuotas">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-comments"></i></span>
           </div>
           <textarea id="prestamoObservaciones" class="form-control" placeholder="Ingresar Observaciones"></textarea>
         </div>
