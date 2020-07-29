@@ -39,17 +39,38 @@ class CobrosControlador{
 
 	public static function ctrGuardarCobros()
 	{
+		$fecha = date('Y-m-d');
 		$tabla = "cobro";
-		$respuestaModelo = CobrosModelo::mdlguardarCobros($tabla,"cob_Codigo");
-		return $respuestaModelo;
 		if (isset($_POST["cob_Codigo"])) {
 			$datosControlador = array(
 				'cob_Id' => $_POST["cob_Id"],
 				'cob_Codigo' => $_POST["cob_Codigo"],
 				'cob_Nombre' => $_POST["cob_Nombre"],
-				'cob_Activo' => $_POST["cob_Activo"]
+				'cob_Activo' => $_POST["cob_Activo"],
+				'cob_Fecha' => $fecha
 			);
-			$respuestaModelo =
+			if (isset($_POST["cob_Id"]) && $_POST["cob_Id"] > 0) {
+				$respuestaModelo = CobrosModelo::mdlActualizarCobros($tabla,$datosControlador);
+				return $respuestaModelo;
+			}else{
+				$respuestaModelo = CobrosModelo::mdlguardarCobros($tabla,$datosControlador);
+				return $respuestaModelo;
+			}
+		}
+	}
+
+
+	/*=============================================
+				ELIMINAR COBRO
+	=============================================*/
+
+
+	public static function ctrEliminarCobros()
+	{
+		$tabla = "cobro";
+		if (isset($_POST["cobid"])) {
+			$respuestaModelo = CobrosModelo::mdlEliminarCobros($tabla,"cob_Id", $_POST["cobid"]);
+			return $respuestaModelo;
 		}
 	}
 
