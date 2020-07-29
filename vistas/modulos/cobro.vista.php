@@ -79,8 +79,8 @@
             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
           </div>
           <select id="cobroActivo" class="form-control form-control-lg">
-            <option value="0">Inactivo</option>
-            <option value="1">Activo</option>
+            <option value="Y">Activo</option>
+            <option value="N">Inactivo</option>
           </select>
         </div>
       </div>

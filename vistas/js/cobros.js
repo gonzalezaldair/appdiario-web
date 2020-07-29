@@ -1,7 +1,7 @@
 /*=============================================
 CARGAR LA TABLA DINÁMICA DE formapago
 =============================================*/
-/*
+
 $.ajax({
 
 	url: "ajax/cobros.ajax.php",
@@ -11,7 +11,7 @@ $.ajax({
 
 	}
 
-})*/
+})
 
 
 /*=============================================
@@ -115,9 +115,11 @@ $('#tablaCobros').on('click', '.btnupdcobro', function(event) {
 			$("#cobroId").val(respuesta["cob_Id"]);
 			$("#cobroCodigo").val(respuesta["cob_Codigo"]);
 			$("#cobroNombre").val(respuesta["cob_Nombre"]);
+			$("#cobroActivo").val(respuesta["cob_Activo"]);
 			$("#modal-nuevo-cobro .modal-title").text("Editar Cobro");
 			$("#modal-nuevo-cobro .modal-header").addClass('bg-success');
 			$("#modal-nuevo-cobro .modal-header").removeClass('bg-primary');
+			$(".selectrutaActivo").show();
 			$("#modal-nuevo-cobro").modal("show");
 		})
 		.fail(function(respuesta) {
@@ -132,18 +134,52 @@ $('#tablaCobros').on('click', '.btnupdcobro', function(event) {
 =============================================*/
 
 
-$('#tablaCobros').on('click', '.btn-guardar-cobro', function(event) {
+$('#modal-nuevo-cobro').on('click', '.btn-guardar-cobro', function(event) {
 	event.preventDefault();
 	const cobid = $("#cobroId").val();
+	console.log("cobid", cobid);
 	const cobcodigo = $("#cobroCodigo").val();
 	const cobnombre = $("#cobroNombre").val();
 	const cobactivo = $("#cobroActivo").val();
 	let datos = new FormData();
-	datos.append("cobid", cobid);
+	datos.append("cob_Id", cobid);
 	datos.append("cob_Codigo", cobcodigo);
 	datos.append("cob_Nombre", cobnombre);
 	datos.append("cob_Activo", cobactivo);
 	datos.append("acc", "add");
+	$.ajax({
+			url: "ajax/cobros.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+		.done(function(respuesta) {
+			console.log("respuesta", respuesta);
+			$("#modal-nuevo-cobro").modal("hide");
+		})
+		.fail(function(respuesta) {
+			console.log("error ", respuesta);
+		});
+
+});
+
+
+
+/*=============================================
+	ELIMINAR DATOS COBROS
+=============================================*/
+
+
+$('#tablaCobros').on('click', '.btneliminarcobro', function(event) {
+	event.preventDefault();
+	const cobid = $(this).attr("cobid");
+	console.log("cobid", cobid);
+	let datos = new FormData();
+	datos.append("cobid", cobid);
+	datos.append("acc", "eliminarcobros");
 	$.ajax({
 			url: "ajax/cobros.ajax.php",
 			method: "POST",

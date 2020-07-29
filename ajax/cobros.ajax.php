@@ -25,7 +25,7 @@ class MostrarCobros{
 
 		for($i = 0; $i < count($Cobros); $i++)
 		{
-			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdcobro' cobid='".$Cobros[$i]["cob_Id"]."' cobcodigo='".$Cobros[$i]["cob_Codigo"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarcobro' cobid='".$Cobros[$i]["cob_Id"]."'><i class='fas fa-trash'></i></button></div>";
+			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button data-toggle='tooltip' data-placement='bottom' title='Actualizar Cobro' type='button' class='btn btn-success btnupdcobro' cobid='".$Cobros[$i]["cob_Id"]."' cobcodigo='".$Cobros[$i]["cob_Codigo"]."'><i class='fas fa-edit'></i></button><button data-toggle='tooltip' data-placement='bottom' title='Eliminar Cobro' type='button' class='btn btn-danger btneliminarcobro' cobid='".$Cobros[$i]["cob_Id"]."'><i class='fas fa-trash'></i></button></div>";
 			$activo = ($Cobros[$i]["cob_Activo"] == 'Y') ? "<span class='badge badge-success'>Activo</span>" : "<span class='badge badge-danger'>Inactivo</span>" ;
 			$datosJson .='[
 			      "'.$Cobros[$i]["cob_Id"].'",
@@ -72,6 +72,10 @@ switch ($acc) {
 		break;
 	case 'add':
 		$traer = CobrosControlador::ctrGuardarCobros();
+		echo json_encode($traer);
+		break;
+	case 'eliminarcobros':
+		$traer = CobrosControlador::ctrEliminarCobros();
 		echo json_encode($traer);
 		break;
 	case 'comboCobros':
