@@ -31,8 +31,10 @@ $("#btn-modal-nuevo-cliente").on('click', function(event) {
 	$("#clientePosicion").val("");
 	$("#clienteRUTA").val(1);
 	$("#clienteDiaCobro").val(0);
-	$("#clienteActivo").val(1);
-	$("#clienteActivo").attr('disabled', true);
+	$("#modal-nuevo-cliente .modal-title").text("Nuevo Cliente");
+	$("#modal-nuevo-cliente .modal-header").removeClass('bg-success');
+	$("#modal-nuevo-cliente .modal-header").addClass('bg-primary');
+	$(".selectactivo").hide();
 
 
 });
@@ -159,34 +161,38 @@ $('#tablaclientes').on('click', '.btnupdcliente', function(event) {
 	const clienteid = $(this).attr('clienteid');
 	const clientecedula = $(this).attr('clientecedula');
 	let datos = new FormData();
-    datos.append("clienteid", clienteid);
-    datos.append("acc", "traer");
+	datos.append("clienteid", clienteid);
+	datos.append("acc", "traer");
 	$.ajax({
-		url:"ajax/clientes.ajax.php",
-      	method: "POST",
-      	data: datos,
-      	cache: false,
-      	contentType: false,
-      	processData: false,
-      	dataType:"json",
-	})
-	.done(function(respuesta) {
-		$("#clienteCedula").val(respuesta["cli_Cedula"]);
-		$("#clienteid").val(respuesta["cli_Id"]);
-		$("#clienteNombre").val(respuesta["cli_Nombre"]);
-		$("#clienteCelular").val(respuesta["cli_Celular"]);
-		$("#clienteDireccion").val(respuesta["cli_Direccion"]);
-		$("#clienteCorreo").val(respuesta["cli_Correo"]);
-		$("#clientePosicion").val(respuesta["cli_Posicion"]);
-		$("#clienteRUTA").val(respuesta["cli_RUTA"]);
-		$("#clienteDiaCobro").val(respuesta["cli_DiaCobro"]);
-		$("#clienteActivo").val(respuesta["cli_Activo"]);
-		$("#clienteCedula").prop('readonly', true);
-		$("#modal-nuevo-cliente").modal("show");
-	})
-	.fail(function(respuesta) {
-		console.log("error ",respuesta);
-	});
+			url: "ajax/clientes.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+		.done(function(respuesta) {
+			$("#clienteCedula").val(respuesta["cli_Cedula"]);
+			$("#clienteid").val(respuesta["cli_Id"]);
+			$("#clienteNombre").val(respuesta["cli_Nombre"]);
+			$("#clienteCelular").val(respuesta["cli_Celular"]);
+			$("#clienteDireccion").val(respuesta["cli_Direccion"]);
+			$("#clienteCorreo").val(respuesta["cli_Correo"]);
+			$("#clientePosicion").val(respuesta["cli_Posicion"]);
+			$("#clienteRUTA").val(respuesta["cli_RUTA"]);
+			$("#clienteDiaCobro").val(respuesta["cli_DiaCobro"]);
+			$("#clienteActivo").val(respuesta["cli_Activo"]);
+			$("#clienteCedula").prop('readonly', true);
+			$(".selectactivo").show();
+			$("#modal-nuevo-cliente .modal-title").text("Editar Cliente");
+			$("#modal-nuevo-cliente .modal-header").addClass('bg-success');
+			$("#modal-nuevo-cliente .modal-header").removeClass('bg-primary');
+			$("#modal-nuevo-cliente").modal("show");
+		})
+		.fail(function(respuesta) {
+			console.log("error ", respuesta);
+		});
 
 });
 

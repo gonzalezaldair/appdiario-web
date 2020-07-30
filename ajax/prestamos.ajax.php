@@ -28,7 +28,7 @@ class MostrarPrestamos{
 			}else{
 				$saldo = $Prestamos[$i]["Saldo"];
 			}
-			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdprestamo' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-warning btnabono' saldo='".$saldo."' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-dollar-sign'></i></i></button><button type='button' class='btn btn-danger btneliminarprestamo' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-trash'></i></button></div>";
+			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdprestamo' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-warning btnabono' saldo='".$saldo."' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-coins'></i></i></button><button type='button' class='btn btn-danger btneliminarprestamo' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-trash'></i></button></div>";
 			$interes = number_format($Prestamos[$i]["interes"], 2, ",",".");
 			$prestado = number_format($Prestamos[$i]["pre_MontoPrestado"], 2, ",",".");
 			$prestadointeres = number_format($Prestamos[$i]["pre_MontoInteres"], 2, ",",".");

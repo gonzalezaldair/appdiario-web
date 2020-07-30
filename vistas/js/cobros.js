@@ -29,6 +29,7 @@ $("#btnmodalnuevocobro").on('click', function(event) {
 	$("#modal-nuevo-cobro .modal-title").text("Nuevo Cobro");
 	$("#modal-nuevo-cobro .modal-header").removeClass('bg-success');
 	$("#modal-nuevo-cobro .modal-header").addClass('bg-primary');
+	$(".selectrutaActivo").hide();
 	let datos = new FormData();
 	datos.append("acc", "consecutivo");
 	$.ajax({

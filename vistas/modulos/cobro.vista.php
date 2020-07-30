@@ -63,20 +63,20 @@
       <div class="modal-body">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-fingerprint"></i></span>
           </div>
           <input type="hidden" id="cobroId">
           <input id="cobroCodigo" type="text" class="form-control form-control-lg" placeholder="Ingresar Codigo" readonly>
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-layer-group"></i></span>
           </div>
           <input id="cobroNombre" type="text" class="form-control form-control-lg" placeholder="Ingresar Nombre">
         </div>
-        <div class="input-group mb-3 selectrutaActivo" style="display:none;">
+        <div class="input-group mb-3 selectrutaActivo">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-eye-slash"></i></span>
           </div>
           <select id="cobroActivo" class="form-control form-control-lg">
             <option value="Y">Activo</option>

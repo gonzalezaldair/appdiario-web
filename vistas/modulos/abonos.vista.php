@@ -58,64 +58,23 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 inputpersona-abono">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
           </div>
           <input type="text" id="abonoCliente" class="form-control form-control-lg" placeholder="Ingresar Nombre, Telefono o Cedula" readonly>
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-money-check-alt"></i></span>
           </div>
           <input id="abonoPrestamo" type="text" class="form-control form-control-lg" placeholder="Ingresar Prestamo" readonly>
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
           </div>
           <input id="abonoMonto" type="text" class="form-control form-control-lg" placeholder="Ingresar Monto">
-        </div>
-      </div>
-      <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-        <button type="button" class="btn btn-primary">Guardar</button>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
-
-<div class="modal fade" id="modal-nuevo-abono">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Nuevo Prestamo</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-          </div>
-          <input type="text" class="form-control form-control-lg" placeholder="Ingresar Nombre, Telefono o Cedula" readonly>
-        </div>
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-          </div>
-          <input type="text" class="form-control form-control-lg" placeholder="Ingresar Prestamo" readonly>
-        </div>
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-          </div>
-          <input type="text" class="form-control form-control-lg" placeholder="Ingresar Monto">
         </div>
       </div>
       <div class="modal-footer justify-content-between">

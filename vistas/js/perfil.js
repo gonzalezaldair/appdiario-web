@@ -22,6 +22,7 @@ $("#btn-nuevo-perfil").on('click', function(event) {
 	$("#per_Codigo").val("");
 	$("#per_Id").val("");
 	$("#per_Nombre").val("");
+	$(".selectrutaActivo").hide();
 	let datos = new FormData();
 	datos.append("acc", "consecutivo");
 	$.ajax({
@@ -101,9 +102,11 @@ $("#tablaperfil").on('click', '.btnupdperfil', function(event) {
 			$("#per_Codigo").val(respuesta["per_Codigo"]);
 			$("#per_Id").val(perfilid);
 			$("#per_Nombre").val(respuesta["per_Nombre"]);
+			$("#per_Activo").val(respuesta["per_Activo"]);
 			$("#modal-nuevo-perfil .modal-title").text("Editar Perfil");
 			$("#modal-nuevo-perfil .modal-header").removeClass('bg-primary');
 			$("#modal-nuevo-perfil .modal-header").addClass('bg-success');
+			$(".selectrutaActivo").show();
 			$("#modal-nuevo-perfil").modal("show");
 		})
 		.fail(function() {
