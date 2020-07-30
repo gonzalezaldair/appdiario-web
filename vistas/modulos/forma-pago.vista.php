@@ -61,20 +61,20 @@
       <div class="modal-body">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-fingerprint"></i></span>
           </div>
            <input type="text" id="FormaPagocodigo" class="form-control form-control-lg" placeholder="Ingresar Codigo" readonly>
            <input type="hidden" id="FormaPagoid">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-money-check-alt"></i></span>
           </div>
            <input id="FormaPagonombre" type="text" class="form-control form-control-lg" placeholder="Ingresar Nombre">
         </div>
         <div class="input-group mb-3 selectrutaActivo" style="display:none;">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-eye-slash"></i></span>
           </div>
           <select id="FormaPagoActivo" class="form-control form-control-lg">
             <option value="0">Inactivo</option>

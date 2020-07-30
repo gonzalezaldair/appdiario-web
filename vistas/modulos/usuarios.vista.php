@@ -65,32 +65,32 @@
       <div class="modal-body">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
           </div>
           <input type="hidden" id="usuarioId">
           <input id="usuarioCedula" type="text" class="form-control form-control-lg" placeholder="Ingresar Cedula">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
           </div>
           <input id="usuarioUsuario" type="text" class="form-control form-control-lg" placeholder="Ingresar Usuario">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-key"></i></span>
           </div>
           <input id="usuarioPassword" type="password" class="form-control form-control-lg" placeholder="Ingresar Contraseña" readonly>
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
           </div>
           <input id="usuarioNombre" type="text" class="form-control form-control-lg" placeholder="Ingresar Nombre">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-phone"></i></span>
           </div>
           <input id="usuarioCelular" type="text" class="form-control form-control-lg" placeholder="Ingresar Celular">
         </div>
@@ -102,26 +102,26 @@
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
           </div>
           <input id="usuarioDireccion" type="text" class="form-control form-control-lg" placeholder="Ingresar Direccion">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-map-marked-alt"></i></span>
           </div>
           <select id="usuarioRUTA" class="form-control form-control-lg">
           </select>
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-users"></i></span>
           </div>
           <select id="usuarioPERFIL" class="form-control form-control-lg"></select>
         </div>
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 selectrutaActivo">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-eye-slash"></i></span>
           </div>
           <select id="usuarioActivo" class="form-control form-control-lg">
             <option value="0">Inactivo</option>

@@ -48,7 +48,10 @@ $("#btnmodalnuevousuario").on('click', function(event) {
 	$("#usuarioRUTA").val(1);
 	$("#usuarioPERFIL").val(1);
 	$("#usuarioActivo").val(1);
-	$("#usuarioActivo").attr('disabled', true);
+	$(".selectrutaActivo").hide();
+	$("#modal-nuevo-usuario .modal-title").text("Nuevo Usuario");
+	$("#modal-nuevo-usuario .modal-header").removeClass('bg-success');
+	$("#modal-nuevo-usuario .modal-header").addClass('bg-primary');
 
 
 });
@@ -160,37 +163,40 @@ $('#tablausuario').on('click', '.btnupdusuario', function(event) {
 	const usuarioid = $(this).attr('usuarioid');
 	const usuariocedula = $(this).attr('usuariocedula');
 	let datos = new FormData();
-    datos.append("usuarioid", usuarioid);
-    datos.append("acc", "traer");
+	datos.append("usuarioid", usuarioid);
+	datos.append("acc", "traer");
 	$.ajax({
-		url:"ajax/usuario.ajax.php",
-      	method: "POST",
-      	data: datos,
-      	cache: false,
-      	contentType: false,
-      	processData: false,
-      	dataType:"json",
-	})
-	.done(function(respuesta) {
-		$("#usuarioCedula").val(respuesta["usu_Cedula"]);
-		$("#usuarioCedula").attr('disabled', true);
-		$("#usuarioId").val(respuesta["usu_Id"]);
-		$("#usuarioUsuario").val(respuesta["usu_Login"]);
-		$("#usuarioUsuario").attr('disabled', true);
-		$("#usuarioPassword").val(respuesta["usu_Password"]);
-		$("#usuarioNombre").val(respuesta["usu_Nombre"]);
-		$("#usuarioCelular").val(respuesta["usu_Celular"]);
-		$("#usuarioCorreo").val(respuesta["usu_Correo"]);
-		$("#usuarioDireccion").val(respuesta["usu_Direccion"]);
-		$("#usuarioRUTA").val(respuesta["usu_RUTA"]);
-		$("#usuarioPERFIL").val(respuesta["usu_Perfil"]);
-		$("#usuarioActivo").val(respuesta["usu_Activo"]);
-		$("#usuarioActivo").attr('disabled', true);
-		$("#modal-nuevo-usuario").modal("show");
-	})
-	.fail(function(respuesta) {
-		console.log("error ",respuesta);
-	});
+			url: "ajax/usuario.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+		.done(function(respuesta) {
+			$("#usuarioCedula").val(respuesta["usu_Cedula"]);
+			$("#usuarioCedula").attr('disabled', true);
+			$("#usuarioId").val(respuesta["usu_Id"]);
+			$("#usuarioUsuario").val(respuesta["usu_Login"]);
+			$("#usuarioUsuario").attr('disabled', true);
+			$("#usuarioPassword").val(respuesta["usu_Password"]);
+			$("#usuarioNombre").val(respuesta["usu_Nombre"]);
+			$("#usuarioCelular").val(respuesta["usu_Celular"]);
+			$("#usuarioCorreo").val(respuesta["usu_Correo"]);
+			$("#usuarioDireccion").val(respuesta["usu_Direccion"]);
+			$("#usuarioRUTA").val(respuesta["usu_RUTA"]);
+			$("#usuarioPERFIL").val(respuesta["usu_Perfil"]);
+			$("#usuarioActivo").val(respuesta["usu_Activo"]);
+			$(".selectrutaActivo").show();
+			$("#modal-nuevo-usuario .modal-title").text("Editar Usuario");
+			$("#modal-nuevo-usuario .modal-header").addClass('bg-success');
+			$("#modal-nuevo-usuario .modal-header").removeClass('bg-primary');
+			$("#modal-nuevo-usuario").modal("show");
+		})
+		.fail(function(respuesta) {
+			console.log("error ", respuesta);
+		});
 
 });
 

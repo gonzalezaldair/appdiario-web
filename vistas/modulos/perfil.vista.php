@@ -65,16 +65,25 @@
       <div class="modal-body">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-fingerprint"></i></span>
           </div>
           <input type="text" class="form-control form-control-lg" placeholder="Ingresar Codigo" id="per_Codigo" readonly>
           <input type="hidden" class="form-control form-control-lg" id="per_Id">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-clipboard-list"></i></span>
           </div>
           <input type="text" class="form-control form-control-lg" placeholder="Ingresar Nombre" id="per_Nombre">
+        </div>
+        <div class="input-group mb-3 selectrutaActivo">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-eye-slash"></i></span>
+          </div>
+          <select id="per_Activo" class="form-control form-control-lg">
+            <option value="1">Activo</option>
+            <option value="0">Inactivo</option>
+          </select>
         </div>
       </div>
       <div class="modal-footer justify-content-between">

@@ -27,6 +27,10 @@ $("#btnmodalnuevoabono").on('click', function(event) {
 	$("#abonoMonto").prop('readonly', false);
 	$("#abonoPrestamo").prop('readonly', false);
 	$("#abonoCliente").prop('readonly', false);
+	$("#modal-nuevo-abono .modal-title").text("Nuevo Abono");
+	$("#modal-nuevo-abono .modal-header").removeClass('bg-success');
+	$("#modal-nuevo-abono .modal-header").addClass('bg-primary');
+	$(".inputpersona-abono").show();
 });
 
 
@@ -79,26 +83,30 @@ $('#tablaabonos').on('click', '.btnupdabono', function(event) {
 	const aboid = $(this).attr('aboid');
 	const aboprestamo = $(this).attr('aboprestamo');
 	let datos = new FormData();
-    datos.append("aboid", aboid);
-    datos.append("acc", "traer");
+	datos.append("aboid", aboid);
+	datos.append("acc", "traer");
 	$.ajax({
-		url:"ajax/abonos.ajax.php",
-      	method: "POST",
-      	data: datos,
-      	cache: false,
-      	contentType: false,
-      	processData: false,
-      	dataType:"json",
-	})
-	.done(function(respuesta) {
-		$("#abonoPrestamo").val(respuesta["abo_PRESTAMO"]);
-		$("#abonoMonto").val(respuesta["abo_Monto"]);
-		$("#abonoMonto").prop('readonly', true);
-		$("#abonoPrestamo").prop('readonly', true);
-		$("#modal-nuevo-abono").modal("show");
-	})
-	.fail(function(respuesta) {
-		console.log("error ",respuesta);
-	});
+			url: "ajax/abonos.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+		.done(function(respuesta) {
+			$("#abonoPrestamo").val(respuesta["abo_PRESTAMO"]);
+			$("#abonoMonto").val(respuesta["abo_Monto"]);
+			$("#abonoMonto").prop('readonly', true);
+			$("#abonoPrestamo").prop('readonly', true);
+			$(".inputpersona-abono").hide();
+			$("#modal-nuevo-abono .modal-title").text("Editar Abono");
+			$("#modal-nuevo-abono .modal-header").addClass('bg-success');
+			$("#modal-nuevo-abono .modal-header").removeClass('bg-primary');
+			$("#modal-nuevo-abono").modal("show");
+		})
+		.fail(function(respuesta) {
+			console.log("error ", respuesta);
+		});
 
 });

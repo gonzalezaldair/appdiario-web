@@ -64,27 +64,27 @@
       <div class="modal-body">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-fingerprint"></i></span>
           </div>
           <input type="text" id="rutaCodigo" class="form-control form-control-lg" placeholder="Ingresar Codigo" readonly>
           <input type="hidden" id="rutaId">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-map-marked-alt"></i></span>
           </div>
           <input id="rutaNombre" type="text" class="form-control form-control-lg" placeholder="Ingresar Nombre">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-layer-group"></i></span>
           </div>
           <select id="rutaCobro" class="form-control form-control-lg">
           </select>
         </div>
         <div class="input-group mb-3 selectrutaActivo" style="display:none;">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-eye-slash"></i></span>
           </div>
           <select id="rutaActivo" class="form-control form-control-lg">
             <option value="0">Inactivo</option>

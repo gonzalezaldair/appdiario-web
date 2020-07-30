@@ -64,26 +64,26 @@
       <div class="modal-body">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
           </div>
           <input type="hidden" name="clienteid" id="clienteid">
           <input type="text" id="clienteCedula" name="clienteCedula" class="form-control form-control-lg" placeholder="Ingresar Cedula">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-signature"></i></span>
           </div>
           <input type="text" id="clienteNombre" name="clienteNombre" class="form-control form-control-lg" placeholder="Ingresar Nombre y Apellido">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-phone"></i></span>
           </div>
           <input type="text" id="clienteCelular" class="form-control form-control-lg" placeholder="Ingresar Celular">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
           </div>
           <input type="text" id="clienteDireccion" class="form-control form-control-lg" placeholder="Ingresar Direccion">
         </div>
@@ -95,21 +95,21 @@
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-map-marked-alt"></i></span>
           </div>
           <select id="clienteRUTA" class="form-control form-control-lg">
           </select>
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
           </div>
           <select id="clienteDiaCobro" class="form-control form-control-lg">
           </select>
         </div>
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 selectactivo">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-eye-slash"></i></span>
           </div>
           <select id="clienteActivo" class="form-control form-control-lg">
             <option value="0">Inactivo</option>
