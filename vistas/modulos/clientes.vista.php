@@ -31,11 +31,12 @@
                 <tr>
                   <th>Cedula</th>
                   <th>Nombres</th>
+                  <th>Celular</th>
                   <th>Direccion</th>
                   <th>Correo</th>
                   <th>Ruta</th>
                   <th>Dia Cobro</th>
-                  <th>Activo</th>
+                  <th>Estado</th>
                   <th>Acciones</th>
                 </tr>
                 </thead>
@@ -52,7 +53,7 @@
 <!-- /.content -->
 
 
-<div class="modal fade" id="modal-nuevo-cliente" style="overflow-y: scroll;">
+<div class="modal fade" id="modal-nuevo-cliente">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header bg-primary">
@@ -61,7 +62,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body cuerpo-modal">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-id-card"></i></span>
@@ -79,7 +80,7 @@
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-phone"></i></span>
           </div>
-          <input type="text" id="clienteCelular" class="form-control form-control-lg" placeholder="Ingresar Celular">
+          <input maxlength="11" type="text" id="clienteCelular" class="form-control form-control-lg" placeholder="Ingresar Celular">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
@@ -119,11 +120,11 @@
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-        <!--<button type="button" class="btn btn-primary">Guardar</button>-->
-        <button class="btn btn-primary" type="button" disabled>
+        <button type="button" class="btn btn-primary btn-guardar-cliente">Guardar</button>
+        <!--<button class="btn btn-primary" type="button" disabled>
           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           Loading...
-        </button>
+        </button>-->
       </div>
     </div>
     <!-- /.modal-content -->
@@ -137,7 +138,7 @@
 <div class="modal fade" id="modal-nuevo-prestamo">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header bg-success">
+      <div class="modal-header bg-warning">
         <h4 class="modal-title">Nuevo Prestamo</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -146,39 +147,39 @@
       <div class="modal-body">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
           </div>
           <input id="idPrestamo" type="hidden" class="form-control form-control-lg" placeholder="Ingresar Codigo" readonly>
           <input id="clientePrestamo" type="text" class="form-control form-control-lg" placeholder="Ingresar Codigo" readonly>
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-receipt"></i></span>
           </div>
           <select id="comboformapago" class="form-control form-control-lg">
           </select>
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
           </div>
           <input id="sumaPrestamo" type="text" class="form-control form-control-lg" placeholder="Ingresar Suma">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-comments-dollar"></i></span>
           </div>
           <input id="interesPrestamo" type="text" class="form-control form-control-lg" placeholder="Ingresar Interes">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-sort-numeric-up"></i></span>
           </div>
           <input id="cuotasPrestamo" type="text" class="form-control form-control-lg" placeholder="Ingresar Cuotas">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <span class="input-group-text"><i class="fas fa-comments"></i></span>
           </div>
           <textarea id="observacionesPrestamo" class="form-control" placeholder="Ingresar Observaciones"></textarea>
         </div>

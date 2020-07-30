@@ -36,4 +36,28 @@ class AbonosModelo{
 
 		$stmt = null;
 	}
+
+
+	public static function mdlGuardarAbonos($tabla, $datosModelo)
+	{
+		$fecha = date("Y-m-d h:m:s");
+		$usuario = 2;
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (abo_PRESTAMO, abo_Monto, abo_Fecha) VALUES (:abo_PRESTAMO, :abo_Monto, :abo_Fecha)");
+
+		$stmt -> bindParam(":abo_PRESTAMO", $datosModelo["abo_PRESTAMO"], PDO::PARAM_INT);
+		$stmt -> bindParam(":abo_Monto", $datosModelo["abo_Monto"], PDO::PARAM_INT);
+		$stmt -> bindParam(":abo_Fecha", $fecha, PDO::PARAM_STR);
+
+		if($stmt->execute())
+		{
+			return "ok";
+		}
+		else
+		{
+			$err = $stmt->errorInfo();
+			return $err[2];
+		}
+		$stmt -> close();
+		$stmt = null;
+	}
 }

@@ -279,3 +279,53 @@ $("#tablausuario").on('click', '.btnpermisosusuario', function(event) {
 	});
 	$("#modal-permisos-usuario").modal("show");
 });
+
+
+$("#modal-nuevo-usuario").on('click', '.btn-guardar-usuario', function(event) {
+	event.preventDefault();
+	/* Act on the event */
+
+	const user_Cedula= $("#usuarioCedula").val();
+	const user_Id= ($("#usuarioId").val() != "" ) ? $("#usuarioId").val() : 0;
+	const user_Usuario= $("#usuarioUsuario").val();
+	const user_Password= $("#usuarioPassword").val();
+	const user_Nombre= $("#usuarioNombre").val();
+	const user_Celular= $("#usuarioCelular").val();
+	const user_Correo= $("#usuarioCorreo").val();
+	const user_Direccion= $("#usuarioDireccion").val();
+	const user_Ruta= $("#usuarioRUTA").val();
+	const user_Perfil= $("#usuarioPERFIL").val();
+	const user_Activo= $("#usuarioActivo").val();
+	let datos = new FormData();
+    datos.append("usu_Id", user_Id);
+    datos.append("usu_Cedula", user_Cedula);
+    datos.append("usu_Login", user_Usuario);
+    datos.append("usu_Password", user_Password);
+    datos.append("usu_Nombre", user_Nombre);
+    datos.append("usu_Celular", user_Celular);
+    datos.append("usu_Correo", user_Correo);
+    datos.append("usu_Direccion", user_Direccion);
+    datos.append("usu_RUTA", user_Ruta);
+    datos.append("usu_Perfil", user_Perfil);
+    datos.append("usu_Activo", user_Activo);
+    datos.append("acc", "add");
+	$.ajax({
+		url:"ajax/usuario.ajax.php",
+      	method: "POST",
+      	data: datos,
+      	cache: false,
+      	contentType: false,
+      	processData: false,
+      	dataType:"json",
+	})
+	.done(function(respuesta) {
+		console.log("respuesta", respuesta);
+		console.log("success");
+	})
+	.fail(function(respuesta) {
+		console.log("respuesta", respuesta.responseText);
+		console.log("error");
+	});
+
+
+});

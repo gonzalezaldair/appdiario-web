@@ -22,7 +22,7 @@
       <div class="col-12">
         <div class="card">
             <div class="card-header">
-              <button type="button" id="btnmodalnuevoabono" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-nuevo-abono"><i class="fas fa-plus"></i> Nuevo Abono</button>
+              <!--<button type="button" id="btnmodalnuevoabono" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-nuevo-abono"><i class="fas fa-plus"></i> Nuevo Abono</button>-->
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -32,7 +32,7 @@
                     <th>Prestamo</th>
                     <th>Monto</th>
                     <th>Fecha</th>
-                    <th>Acciones</th>
+                    <!--<th>Acciones</th>-->
                   </tr>
                 </thead>
               </table>

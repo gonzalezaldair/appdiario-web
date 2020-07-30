@@ -25,13 +25,12 @@ class MostrarAbonos{
 
 		for($i = 0; $i < count($Abonos); $i++)
 		{
-			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdabono' aboid='".$Abonos[$i]["abo_Id"]."' aboprestamo='".$Abonos[$i]["abo_PRESTAMO"]."' ><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarabono' aboid='".$Abonos[$i]["abo_Id"]."' aboprestamo='".$Abonos[$i]["abo_PRESTAMO"]."' ><i class='fas fa-trash'></i></button></div>";
+			//$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdabono' aboid='".$Abonos[$i]["abo_Id"]."' aboprestamo='".$Abonos[$i]["abo_PRESTAMO"]."' ><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarabono' aboid='".$Abonos[$i]["abo_Id"]."' aboprestamo='".$Abonos[$i]["abo_PRESTAMO"]."' ><i class='fas fa-trash'></i></button></div>";
 			$monto =number_format($Abonos[$i]["abo_Monto"], 2, ",",".");
 			$datosJson .='[
 			      "'.$Abonos[$i]["abo_PRESTAMO"].'",
 			      "'.$monto.'",
-			      "'.$Abonos[$i]["abo_Fecha"].'",
-			      "'.$botones.'"
+			      "'.$Abonos[$i]["abo_Fecha"].'"
 			    ],';
 		}
 
@@ -61,6 +60,10 @@ switch ($acc) {
 	case 'ver':
 		$ver = new MostrarAbonos();
 		$ver -> TablaAbonos();
+		break;
+	case 'add':
+		$traer = AbonosControlador::ctrGuardarAbonos();
+		echo json_encode($traer);
 		break;
 	case 'traer':
 		$item = "abo_Id";

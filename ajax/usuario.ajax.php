@@ -83,6 +83,10 @@ switch ($acc) {
 		$ver = new MostrarUsuarios();
 		$ver -> TablaUsuarios();
 		break;
+	case 'add':
+		$traer = UsuariosControlador::ctrGuardarUsuario();
+		echo json_encode($traer);
+		break;
 	case 'traer':
 		$item = "usu_Id";
 		$valor = trim($_POST["usuarioid"]);

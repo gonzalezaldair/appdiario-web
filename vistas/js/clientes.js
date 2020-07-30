@@ -151,6 +151,51 @@ $('#tablaclientes').DataTable( {
 } );
 
 
+$("#modal-nuevo-cliente").on('click', '.btn-guardar-cliente', function(event) {
+	event.preventDefault();
+	/* Act on the event */
+	const cli_Cedula = $("#clienteCedula").val();
+	const cli_Id = ($("#clienteid").val() != "") ? $("#clienteid").val() : 0;
+	const cli_Nombre = $("#clienteNombre").val();
+	const cli_Celular = $("#clienteCelular").val();
+	const cli_Direccion = $("#clienteDireccion").val();
+	const cli_Correo = $("#clienteCorreo").val();
+	//const cli_Posicion = $("#clientePosicion").val();
+	const cli_Ruta = $("#clienteRUTA").val();
+	const cli_DiaCobro = $("#clienteDiaCobro").val();
+	const cli_Activo = $("#clienteActivo").val();
+	let datos = new FormData();
+	datos.append("cli_Id", cli_Id);
+	datos.append("cli_Cedula", cli_Cedula);
+	datos.append("cli_Nombre", cli_Nombre);
+	datos.append("cli_Celular", cli_Celular);
+	datos.append("cli_Direccion", cli_Direccion);
+	datos.append("cli_Correo", cli_Correo);
+	//datos.append("cli_Posicion", cli_Posicion);
+	datos.append("cli_RUTA", cli_Ruta);
+	datos.append("cli_DiaCobro", cli_DiaCobro);
+	datos.append("cli_Activo", cli_Activo);
+	datos.append("acc", "add");
+	$.ajax({
+			url: "ajax/clientes.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+		.done(function(respuesta) {
+			console.log("respuesta", respuesta);
+			console.log("success");
+		})
+		.fail(function(respuesta) {
+			console.log("respuesta", respuesta.responseText);
+			console.log("error");
+		});
+
+});
+
 /*=============================================
 	ACTUALIZAR CLIENTES
 =============================================*/
@@ -198,7 +243,7 @@ $('#tablaclientes').on('click', '.btnupdcliente', function(event) {
 
 
 /*=============================================
-	ACTUALIZAR CLIENTES
+	NUEVO PRESTAMO
 =============================================*/
 
 
