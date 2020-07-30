@@ -62,7 +62,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body cuerpo-modal">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-id-card"></i></span>
@@ -131,7 +131,7 @@
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-        <button type="button" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-primary btn-guardar-usuario">Guardar</button>
       </div>
     </div>
     <!-- /.modal-content -->

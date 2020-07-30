@@ -75,6 +75,10 @@ switch ($acc) {
 		$ver = new MostrarPrestamos();
 		$ver -> TablaPrestamos();
 		break;
+	case 'add':
+		$add = PrestamosControlador::ctrguardarPrestamo();
+		echo json_encode($add);
+		break;
 	case 'traer':
 		$item = "pre_Id";
 		$valor = trim($_POST["prestamoid"]);

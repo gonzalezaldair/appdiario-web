@@ -1,3 +1,14 @@
+<?php
+$item = null;
+$valor = null;
+
+$Rutas = RutasControlador::ctrMostrarRutas($item, $valor);
+$clientes = ClientesControlador::ctrMostrarClientes($item, $valor);
+$prestamos = PrestamosControlador::ctrMostrarPrestamos($item, $valor);
+$PrestamosTablaInicio = PrestamosControlador::ctrdatatableprestamos();
+$usuario = UsuariosControlador::ctrMostrarUsuarios($item, $valor);
+//echo '<pre>'; print_r($PrestamosTablaInicio); echo '</pre>';
+ ?>
 <!-- Content Header (Page header) -->
 <div class="content-header">
   <div class="container-fluid">
@@ -22,12 +33,12 @@
     <div class="row">
       <div class="col-12 col-sm-6 col-md-3">
         <div class="info-box">
-          <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+          <span class="info-box-icon bg-info elevation-1"><i class="fas user-friends"></i></span>
           <div class="info-box-content">
-            <span class="info-box-text">CPU Traffic</span>
+            <span class="info-box-text">Usuarios</span>
             <span class="info-box-number">
-              10
-              <small>%</small>
+              <?php echo count($usuario); ?>
+              <!--<small>%</small>-->
             </span>
           </div>
           <!-- /.info-box-content -->
@@ -41,7 +52,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Rutas</span>
-            <span class="info-box-number">41,410</span>
+            <span class="info-box-number"><?php echo count($Rutas); ?></span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -58,7 +69,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Prestamos</span>
-            <span class="info-box-number">760</span>
+            <span class="info-box-number"><?php echo count($prestamos); ?></span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -71,7 +82,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Clientes</span>
-            <span class="info-box-number">2,000</span>
+            <span class="info-box-number"><?php echo count($clientes); ?></span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -104,69 +115,24 @@
               <table class="table m-0">
                 <thead>
                   <tr>
-                    <th>Order ID</th>
-                    <th>Item</th>
-                    <th>Status</th>
-                    <th>Popularity</th>
+                    <th>Prestamo ID</th>
+                    <th>Cliente</th>
+                    <th>Suma</th>
+                    <th>Usuario</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                    <td>Call of Duty IV</td>
-                    <td><span class="badge badge-success">Shipped</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                    <td>Samsung Smart TV</td>
-                    <td><span class="badge badge-warning">Pending</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                    <td>iPhone 6 Plus</td>
-                    <td><span class="badge badge-danger">Delivered</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                    <td>Samsung Smart TV</td>
-                    <td><span class="badge badge-info">Processing</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                    <td>Samsung Smart TV</td>
-                    <td><span class="badge badge-warning">Pending</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                    <td>iPhone 6 Plus</td>
-                    <td><span class="badge badge-danger">Delivered</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                    <td>Call of Duty IV</td>
-                    <td><span class="badge badge-success">Shipped</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                    </td>
-                  </tr>
+                  <?php
+                  for ($i=0; $i < 7; $i++) {
+                    echo '<tr>
+                            <td><a href="#">'.$PrestamosTablaInicio[$i]["pre_Id"].'</a></td>
+                            <td>'.$PrestamosTablaInicio[$i]["cli_Nombre"].'</td>
+                            <td>$ '.number_format($PrestamosTablaInicio[$i]["pre_MontoPrestado"], 2, ",",".").'</td>
+                            <td>'.$PrestamosTablaInicio[$i]["usu_Nombre"].'</td>
+                          </tr>';
+                  }
+
+                  ?>
                 </tbody>
               </table>
             </div>
@@ -174,8 +140,8 @@
           </div>
           <!-- /.card-body -->
           <div class="card-footer clearfix">
-            <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
-            <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
+           <!-- <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>-->
+            <a href="prestamos" class="btn btn-sm btn-secondary float-right">Ver Todos Los Prestamos</a>
           </div>
           <!-- /.card-footer -->
         </div>

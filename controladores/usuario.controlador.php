@@ -47,4 +47,23 @@ class UsuariosControlador{
 	}
 
 
+	/*=============================================
+				AGREGAR USUARIO
+	=============================================*/
+
+	public static function ctrGuardarUsuario(){
+		$tabla ="usuario";
+		if (isset($_POST)) {
+			if ($_POST["usu_Id"] > 0) {
+				$respuestaModelo =UsuariosModelo::mdlactualizarUsuario($tabla, $_POST);
+			}else{
+				$respuestaModelo =UsuariosModelo::mdlGuardarUsuario($tabla, $_POST);
+			}
+
+			return $respuestaModelo;
+		}
+
+	}
+
+
 }

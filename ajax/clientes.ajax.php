@@ -69,6 +69,7 @@ class MostrarClientes{
 			$datosJson .='[
 			      "'.$clientes[$i]["cli_Cedula"].'",
 			      "'.$clientes[$i]["cli_Nombre"].'",
+			      "'.$clientes[$i]["cli_Celular"].'",
 			      "'.$clientes[$i]["cli_Direccion"].'",
 			      "'.$clientes[$i]["cli_Correo"].'",
 			      "'.$Rutas["rut_Nombre"].'",
@@ -104,6 +105,10 @@ switch ($acc) {
 	case 'ver':
 		$ver = new MostrarClientes();
 		$ver -> TablaClientes();
+		break;
+	case 'add':
+		$traer = ClientesControlador::ctrGuardarClientes();
+		echo json_encode($traer);
 		break;
 	case 'traer':
 		$item = "cli_Id";

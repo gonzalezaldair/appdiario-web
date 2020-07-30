@@ -33,4 +33,22 @@ class PrestamosControlador{
 	}
 
 
+	public static function ctrguardarPrestamo()
+	{
+		$tabla = "prestamo";
+		if (isset($_POST)) {
+
+			if ($_POST["pre_Id"] > 0) {
+
+				return $respuestaModelo = PrestamosModelo::mdlactualizarPrestamo($tabla, $_POST);
+
+			}else{
+
+				return $respuestaModelo = PrestamosModelo::mdlguardarPrestamo($tabla, $_POST);
+
+			}
+		}
+	}
+
+
 }
