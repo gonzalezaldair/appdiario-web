@@ -6,3 +6,62 @@
   height: 450px;
   overflow-y: auto;
 }
+
+
+
+
+/*ESTILOS ADVANCED LIVE SEARCH */
+
+#livesearchPersonaPrestamos {
+    position: absolute;
+    width: 95%;
+    /*max-width:450px;*/
+    cursor: pointer;
+    overflow-y: auto;
+    max-height: 200px;
+    box-sizing: border-box;
+    z-index: 1001;
+    background-color: #ADADAD;
+    border-radius: 5px;
+ }
+ .link-class:hover{
+     background-color:#f1f1f1;
+ }
+
+ #livesearchPersonaPrestamos li  span{
+  color: #0071df;
+  font-size: 13px;
+ }
+ /* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
+
+ #livesearchPersonaPrestamos::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+#livesearchPersonaPrestamos::-webkit-scrollbar:vertical {
+  width:8px;
+}
+
+#livesearchPersonaPrestamos::-webkit-scrollbar-button:increment,#livesearchPersonaPrestamos::-webkit-scrollbar-button {
+  display: none;
+}
+
+#livesearchPersonaPrestamos::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+#livesearchPersonaPrestamos::-webkit-scrollbar-thumb {
+  /*background-color: #797979;*/
+  background-color: #ADADAD;
+  border-radius: 20px;
+  border: 2px solid #f1f2f3;
+}
+
+#livesearchPersonaPrestamos::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+#livesearchPersonaPrestamos img{
+  width: 40px;
+  height: 40px;
+}

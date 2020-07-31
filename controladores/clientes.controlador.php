@@ -19,6 +19,15 @@ class ClientesControlador{
 		return $respuesta;
 
 	}
+	public static function ctrLiveSearch($item, $valor){
+
+		$tabla = "cliente";
+
+		$respuesta = ClientesModelo::mdlLiveSearch($tabla, $item, $valor);
+
+		return $respuesta;
+
+	}
 
 
 	public static function ctrGuardarClientes(){

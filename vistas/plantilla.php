@@ -66,7 +66,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
  ?>
-
+<input type="hidden" name="" value="2" id="user_Id">
 
  <!--=====================================
   PLUGINS DE JAVASCRIPT
@@ -85,6 +85,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="vistas/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <!-- AdminLTE App -->
 <script src="vistas/dist/js/adminlte.min.js"></script>
+<!-- Jquery Number -->
+<script src="vistas/js/jquery.number.js"></script>
 
 <!--=====================================
   SCRIPT JAVASCRIPT PERSONALIZADOS

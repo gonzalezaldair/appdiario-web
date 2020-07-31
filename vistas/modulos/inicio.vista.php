@@ -33,7 +33,7 @@ $usuario = UsuariosControlador::ctrMostrarUsuarios($item, $valor);
     <div class="row">
       <div class="col-12 col-sm-6 col-md-3">
         <div class="info-box">
-          <span class="info-box-icon bg-info elevation-1"><i class="fas user-friends"></i></span>
+          <span class="info-box-icon bg-info elevation-1"><i class="fas fa-user-friends"></i></span>
           <div class="info-box-content">
             <span class="info-box-text">Usuarios</span>
             <span class="info-box-number">
