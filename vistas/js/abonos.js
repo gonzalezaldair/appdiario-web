@@ -40,6 +40,7 @@ CARGAR LA TABLA DINÁMICA DE CLIENTES
 
 
 $('#tablaabonos').DataTable( {
+	"order": [[ 2, "desc" ]],
     "ajax": "ajax/abonos.ajax.php",
     "deferRender": true,
 	"retrieve": true,

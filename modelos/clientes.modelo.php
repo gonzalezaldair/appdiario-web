@@ -37,6 +37,24 @@ class ClientesModelo{
 		$stmt = null;
 	}
 
+
+	public static function mdlLiveSearch($tabla, $item, $valor)
+	{
+
+
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE cli_Celular like '%$valor%' OR cli_Cedula like '%$valor%'");
+
+		$stmt -> bindParam(":".$item, $valor);
+
+		$stmt -> execute();
+
+		return $stmt -> fetchAll();
+
+		$stmt -> close();
+
+		$stmt = null;
+	}
+
 	public static function mdlGuardarClientes($tabla, $datosModelo)
 	{
 		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(cli_Cedula, cli_Nombre, cli_Celular, cli_Direccion, cli_Correo, cli_Posicion, cli_RUTA, cli_DiaCobro) VALUES (:cli_Cedula, :cli_Nombre, :cli_Celular, :cli_Direccion, :cli_Correo, 0, :cli_RUTA, :cli_DiaCobro)");

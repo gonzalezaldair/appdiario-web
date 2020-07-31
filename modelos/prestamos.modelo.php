@@ -84,7 +84,7 @@ class PrestamosModelo{
 	public static function mdlactualizarPrestamo($tabla,$datosModelo)
 	{
 		$usuario = 2;
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET pre_FormaPago=:pre_FormaPago,pre_Interes=:pre_Interes,pre_MontoInteres=:pre_MontoInteres,pre_Cuotas=:pre_Cuotas,pre_Observaciones=:pre_Observaciones,pre_USUARIO=:pre_USUARIO");
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET pre_FormaPago=:pre_FormaPago,pre_Interes=:pre_Interes,pre_MontoInteres=:pre_MontoInteres,pre_Cuotas=:pre_Cuotas,pre_Observaciones=:pre_Observaciones,pre_USUARIO=:pre_USUARIO WHERE pre_Id = :id");
 
 
 		$stmt -> bindParam(":pre_FormaPago", $datosModelo["pre_FormaPago"], PDO::PARAM_INT);
@@ -93,6 +93,7 @@ class PrestamosModelo{
 		$stmt -> bindParam(":pre_Cuotas", $datosModelo["pre_Cuotas"], PDO::PARAM_INT);
 		$stmt -> bindParam(":pre_Observaciones", $datosModelo["pre_Observaciones"], PDO::PARAM_STR);
 		$stmt -> bindParam(":pre_USUARIO", $usuario, PDO::PARAM_INT);
+		$stmt -> bindParam(":id", $datosModelo["pre_Id"], PDO::PARAM_INT);
 
 		if($stmt->execute())
 		{

@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('America/Bogota');
+
 require_once '../modelos/prestamos.modelo.php';
 require_once '../controladores/prestamos.controlador.php';
 
