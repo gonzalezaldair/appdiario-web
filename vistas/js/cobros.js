@@ -57,37 +57,12 @@ CARGAR LA TABLA DINÁMICA DE formapago
 =============================================*/
 
 
-$('#tablaCobros').DataTable( {
+let tablaCobros = $('#tablaCobros').DataTable( {
     "ajax": "ajax/cobros.ajax.php",
     "deferRender": true,
 	"retrieve": true,
 	"processing": true,
-	"language": {
-
-		"sProcessing":     "Procesando...",
-		"sLengthMenu":     "Mostrar _MENU_ registros",
-		"sZeroRecords":    "No se encontraron resultados",
-		"sEmptyTable":     "Ningún dato disponible en esta tabla",
-		"sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
-		"sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0",
-		"sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-		"sInfoPostFix":    "",
-		"sSearch":         "Buscar:",
-		"sUrl":            "",
-		"sInfoThousands":  ",",
-		"sLoadingRecords": "Cargando...",
-		"oPaginate": {
-		"sFirst":    "Primero",
-		"sLast":     "Último",
-		"sNext":     "Siguiente",
-		"sPrevious": "Anterior"
-		},
-		"oAria": {
-			"sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-			"sSortDescending": ": Activar para ordenar la columna de manera descendente"
-		}
-
-	}
+	"language": lenguajeTabla
 } );
 
 
@@ -138,7 +113,6 @@ $('#tablaCobros').on('click', '.btnupdcobro', function(event) {
 $('#modal-nuevo-cobro').on('click', '.btn-guardar-cobro', function(event) {
 	event.preventDefault();
 	const cobid = $("#cobroId").val();
-	console.log("cobid", cobid);
 	const cobcodigo = $("#cobroCodigo").val();
 	const cobnombre = $("#cobroNombre").val();
 	const cobactivo = $("#cobroActivo").val();
@@ -158,7 +132,17 @@ $('#modal-nuevo-cobro').on('click', '.btn-guardar-cobro', function(event) {
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			console.log("respuesta", respuesta);
+			Swal.fire({
+				title: 'Guardar Datos',
+				text: "Datos Guardados Correctamente.",
+				type: 'success',
+				confirmButtonColor: '#3085d6',
+				confirmButtonText: '! Cerrar ¡'
+			}).then((result) => {
+				if (result.value) {
+					tablaCobros.ajax.reload();
+				}
+			})
 			$("#modal-nuevo-cobro").modal("hide");
 		})
 		.fail(function(respuesta) {
@@ -177,7 +161,6 @@ $('#modal-nuevo-cobro').on('click', '.btn-guardar-cobro', function(event) {
 $('#tablaCobros').on('click', '.btneliminarcobro', function(event) {
 	event.preventDefault();
 	const cobid = $(this).attr("cobid");
-	console.log("cobid", cobid);
 	let datos = new FormData();
 	datos.append("cobid", cobid);
 	datos.append("acc", "eliminarcobros");
@@ -191,8 +174,8 @@ $('#tablaCobros').on('click', '.btneliminarcobro', function(event) {
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			console.log("respuesta", respuesta);
 			$("#modal-nuevo-cobro").modal("hide");
+			tablaCobros.ajax.reload();
 		})
 		.fail(function(respuesta) {
 			console.log("error ", respuesta);
