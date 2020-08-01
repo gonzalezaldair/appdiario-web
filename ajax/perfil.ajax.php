@@ -73,6 +73,10 @@ switch ($acc) {
 		$traer = PerfilControlador::ctrMostrarPerfil($item, $valor);
 		echo json_encode($traer);
 		break;
+	case 'eliminar':
+		$traer = PerfilControlador::ctrEliminarPerfil();
+		echo json_encode($traer);
+		break;
 	case 'comboperfil':
 		$item = null;
 		$valor = null;

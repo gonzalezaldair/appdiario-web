@@ -57,37 +57,12 @@ CARGAR LA TABLA DINÁMICA DE formapago
 =============================================*/
 
 
-$('#tablaformapago').DataTable( {
+let tablaformapago = $('#tablaformapago').DataTable( {
     "ajax": "ajax/formapago.ajax.php",
     "deferRender": true,
 	"retrieve": true,
 	"processing": true,
-	"language": {
-
-		"sProcessing":     "Procesando...",
-		"sLengthMenu":     "Mostrar _MENU_ registros",
-		"sZeroRecords":    "No se encontraron resultados",
-		"sEmptyTable":     "Ningún dato disponible en esta tabla",
-		"sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
-		"sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0",
-		"sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-		"sInfoPostFix":    "",
-		"sSearch":         "Buscar:",
-		"sUrl":            "",
-		"sInfoThousands":  ",",
-		"sLoadingRecords": "Cargando...",
-		"oPaginate": {
-		"sFirst":    "Primero",
-		"sLast":     "Último",
-		"sNext":     "Siguiente",
-		"sPrevious": "Anterior"
-		},
-		"oAria": {
-			"sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-			"sSortDescending": ": Activar para ordenar la columna de manera descendente"
-		}
-
-	}
+	"language": lenguajeTabla
 } );
 
 /*=============================================
@@ -118,7 +93,17 @@ $("#modal-nueva-forma-pago").on('click', '.btn-guardar-formapago', function(even
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			console.log("respuesta", respuesta);
+			Swal.fire({
+				title: 'Guardar Datos',
+				text: "Datos Guardados Correctamente.",
+				type: 'success',
+				confirmButtonColor: '#3085d6',
+				confirmButtonText: '! Cerrar ¡'
+			}).then((result) => {
+				if (result.value) {
+					tablaformapago.ajax.reload();
+				}
+			})
 			$("#modal-nueva-forma-pago").modal("hide");
 		})
 		.fail(function(respuesta) {
@@ -174,7 +159,6 @@ $('#tablaformapago').on('click', '.btnupdformapago', function(event) {
 $('#tablaformapago').on('click', '.btneliminarformapago', function(event) {
 	event.preventDefault();
 	const frmid = $(this).attr('frmid');
-	console.log("frmid", frmid);
 	const frmcodigo = $(this).attr('frmcodigo');
 	let datos = new FormData();
 	datos.append("frm_Id", frmid);
@@ -189,7 +173,7 @@ $('#tablaformapago').on('click', '.btneliminarformapago', function(event) {
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			console.log("respuesta", respuesta);
+			tablaformapago.ajax.reload();
 		})
 		.fail(function(respuesta) {
 			console.log("error ", respuesta);

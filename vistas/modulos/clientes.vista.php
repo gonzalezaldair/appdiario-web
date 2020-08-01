@@ -149,7 +149,7 @@
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-id-card"></i></span>
           </div>
-          <input id="idPrestamo" type="hidden" class="form-control form-control-lg" placeholder="Ingresar Codigo" readonly>
+          <input id="idCliente" type="hidden" class="form-control form-control-lg" placeholder="Ingresar Codigo" readonly>
           <input id="clientePrestamo" type="text" class="form-control form-control-lg" placeholder="Ingresar Codigo" readonly>
         </div>
         <div class="input-group mb-3">
@@ -163,19 +163,19 @@
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
           </div>
-          <input id="sumaPrestamo" type="text" class="form-control form-control-lg" placeholder="Ingresar Suma">
+          <input id="sumaPrestamo" type="text" class="form-control form-control-lg validarNumero" placeholder="Ingresar Suma">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-comments-dollar"></i></span>
           </div>
-          <input id="interesPrestamo" type="text" class="form-control form-control-lg" placeholder="Ingresar Interes">
+          <input id="interesPrestamo" type="text" class="form-control form-control-lg validarNumero" placeholder="Ingresar Interes">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-sort-numeric-up"></i></span>
           </div>
-          <input id="cuotasPrestamo" type="text" class="form-control form-control-lg" placeholder="Ingresar Cuotas">
+          <input id="cuotasPrestamo" type="text" class="form-control form-control-lg validarNumero" placeholder="Ingresar Cuotas">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
@@ -186,7 +186,7 @@
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-        <button type="button" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-primary btn-guardar-prestamo">Guardar</button>
       </div>
     </div>
     <!-- /.modal-content -->

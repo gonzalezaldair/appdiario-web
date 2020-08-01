@@ -49,37 +49,12 @@ CARGAR LA TABLA DINÁMICA DE CLIENTES
 =============================================*/
 
 
-$('#tablaperfil').DataTable({
+let tablaPerfil = $('#tablaperfil').DataTable({
 	"ajax": "ajax/perfil.ajax.php",
 	"deferRender": true,
 	"retrieve": true,
 	"processing": true,
-	"language": {
-
-		"sProcessing": "Procesando...",
-		"sLengthMenu": "Mostrar _MENU_ registros",
-		"sZeroRecords": "No se encontraron resultados",
-		"sEmptyTable": "Ningún dato disponible en esta tabla",
-		"sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
-		"sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0",
-		"sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-		"sInfoPostFix": "",
-		"sSearch": "Buscar:",
-		"sUrl": "",
-		"sInfoThousands": ",",
-		"sLoadingRecords": "Cargando...",
-		"oPaginate": {
-			"sFirst": "Primero",
-			"sLast": "Último",
-			"sNext": "Siguiente",
-			"sPrevious": "Anterior"
-		},
-		"oAria": {
-			"sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-			"sSortDescending": ": Activar para ordenar la columna de manera descendente"
-		}
-
-	}
+	"language": lenguajeTabla
 });
 
 $("#tablaperfil").on('click', '.btnupdperfil', function(event) {
@@ -109,8 +84,8 @@ $("#tablaperfil").on('click', '.btnupdperfil', function(event) {
 			$(".selectrutaActivo").show();
 			$("#modal-nuevo-perfil").modal("show");
 		})
-		.fail(function() {
-			console.log("error");
+		.fail(function(response) {
+			console.log("error", response.responseText);
 		});
 });
 
@@ -119,12 +94,14 @@ $("#modal-nuevo-perfil").on('click', '.btnguardar-datos-perfil', function(event)
 	event.preventDefault();
 	/* Act on the event */
 	const codigo = $("#per_Codigo").val();
-	const id = $("#per_Id").val();
+	const id = ($("#per_Id").val() != "") ? $("#per_Id").val() : 0 ;
 	const nombre = $("#per_Nombre").val();
+	const per_Activo = $("#per_Activo").val();
 	let datos = new FormData();
 	datos.append("per_Codigo", codigo);
 	datos.append("per_Id", id);
 	datos.append("per_Nombre", nombre);
+	datos.append("per_Activo", per_Activo);
 	datos.append("acc", "add");
 	$.ajax({
 			url: "ajax/perfil.ajax.php",
@@ -136,10 +113,45 @@ $("#modal-nuevo-perfil").on('click', '.btnguardar-datos-perfil', function(event)
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			console.log("respuesta", respuesta);
-			//$("#modal-nuevo-perfil").modal("show");
+			Swal.fire({
+				title: 'Guardar Datos',
+				text: "Datos Guardados Correctamente.",
+				type: 'success',
+				confirmButtonColor: '#3085d6',
+				confirmButtonText: '! Cerrar ¡'
+			}).then((result) => {
+				if (result.value) {
+					tablaPerfil.ajax.reload();
+				}
+			})
+			$("#modal-nuevo-perfil").modal("hide");
 		})
-		.fail(function() {
-			console.log("error");
+		.fail(function(response) {
+			console.log("error", response.responseText);
+		});
+});
+
+
+$("#tablaperfil").on('click', '.btneliminarperfil', function(event) {
+	event.preventDefault();
+	/* Act on the event */
+	const perfilid = $(this).attr('perfilid');
+	let datos = new FormData();
+	datos.append("perid", perfilid);
+	datos.append("acc", "eliminar");
+	$.ajax({
+			url: "ajax/perfil.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+		.done(function(respuesta) {
+			tablaPerfil.ajax.reload();
+		})
+		.fail(function(response) {
+			console.log("error", response.responseText);
 		});
 });

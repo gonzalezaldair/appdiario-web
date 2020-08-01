@@ -23,6 +23,7 @@ $("#btn-modal-nuevo-cliente").on('click', function(event) {
 	/* Act on the event */
 
 	$("#clienteCedula").val("");
+	$("#clienteCedula").prop('readonly', false);
 	$("#clienteid").val("");
 	$("#clienteNombre").val("");
 	$("#clienteCelular").val("");
@@ -115,40 +116,15 @@ $.ajax({
 /*=============================================
 CARGAR LA TABLA DINÁMICA DE CLIENTES
 =============================================*/
-
-
-$('#tablaclientes').DataTable( {
-    "ajax": "ajax/clientes.ajax.php",
-    "deferRender": true,
+let tablaclientes = $('#tablaclientes').DataTable({
+	"ajax": "ajax/clientes.ajax.php",
+	"deferRender": true,
 	"retrieve": true,
 	"processing": true,
-	"language": {
+	"language": lenguajeTabla
+});
 
-		"sProcessing":     "Procesando...",
-		"sLengthMenu":     "Mostrar _MENU_ registros",
-		"sZeroRecords":    "No se encontraron resultados",
-		"sEmptyTable":     "Ningún dato disponible en esta tabla",
-		"sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
-		"sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0",
-		"sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-		"sInfoPostFix":    "",
-		"sSearch":         "Buscar:",
-		"sUrl":            "",
-		"sInfoThousands":  ",",
-		"sLoadingRecords": "Cargando...",
-		"oPaginate": {
-		"sFirst":    "Primero",
-		"sLast":     "Último",
-		"sNext":     "Siguiente",
-		"sPrevious": "Anterior"
-		},
-		"oAria": {
-			"sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-			"sSortDescending": ": Activar para ordenar la columna de manera descendente"
-		}
 
-	}
-} );
 
 
 $("#modal-nuevo-cliente").on('click', '.btn-guardar-cliente', function(event) {
@@ -171,7 +147,7 @@ $("#modal-nuevo-cliente").on('click', '.btn-guardar-cliente', function(event) {
 	datos.append("cli_Celular", cli_Celular);
 	datos.append("cli_Direccion", cli_Direccion);
 	datos.append("cli_Correo", cli_Correo);
-	//datos.append("cli_Posicion", cli_Posicion);
+	datos.append("cli_Posicion", 0);
 	datos.append("cli_RUTA", cli_Ruta);
 	datos.append("cli_DiaCobro", cli_DiaCobro);
 	datos.append("cli_Activo", cli_Activo);
@@ -186,8 +162,18 @@ $("#modal-nuevo-cliente").on('click', '.btn-guardar-cliente', function(event) {
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			console.log("respuesta", respuesta);
-			console.log("success");
+			Swal.fire({
+				title: 'Guardar Datos',
+				text: "Datos Guardados Correctamente.",
+				type: 'success',
+				confirmButtonColor: '#3085d6',
+				confirmButtonText: '! Cerrar ¡'
+			}).then((result) => {
+				if (result.value) {
+					tablaclientes.ajax.reload();
+				}
+			})
+			$("#modal-nuevo-cliente").modal("hide");
 		})
 		.fail(function(respuesta) {
 			console.log("respuesta", respuesta.responseText);
@@ -243,6 +229,29 @@ $('#tablaclientes').on('click', '.btnupdcliente', function(event) {
 
 
 /*=============================================
+	VALIDAR QUE SOLO INGRESEN VALORES PERMITIDOS
+=============================================*/
+
+
+$("input.validarNumero").on("input", function() {
+	this.value = this.value.replace(/[^0-9.]/g, '');
+});
+
+
+/*=============================================
+	MOSTRAR EN FORMATO DINERO prestamoMontoPrestado
+=============================================*/
+
+$('#modal-nuevo-prestamo').on('change', '#sumaPrestamo', function(event) {
+	event.preventDefault();
+	/* Act on the event */
+
+	$('#sumaPrestamo').attr('MontoReal', $('#sumaPrestamo').val());
+	$('#sumaPrestamo').val($.number($('#sumaPrestamo').val(), 2,".",","));
+});
+
+
+/*=============================================
 	NUEVO PRESTAMO
 =============================================*/
 
@@ -252,6 +261,150 @@ $('#tablaclientes').on('click', '.btnnuevoprestamo', function(event) {
 	const clienteid = $(this).attr('clienteid');
 	const clientecedula = $(this).attr('clientecedula');
 	$("#clientePrestamo").val(clientecedula);
-	$("#idPrestamo").val(clienteid);
+	$("#idCliente").val(clienteid);
+	$("#interesPrestamo").val("");
+	$("#sumaPrestamo").attr('MontoReal',"");
+	$("#cuotasPrestamo").val("");
+	$("#observacionesPrestamo").val("");
 	$("#modal-nuevo-prestamo").modal("show");
+});
+
+
+/*=============================================
+	GUARDAR PRESTAMO
+=============================================*/
+
+$("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo', function(event) {
+	event.preventDefault();
+	/* Act on the event */
+	const pre_Id = ($("#idPrestamo").val() != "") ? $("#idPrestamo").val() : 0;
+	const pre_Cliente = $("#idCliente").val();
+	const pre_FormaPago = $("#comboformapago").val();
+	const pre_Interes = $("#interesPrestamo").val();
+	const pre_MontoPrestado = $("#sumaPrestamo").attr('MontoReal');
+	const pre_Cuotas = $("#cuotasPrestamo").val();
+	const pre_Observaciones = $("#observacionesPrestamo").val();
+	let datos = new FormData();
+	datos.append("pre_Id", pre_Id);
+	datos.append("pre_CLIENTE", pre_Cliente);
+	datos.append("pre_FormaPago", pre_FormaPago);
+	datos.append("pre_Interes", pre_Interes);
+	//datos.append("pre_MontoInteres", 100000);
+	datos.append("pre_MontoPrestado", pre_MontoPrestado);
+	datos.append("pre_Cuotas", pre_Cuotas);
+	datos.append("pre_Observaciones", pre_Observaciones);
+	datos.append("pre_USUARIO", user_Id);
+	datos.append("acc", "add");
+	$.ajax({
+			url: "ajax/prestamos.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+		.done(function(respuesta) {
+			Swal.fire(
+				'Guardar Datos!',
+				'Prestamo Guardado Correctamente.',
+				'success'
+			)
+			$("#modal-nuevo-prestamo").modal("hide");
+		})
+		.fail(function(respuesta) {
+			console.log("respuesta", respuesta.responseText);
+			console.log("error");
+		});
+});
+
+
+/*=============================================
+			BUSCAR SI EXISTE CLIENTE
+=============================================*/
+
+
+$("#modal-nuevo-cliente").on('change', '#clienteCedula', function(event) {
+	event.preventDefault();
+	/* Act on the event */
+
+	$(".alert").remove();
+
+	const valor = $("#clienteCedula").val();
+	let datos = new FormData();
+	datos.append("valor", valor);
+	datos.append("item", "cli_Cedula");
+	datos.append("acc", "existe");
+	$.ajax({
+			url: "ajax/clientes.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+		.done(function(respuesta) {
+			//console.log("respuesta ", respuesta);
+			if (respuesta) {
+				$("#clienteCedula").parent().after('<div class="alert alert-warning">Este Cliente ya existe en la base de datos</div>');
+
+				$("#clienteCedula").val("");
+
+				/*Toast.fire({
+					type: 'warning',
+					title: ' Cedula Ya Esta Registrada'
+				})*/
+			}
+		})
+		.fail(function(respuesta) {
+			console.log("respuesta.responseText ", respuesta.responseText);
+			console.log("error");
+		});
+
+});
+
+/*=============================================
+			BUSCAR SI EXISTE # TELEFONO
+=============================================*/
+
+
+$("#modal-nuevo-cliente").on('change', '#clienteCelular', function(event) {
+	event.preventDefault();
+	/* Act on the event */
+
+	$(".alert").remove();
+
+	const valor = $("#clienteCelular").val();
+	let datos = new FormData();
+	datos.append("valor", valor);
+	datos.append("item", "cli_Celular");
+	datos.append("acc", "existe");
+	$.ajax({
+			url: "ajax/clientes.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+		.done(function(respuesta) {
+			//console.log("respuesta ", respuesta);
+			if (respuesta) {
+				$("#clienteCelular").parent().after('<div class="alert alert-warning">Este Telefono ya existe en la base de datos</div>');
+
+				$("#clienteCelular").val("");
+
+				/*Toast.fire({
+					type: 'warning',
+					title: ' Cedula Ya Esta Registrada'
+				})*/
+			}
+		})
+		.fail(function(respuesta) {
+			console.log("respuesta.responseText ", respuesta.responseText);
+			console.log("error");
+		});
+
 });

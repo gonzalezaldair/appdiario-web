@@ -41,21 +41,35 @@ class CobrosControlador{
 	{
 		$fecha = date('Y-m-d');
 		$tabla = "cobro";
-		if (isset($_POST["cob_Codigo"])) {
-			$datosControlador = array(
-				'cob_Id' => $_POST["cob_Id"],
-				'cob_Codigo' => $_POST["cob_Codigo"],
-				'cob_Nombre' => $_POST["cob_Nombre"],
-				'cob_Activo' => $_POST["cob_Activo"],
-				'cob_Fecha' => $fecha
-			);
-			if (isset($_POST["cob_Id"]) && $_POST["cob_Id"] > 0) {
-				$respuestaModelo = CobrosModelo::mdlActualizarCobros($tabla,$datosControlador);
-				return $respuestaModelo;
-			}else{
-				$respuestaModelo = CobrosModelo::mdlguardarCobros($tabla,$datosControlador);
-				return $respuestaModelo;
+		if (isset($_POST)) {
+
+			if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["cob_Nombre"])) {
+
+				$cob_Id = intval($_POST["cob_Id"]);
+				$cob_Codigo = trim($_POST["cob_Codigo"]);
+				$cob_Nombre = trim($_POST["cob_Nombre"]);
+				$cob_Activo = intval($_POST["cob_Activo"]);
+				$cob_Fecha = trim($fecha);
+
+				$datosControlador = array(
+					'cob_Id' => $_POST["cob_Id"],
+					'cob_Codigo' => $_POST["cob_Codigo"],
+					'cob_Nombre' => $_POST["cob_Nombre"],
+					'cob_Activo' => $_POST["cob_Activo"],
+					'cob_Fecha' => $cob_Fecha
+				);
+
+				if ($cob_Id > 0) {
+					return $respuestaModelo = CobrosModelo::mdlActualizarCobros($tabla,$datosControlador);
+				}else{
+					return $respuestaModelo = CobrosModelo::mdlguardarCobros($tabla,$datosControlador);
+				}
+
+			}else
+			{
+				return "Revisar Campos Alguno debe contener un caracter no permitido o esta vacio";
 			}
+
 		}
 	}
 

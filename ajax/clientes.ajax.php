@@ -116,6 +116,12 @@ switch ($acc) {
 		$traer = ClientesControlador::ctrMostrarClientes($item, $valor);
 		echo json_encode($traer);
 		break;
+	case 'existe':
+		$item = trim($_POST["item"]);
+		$valor = trim($_POST["valor"]);
+		$traer = ClientesControlador::ctrMostrarClientes($item, $valor);
+		echo json_encode($traer);
+		break;
 	case 'livesearch':
 		$item = "cli_Id";
 		$valor = trim($_POST["clienteid"]);

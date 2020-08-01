@@ -22,6 +22,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="vistas/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="vistas/dist/css/adminlte.min.css">
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="vistas/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="vistas/plugins/toastr/toastr.min.css">
   <!-- Estilos Personalizados -->
   <link rel="stylesheet" href="vistas/dist/css/masestilos.css?v=<?php echo filemtime("vistas/dist/css/masestilos.css"); ?>">
   <!-- Google Font: Source Sans Pro -->
@@ -83,6 +87,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="vistas/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="vistas/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="vistas/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<!-- SweetAlert2 -->
+<script src="vistas/plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Toastr -->
+<script src="vistas/plugins/toastr/toastr.min.js"></script>
 <!-- AdminLTE App -->
 <script src="vistas/dist/js/adminlte.min.js"></script>
 <!-- Jquery Number -->
@@ -103,36 +111,5 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="vistas/js/abonos.js?v=<?php echo filemtime("vistas/js/abonos.js"); ?>"></script>
 <script src="vistas/js/perfil.js?v=<?php echo filemtime("vistas/js/perfil.js"); ?>"></script>
 
-
-<script>
-  $(function() {
-    $(".tablas").DataTable({
-      "language": {
-        "sProcessing": "Procesando...",
-        "sLengthMenu": "Mostrar _MENU_ registros",
-        "sZeroRecords": "No se encontraron resultados",
-        "sEmptyTable": "Ningún dato disponible en esta tabla",
-        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
-        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0",
-        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-        "sInfoPostFix": "",
-        "sSearch": "Buscar:",
-        "sUrl": "",
-        "sInfoThousands": ",",
-        "sLoadingRecords": "Cargando...",
-        "oPaginate": {
-          "sFirst": "Primero",
-          "sLast": "Último",
-          "sNext": "Siguiente",
-          "sPrevious": "Anterior"
-        },
-        "oAria": {
-          "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-        }
-      }
-    });
-  });
-</script>
 </body>
 </html>

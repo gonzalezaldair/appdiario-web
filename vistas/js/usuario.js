@@ -120,37 +120,12 @@ CARGAR LA TABLA DINÁMICA DE CLIENTES
 =============================================*/
 
 
-$('#tablausuario').DataTable( {
+let tablaUsuario = $('#tablausuario').DataTable( {
     "ajax": "ajax/usuario.ajax.php",
     "deferRender": true,
 	"retrieve": true,
 	"processing": true,
-	"language": {
-
-		"sProcessing":     "Procesando...",
-		"sLengthMenu":     "Mostrar _MENU_ registros",
-		"sZeroRecords":    "No se encontraron resultados",
-		"sEmptyTable":     "Ningún dato disponible en esta tabla",
-		"sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
-		"sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0",
-		"sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-		"sInfoPostFix":    "",
-		"sSearch":         "Buscar:",
-		"sUrl":            "",
-		"sInfoThousands":  ",",
-		"sLoadingRecords": "Cargando...",
-		"oPaginate": {
-		"sFirst":    "Primero",
-		"sLast":     "Último",
-		"sNext":     "Siguiente",
-		"sPrevious": "Anterior"
-		},
-		"oAria": {
-			"sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-			"sSortDescending": ": Activar para ordenar la columna de manera descendente"
-		}
-
-	}
+	"language": lenguajeTabla
 } );
 
 /*=============================================
@@ -219,11 +194,9 @@ $("#tablausuario").on('click', '.btnpermisosusuario', function(event) {
       	dataType:"json",
 	})
 	.done(function(respuesta) {
-		console.log("respuesta", respuesta);
-		console.log("allpermisos", allpermisos);
 		let tablapermisos = "";
 		for (var i = 0; i < allpermisos.length; i++) {
-			console.log("i", i);
+
 			tablapermisos += '<tr>';
 			tablapermisos += '<td>'+allpermisos[i].mod_Nombre+'</td>';
 			for (var j = 0; j < respuesta.length; j++) {
@@ -285,47 +258,56 @@ $("#modal-nuevo-usuario").on('click', '.btn-guardar-usuario', function(event) {
 	event.preventDefault();
 	/* Act on the event */
 
-	const user_Cedula= $("#usuarioCedula").val();
-	const user_Id= ($("#usuarioId").val() != "" ) ? $("#usuarioId").val() : 0;
-	const user_Usuario= $("#usuarioUsuario").val();
-	const user_Password= $("#usuarioPassword").val();
-	const user_Nombre= $("#usuarioNombre").val();
-	const user_Celular= $("#usuarioCelular").val();
-	const user_Correo= $("#usuarioCorreo").val();
-	const user_Direccion= $("#usuarioDireccion").val();
-	const user_Ruta= $("#usuarioRUTA").val();
-	const user_Perfil= $("#usuarioPERFIL").val();
-	const user_Activo= $("#usuarioActivo").val();
+	const user_Cedula = $("#usuarioCedula").val();
+	const user_Id = ($("#usuarioId").val() != "") ? $("#usuarioId").val() : 0;
+	const user_Usuario = $("#usuarioUsuario").val();
+	const user_Password = $("#usuarioPassword").val();
+	const user_Nombre = $("#usuarioNombre").val();
+	const user_Celular = $("#usuarioCelular").val();
+	const user_Correo = $("#usuarioCorreo").val();
+	const user_Direccion = $("#usuarioDireccion").val();
+	const user_Ruta = $("#usuarioRUTA").val();
+	const user_Perfil = $("#usuarioPERFIL").val();
+	const user_Activo = $("#usuarioActivo").val();
 	let datos = new FormData();
-    datos.append("usu_Id", user_Id);
-    datos.append("usu_Cedula", user_Cedula);
-    datos.append("usu_Login", user_Usuario);
-    datos.append("usu_Password", user_Password);
-    datos.append("usu_Nombre", user_Nombre);
-    datos.append("usu_Celular", user_Celular);
-    datos.append("usu_Correo", user_Correo);
-    datos.append("usu_Direccion", user_Direccion);
-    datos.append("usu_RUTA", user_Ruta);
-    datos.append("usu_Perfil", user_Perfil);
-    datos.append("usu_Activo", user_Activo);
-    datos.append("acc", "add");
+	datos.append("usu_Id", user_Id);
+	datos.append("usu_Cedula", user_Cedula);
+	datos.append("usu_Login", user_Usuario);
+	datos.append("usu_Password", user_Password);
+	datos.append("usu_Nombre", user_Nombre);
+	datos.append("usu_Celular", user_Celular);
+	datos.append("usu_Correo", user_Correo);
+	datos.append("usu_Direccion", user_Direccion);
+	datos.append("usu_RUTA", user_Ruta);
+	datos.append("usu_Perfil", user_Perfil);
+	datos.append("usu_Activo", user_Activo);
+	datos.append("acc", "add");
 	$.ajax({
-		url:"ajax/usuario.ajax.php",
-      	method: "POST",
-      	data: datos,
-      	cache: false,
-      	contentType: false,
-      	processData: false,
-      	dataType:"json",
-	})
-	.done(function(respuesta) {
-		console.log("respuesta", respuesta);
-		console.log("success");
-	})
-	.fail(function(respuesta) {
-		console.log("respuesta", respuesta.responseText);
-		console.log("error");
-	});
+			url: "ajax/usuario.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+		.done(function(respuesta) {
+			Swal.fire({
+				title: 'Guardar Datos',
+				text: "Datos Guardados Correctamente.",
+				type: 'success',
+				confirmButtonColor: '#3085d6',
+				confirmButtonText: '! Cerrar ¡'
+			}).then((result) => {
+				if (result.value) {
+					tablaUsuario.ajax.reload();
+				}
+			})
+		})
+		.fail(function(respuesta) {
+			console.log("respuesta", respuesta.responseText);
+			console.log("error");
+		});
 
 
 });

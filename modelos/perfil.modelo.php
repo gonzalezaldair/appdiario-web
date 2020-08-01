@@ -59,6 +59,54 @@ class PerfilModelo{
 		$stmt = null;
 	}
 
+
+	/*=============================================
+				ACTUALIZAR PERFIL
+	=============================================*/
+
+	public static function mdlActualizarPerfil($tabla,$datosModelo)
+	{
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET per_Nombre= :per_Nombre ,per_Activo= :per_Activo WHERE per_Id = :per_Id");
+		$stmt -> bindParam(":per_Nombre", $datosModelo["per_Nombre"], PDO::PARAM_STR);
+		$stmt -> bindParam(":per_Activo", $datosModelo["per_Activo"], PDO::PARAM_INT);
+		$stmt -> bindParam(":per_Id", $datosModelo["per_Id"], PDO::PARAM_INT);
+
+		if($stmt->execute())
+		{
+			return "ok";
+		}
+		else
+		{
+			$err = $stmt->errorInfo();
+			return $err[2];
+		}
+		$stmt -> close();
+		$stmt = null;
+	}
+
+
+	/*=============================================
+				ELIMINAR PERFIL
+	=============================================*/
+
+	public static function mdlEliminarPerfil($tabla,$item,$valor)
+	{
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET per_Activo= 0 WHERE per_Id = :$item");
+		$stmt -> bindParam(":".$item, $valor);
+
+		if($stmt->execute())
+		{
+			return "ok";
+		}
+		else
+		{
+			$err = $stmt->errorInfo();
+			return $err[2];
+		}
+		$stmt -> close();
+		$stmt = null;
+	}
+
 	/*=============================================
 				GENERAR CONSECUTIVO
 	=============================================*/
