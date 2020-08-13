@@ -53,7 +53,9 @@ class AbonosControlador{
 				}
 			}else{
 
-				return "Revisar Campos Alguno debe contener un caracter no permitido o esta vacio";
+				$arrayName = array('codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio');
+
+				return $arrayName;
 
 			}
 

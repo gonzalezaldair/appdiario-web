@@ -76,7 +76,7 @@
           </div>
           <input id="usuarioUsuario" type="text" class="form-control form-control-lg" placeholder="Ingresar Usuario">
         </div>
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 divusuarioPassword">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-key"></i></span>
           </div>
