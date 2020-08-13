@@ -14,25 +14,61 @@ class FormaPagoModelo{
 	{
 		if($item != null){
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
+			try {
 
-			$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
 
-			$stmt -> execute();
+				$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
 
-			return $stmt -> fetch();
+				$stmt -> execute();
+
+				return $stmt -> fetch();
+
+			} catch (PDOException $e){
+
+				$err = $stmt->errorInfo();
+				$arrayName = array(
+					'mensaje' => $e->getMessage(),
+					'codigo' => $err[1],
+					'sqlstate' => $e->getCode(),
+					'script' => $e->getFile(),
+					'linea' => $e->getLine(),
+					'excepcionprevia' => $e->getPrevious(),
+					'cadena' => $e->__toString(),
+					'errorinfo' => $err[2]
+				);
+
+				return $arrayName;
+			}
 
 		}else{
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
+			try {
 
-			$stmt -> execute();
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
 
-			return $stmt -> fetchAll();
+				$stmt -> execute();
+
+				return $stmt -> fetchAll();
+
+			} catch (PDOException $e){
+
+				$err = $stmt->errorInfo();
+				$arrayName = array(
+					'mensaje' => $e->getMessage(),
+					'codigo' => $err[1],
+					'sqlstate' => $e->getCode(),
+					'script' => $e->getFile(),
+					'linea' => $e->getLine(),
+					'excepcionprevia' => $e->getPrevious(),
+					'cadena' => $e->__toString(),
+					'errorinfo' => $err[2]
+				);
+
+				return $arrayName;
+			}
 
 		}
-
-		$stmt -> close();
 
 		$stmt = null;
 	}
@@ -43,13 +79,30 @@ class FormaPagoModelo{
 
 	public static function mdlconsecutivo($tabla,$item)
 	{
-		$stmt = Conexion::conectar()->prepare("SELECT IFNULL(MAX($item),0) as Consecutivo FROM $tabla LIMIT 1");
+		try {
 
-		$stmt -> execute();
+			$stmt = Conexion::conectar()->prepare("SELECT IFNULL(MAX($item),0) as Consecutivo FROM $tabla LIMIT 1");
 
-		return $stmt -> fetch();
+			$stmt -> execute();
 
-		$stmt -> close();
+			return $stmt -> fetch();
+
+		} catch (PDOException $e){
+
+			$err = $stmt->errorInfo();
+			$arrayName = array(
+				'mensaje' => $e->getMessage(),
+				'codigo' => $err[1],
+				'sqlstate' => $e->getCode(),
+				'script' => $e->getFile(),
+				'linea' => $e->getLine(),
+				'excepcionprevia' => $e->getPrevious(),
+				'cadena' => $e->__toString(),
+				'errorinfo' => $err[2]
+			);
+
+			return $arrayName;
+		}
 
 		$stmt = null;
 	}
@@ -60,21 +113,40 @@ class FormaPagoModelo{
 
 	public static function mdlguardarFormaPago($tabla,$datosModelo)
 	{
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(frm_Codigo, frm_Nombre) VALUES (:codigo, :nombre)");
+		try {
 
-		$stmt -> bindParam(":codigo", $datosModelo["frm_Codigo"], PDO::PARAM_STR);
-		$stmt -> bindParam(":nombre", $datosModelo["frm_Nombre"], PDO::PARAM_STR);
+			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(frm_Codigo, frm_Nombre) VALUES (:codigo, :nombre)");
 
-		if($stmt->execute())
-		{
-			return "ok";
-		}
-		else
-		{
+			$stmt -> bindParam(":codigo", $datosModelo["frm_Codigo"], PDO::PARAM_STR);
+			$stmt -> bindParam(":nombre", $datosModelo["frm_Nombre"], PDO::PARAM_STR);
+
+			$stmt->execute();
+
+			$stmt = null;
+
+			$arrayName = array(
+				'mensaje' => "ok"
+			);
+
+			return $arrayName;
+
+		} catch (PDOException $e){
+
 			$err = $stmt->errorInfo();
-			return $err[2];
+			$arrayName = array(
+				'mensaje' => $e->getMessage(),
+				'codigo' => $err[1],
+				'sqlstate' => $e->getCode(),
+				'script' => $e->getFile(),
+				'linea' => $e->getLine(),
+				'excepcionprevia' => $e->getPrevious(),
+				'cadena' => $e->__toString(),
+				'errorinfo' => $err[2]
+			);
+
+			return $arrayName;
 		}
-		$stmt -> close();
+
 		$stmt = null;
 	}
 
@@ -84,23 +156,43 @@ class FormaPagoModelo{
 
 	public static function mdlactualizarFormaPago($tabla,$datosModelo)
 	{
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET frm_Codigo= :codigo, frm_Nombre= :nombre, frm_Activo = :estado WHERE frm_Id = :id");
 
-		$stmt -> bindParam(":codigo", $datosModelo["frm_Codigo"], PDO::PARAM_STR);
-		$stmt -> bindParam(":nombre", $datosModelo["frm_Nombre"], PDO::PARAM_STR);
-		$stmt -> bindParam(":estado", $datosModelo["frm_Activo"], PDO::PARAM_INT);
-		$stmt -> bindParam(":id", $datosModelo["frm_Id"], PDO::PARAM_INT);
+		try {
 
-		if($stmt->execute())
-		{
-			return "ok";
-		}
-		else
-		{
+			$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET frm_Codigo= :codigo, frm_Nombre= :nombre, frm_Activo = :estado WHERE frm_Id = :id");
+
+			$stmt -> bindParam(":codigo", $datosModelo["frm_Codigo"], PDO::PARAM_STR);
+			$stmt -> bindParam(":nombre", $datosModelo["frm_Nombre"], PDO::PARAM_STR);
+			$stmt -> bindParam(":estado", $datosModelo["frm_Activo"], PDO::PARAM_INT);
+			$stmt -> bindParam(":id", $datosModelo["frm_Id"], PDO::PARAM_INT);
+
+			$stmt->execute();
+
+			$stmt = null;
+
+			$arrayName = array(
+				'mensaje' => "ok"
+			);
+
+			return $arrayName;
+
+		} catch (PDOException $e){
+
 			$err = $stmt->errorInfo();
-			return $err[2];
+			$arrayName = array(
+				'mensaje' => $e->getMessage(),
+				'codigo' => $err[1],
+				'sqlstate' => $e->getCode(),
+				'script' => $e->getFile(),
+				'linea' => $e->getLine(),
+				'excepcionprevia' => $e->getPrevious(),
+				'cadena' => $e->__toString(),
+				'errorinfo' => $err[2]
+			);
+
+			return $arrayName;
 		}
-		$stmt -> close();
+
 		$stmt = null;
 	}
 
@@ -110,19 +202,38 @@ class FormaPagoModelo{
 
 	public static function mdlEliminarFormaPago($tabla,$item,$valor)
 	{
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET frm_Activo = 0 WHERE $item  = :$item");
-		$stmt -> bindParam(":".$item, $valor, PDO::PARAM_INT);
+		try {
 
-		if($stmt->execute())
-		{
-			return "ok";
-		}
-		else
-		{
+			$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET frm_Activo = 0 WHERE $item  = :$item");
+			$stmt -> bindParam(":".$item, $valor, PDO::PARAM_INT);
+
+			$stmt->execute();
+
+			$stmt = null;
+
+			$arrayName = array(
+				'mensaje' => "ok"
+			);
+
+			return $arrayName;
+
+		} catch (PDOException $e){
+
 			$err = $stmt->errorInfo();
-			return $err[2];
+			$arrayName = array(
+				'mensaje' => $e->getMessage(),
+				'codigo' => $err[1],
+				'sqlstate' => $e->getCode(),
+				'script' => $e->getFile(),
+				'linea' => $e->getLine(),
+				'excepcionprevia' => $e->getPrevious(),
+				'cadena' => $e->__toString(),
+				'errorinfo' => $err[2]
+			);
+
+			return $arrayName;
 		}
-		$stmt -> close();
+
 		$stmt = null;
 	}
 }
