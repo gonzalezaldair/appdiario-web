@@ -36,14 +36,16 @@ class ClientesControlador{
 
 		if (isset($_POST)) {
 
-			if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["cli_Nombre"]) && preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["cli_Direccion"]) && preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $_POST["cli_Correo"]) ) {
+			$correo = ($_POST["cli_Correo"] != "") ? $_POST["cli_Correo"] : "notiene@notiene.com" ;
+
+			if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["cli_Nombre"]) && preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["cli_Direccion"]) && preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $correo) ) {
 
 				$cli_Id = intval($_POST["cli_Id"]);
 				$cli_Cedula = intval($_POST["cli_Cedula"]);
-				$cli_Nombre = trim($_POST["cli_Nombre"]);
+				$cli_Nombre = strtoupper(trim($_POST["cli_Nombre"]));
 				$cli_Celular  = intval($_POST["cli_Celular"]);
-				$cli_Direccion = trim($_POST["cli_Direccion"]);
-				$cli_Correo = trim($_POST["cli_Correo"]);
+				$cli_Direccion = strtoupper(trim($_POST["cli_Direccion"]));
+				$cli_Correo = strtoupper(trim($correo));
 				$cli_Posicion = intval($_POST["cli_Posicion"]);
 				$cli_RUTA  = intval($_POST["cli_RUTA"]);
 				$cli_DiaCobro = intval($_POST["cli_DiaCobro"]);
@@ -74,7 +76,7 @@ class ClientesControlador{
 
 			}else{
 
-				return "Revisar Campos Alguno debe contener un caracter no permitido o esta vacio";
+				return $arrayName = array('codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio');
 
 			}
 
