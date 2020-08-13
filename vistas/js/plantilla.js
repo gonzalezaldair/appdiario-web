@@ -1,5 +1,4 @@
 let user_Id = $("#user_Id").val();
-console.log("user_Id", user_Id);
 
 
 let lenguajeTabla = {

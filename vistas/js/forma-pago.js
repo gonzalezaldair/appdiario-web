@@ -30,6 +30,7 @@ $("#btnmodalnuevaformapago").on('click', function(event) {
 	$("#modal-nueva-forma-pago .modal-title").text("Nueva Forma de Pago");
 	$("#modal-nueva-forma-pago .modal-header").removeClass('bg-success');
 	$("#modal-nueva-forma-pago .modal-header").addClass('bg-primary');
+	$(".selectrutaActivo").hide();
 	let datos = new FormData();
 	datos.append("acc", "consecutivo");
 	$.ajax({
@@ -93,18 +94,29 @@ $("#modal-nueva-forma-pago").on('click', '.btn-guardar-formapago', function(even
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			Swal.fire({
-				title: 'Guardar Datos',
-				text: "Datos Guardados Correctamente.",
-				type: 'success',
-				confirmButtonColor: '#3085d6',
-				confirmButtonText: '! Cerrar ¡'
-			}).then((result) => {
-				if (result.value) {
-					tablaformapago.ajax.reload();
-				}
-			})
-			$("#modal-nueva-forma-pago").modal("hide");
+
+			if (respuesta.mensaje === 'ok') {
+				Swal.fire({
+					title: 'Guardar Datos',
+					text: "Datos Guardados Correctamente.",
+					type: 'success',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				}).then((result) => {
+					if (result.value) {
+						tablaformapago.ajax.reload();
+					}
+				})
+				$("#modal-nueva-forma-pago").modal("hide");
+			} else {
+				Swal.fire({
+					title: 'Advertencia',
+					text: "Error: " + respuesta.codigo,
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				});
+			}
 		})
 		.fail(function(respuesta) {
 			console.log("error ", respuesta);
@@ -173,7 +185,28 @@ $('#tablaformapago').on('click', '.btneliminarformapago', function(event) {
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			tablaformapago.ajax.reload();
+			if (respuesta.mensaje === 'ok') {
+				Swal.fire({
+					title: 'Guardar Datos',
+					text: "Datos Guardados Correctamente.",
+					type: 'success',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				}).then((result) => {
+					if (result.value) {
+						tablaformapago.ajax.reload();
+					}
+				})
+				$("#modal-nueva-forma-pago").modal("hide");
+			} else {
+				Swal.fire({
+					title: 'Advertencia',
+					text: "Error: " + respuesta.codigo,
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				});
+			}
 		})
 		.fail(function(respuesta) {
 			console.log("error ", respuesta);

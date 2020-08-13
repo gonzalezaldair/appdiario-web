@@ -57,6 +57,12 @@ let tablaPerfil = $('#tablaperfil').DataTable({
 	"language": lenguajeTabla
 });
 
+
+
+/**
+ * TRAER DATOS DE PERFIL
+ */
+
 $("#tablaperfil").on('click', '.btnupdperfil', function(event) {
 	event.preventDefault();
 	/* Act on the event */
@@ -90,6 +96,12 @@ $("#tablaperfil").on('click', '.btnupdperfil', function(event) {
 });
 
 
+
+/**
+ * GUARDAR PERFIL
+ */
+
+
 $("#modal-nuevo-perfil").on('click', '.btnguardar-datos-perfil', function(event) {
 	event.preventDefault();
 	/* Act on the event */
@@ -113,23 +125,39 @@ $("#modal-nuevo-perfil").on('click', '.btnguardar-datos-perfil', function(event)
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			Swal.fire({
-				title: 'Guardar Datos',
-				text: "Datos Guardados Correctamente.",
-				type: 'success',
-				confirmButtonColor: '#3085d6',
-				confirmButtonText: '! Cerrar ¡'
-			}).then((result) => {
-				if (result.value) {
-					tablaPerfil.ajax.reload();
-				}
-			})
-			$("#modal-nuevo-perfil").modal("hide");
+			if (respuesta.mensaje === 'ok') {
+				Swal.fire({
+					title: 'Guardar Datos',
+					text: "Datos Guardados Correctamente.",
+					type: 'success',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				}).then((result) => {
+					if (result.value) {
+						tablaPerfil.ajax.reload();
+					}
+				})
+				$("#modal-nuevo-perfil").modal("hide");
+			} else {
+				Swal.fire({
+					title: 'Advertencia',
+					text: "Error: " + respuesta.codigo,
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				});
+			}
 		})
 		.fail(function(response) {
 			console.log("error", response.responseText);
 		});
 });
+
+
+
+/**
+ * ELIMINAR PEFIL
+ */
 
 
 $("#tablaperfil").on('click', '.btneliminarperfil', function(event) {
@@ -149,7 +177,27 @@ $("#tablaperfil").on('click', '.btneliminarperfil', function(event) {
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			tablaPerfil.ajax.reload();
+			if (respuesta.mensaje === 'ok') {
+				Swal.fire({
+					title: 'Eliminar Datos',
+					text: "Datos Actualizados Correctamente.",
+					type: 'success',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				}).then((result) => {
+					if (result.value) {
+						tablaPerfil.ajax.reload();
+					}
+				})
+			} else {
+				Swal.fire({
+					title: 'Advertencia',
+					text: "Error: " + respuesta.codigo,
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				});
+			}
 		})
 		.fail(function(response) {
 			console.log("error", response.responseText);

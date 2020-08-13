@@ -31,7 +31,9 @@ class MostrarUsuarios{
 
 		for($i = 0; $i < count($Usuarios); $i++)
 		{
-			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdusuario' usuarioid='".$Usuarios[$i]["usu_Id"]."' usuariocedula='".$Usuarios[$i]["usu_Cedula"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-warning btnpermisosusuario' usuarioid='".$Usuarios[$i]["usu_Id"]."'><i class='fas fa-user-lock'></i></button><button type='button' class='btn btn-danger btneliminarusuario' usuarioid='".$Usuarios[$i]["usu_Id"]."'><i class='fas fa-trash'></i></button></div>";
+			//$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdusuario' usuarioid='".$Usuarios[$i]["usu_Id"]."' usuariocedula='".$Usuarios[$i]["usu_Cedula"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-warning btnpermisosusuario' usuarioid='".$Usuarios[$i]["usu_Id"]."'><i class='fas fa-user-lock'></i></button><button type='button' class='btn btn-danger btneliminarusuario' usuarioid='".$Usuarios[$i]["usu_Id"]."'><i class='fas fa-trash'></i></button></div>";
+
+			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdusuario' usuarioid='".$Usuarios[$i]["usu_Id"]."' usuariocedula='".$Usuarios[$i]["usu_Cedula"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarusuario' usuarioid='".$Usuarios[$i]["usu_Id"]."'><i class='fas fa-trash'></i></button></div>";
 
 			$item = "rut_Id";
     		$valor = $Usuarios[$i]["usu_RUTA"];
@@ -84,12 +86,12 @@ switch ($acc) {
 		$ver -> TablaUsuarios();
 		break;
 	case 'add':
-		$traer = UsuariosControlador::ctrGuardarUsuario();
-		echo json_encode($traer);
+		$add = UsuariosControlador::ctrGuardarUsuario();
+		echo json_encode($add);
 		break;
 	case 'traer':
-		$item = "usu_Id";
-		$valor = trim($_POST["usuarioid"]);
+		$item = trim($_POST["item"]);
+		$valor = trim($_POST["valor"]);
 		$traer = UsuariosControlador::ctrMostrarUsuarios($item, $valor);
 		echo json_encode($traer);
 		break;
@@ -102,6 +104,10 @@ switch ($acc) {
 	case 'allpermisos':
 		$permisos = UsuariosControlador::ctrModulosPermisos();
 		echo json_encode($permisos);
+		break;
+	case 'eliminar':
+		$traer = UsuariosControlador::ctrEliminarUsuario();
+		echo json_encode($traer);
 		break;
 
 	default:

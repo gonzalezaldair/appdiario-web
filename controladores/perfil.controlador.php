@@ -31,8 +31,8 @@ class PerfilControlador{
 			if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["per_Nombre"])) {
 
 				$per_Id = intval($_POST["per_Id"]);
-				$per_Codigo = trim($_POST["per_Codigo"]);
-				$per_Nombre = trim($_POST["per_Nombre"]);
+				$per_Codigo = strtoupper (trim($_POST["per_Codigo"]));
+				$per_Nombre = strtoupper (trim($_POST["per_Nombre"]));
 				$per_Activo = intval($_POST["per_Activo"]);
 
 				$datosControlador = array(
@@ -49,7 +49,7 @@ class PerfilControlador{
 				}
 			}else{
 
-				return "Revisar Campos Alguno debe contener un caracter no permitido o esta vacio";
+				return $arrayName = array('codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio');
 			}
 
 		}
