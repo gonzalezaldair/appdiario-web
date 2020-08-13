@@ -111,8 +111,8 @@ switch ($acc) {
 		echo json_encode($traer);
 		break;
 	case 'traer':
-		$item = "cli_Id";
-		$valor = trim($_POST["clienteid"]);
+		$item = trim($_POST["item"]);
+		$valor = trim($_POST["valor"]);
 		$traer = ClientesControlador::ctrMostrarClientes($item, $valor);
 		echo json_encode($traer);
 		break;
