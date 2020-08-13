@@ -25,22 +25,23 @@ comboFormapago.append("acc", "comboFormaPago");
 $.ajax({
 		url: "ajax/formapago.ajax.php",
 		method: "POST",
-		data: comboFormapago,
+		data: formapago,
 		cache: false,
 		contentType: false,
 		processData: false,
 		dataType: "json",
 	})
 	.done(function(respuesta) {
-		//console.log("respuesta", respuesta);
 		for (var i = 0; i < respuesta.length; i++) {
-			$("#prestamoFormaPago").append('<option value='+respuesta[i].frm_Id+'>'+respuesta[i].frm_Nombre+'</option>');
+			if (respuesta[i].frm_Activo == 1) {
+				$("#prestamoFormaPago").append('<option value=' + respuesta[i].frm_Id + '>' + respuesta[i].frm_Nombre + '</option>');
+			}
+
 		}
 	})
 	.fail(function(respuesta) {
 		console.log("error ", respuesta);
 	});
-
 /*=============================================
 	LIMPIAR CAMPOS MODAL
 =============================================*/
@@ -88,6 +89,11 @@ let tablaPrestamos = $('#tablaPrestamos').DataTable( {
 } );
 
 
+/**
+ * GUARDAR PRESTAMO
+ */
+
+
 $("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo', function(event) {
 	event.preventDefault();
 	/* Act on the event */
@@ -119,18 +125,28 @@ $("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo', function(event) 
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			Swal.fire({
-				title: 'Guardar Datos',
-				text: "Datos Guardados Correctamente.",
-				type: 'success',
-				confirmButtonColor: '#3085d6',
-				confirmButtonText: '! Cerrar ¡'
-			}).then((result) => {
-				if (result.value) {
-					tablaPrestamos.ajax.reload();
-				}
-			})
-			$("#modal-nuevo-prestamo").modal("hide");
+			if (respuesta.mensaje === 'ok') {
+				Swal.fire({
+					title: 'Guardar Datos',
+					text: "Datos Guardados Correctamente.",
+					type: 'success',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				}).then((result) => {
+					if (result.value) {
+						tablaPrestamos.ajax.reload();
+					}
+				})
+				$("#modal-nuevo-prestamo").modal("hide");
+			} else {
+				Swal.fire({
+					title: 'Advertencia',
+					text: "Error: " + respuesta.codigo,
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				});
+			}
 		})
 		.fail(function(respuesta) {
 			console.log("respuesta", respuesta.responseText);
@@ -205,6 +221,7 @@ $('#tablaPrestamos').on('click', '.btnabono', function(event) {
 	$("#prestamosabonoSuma").val(0);
 	const prestamoid = $(this).attr('prestamoid');
 	const saldo = $(this).attr('saldo');
+	$("#prestamosabonoSuma").attr('max', saldo);
 	$("#prestamoabonoid").val(prestamoid);
 	$("#prestamosabonosaldo").val($.number(saldo, 2,".",","));
 	$("#prestamosabonosaldo").attr("saldo",saldo);
@@ -238,20 +255,28 @@ $('#modal-nuevo-abono').on('click', '.btn-guardar-abono', function(event) {
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			console.log("respuesta", respuesta);
-			console.info("success");
-			Swal.fire({
-				title: 'Guardar Datos',
-				text: "Datos Guardados Correctamente.",
-				type: 'success',
-				confirmButtonColor: '#3085d6',
-				confirmButtonText: '! Cerrar ¡'
-			}).then((result) => {
-				if (result.value) {
-					tablaPrestamos.ajax.reload();
-				}
-			})
-			$('#modal-nuevo-abono').modal("hide");
+			if (respuesta.mensaje === 'ok') {
+				Swal.fire({
+					title: 'Guardar Abono',
+					text: "Datos Guardados Correctamente.",
+					type: 'success',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				}).then((result) => {
+					if (result.value) {
+						$("#modal-nuevo-abono").modal("hide");
+					}
+				})
+
+			} else {
+				Swal.fire({
+					title: 'Advertencia',
+					text: "Error: " + respuesta.codigo,
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				});
+			}
 		})
 		.fail(function(respuesta) {
 			console.info("respuesta", respuesta.responseText);
@@ -278,16 +303,35 @@ $('#modal-nuevo-prestamo').on('change', '#prestamoMontoPrestado', function(event
 	MOSTRAR EN FORMATO DINERO prestamosabonoSuma
 =============================================*/
 
+
+
 $("#prestamosabonoSuma").on('change', function(event) {
 	event.preventDefault();
 	/* Act on the event */
 
-	$(this).attr('AbonoReal', $(this).val());
-	$(this).val($.number($(this).val(), 2,".",","));
-	const saldo = $("#prestamosabonosaldo").attr("saldo");
-	const abonoReal = $(this).attr("AbonoReal")
-	$("#prestamosabonosaldo").val(saldo - abonoReal);
-	$("#prestamosabonosaldo").val($.number($('#prestamosabonosaldo').val(), 2,".",","));
+	const abonomax = $("#prestamosabonoSuma").attr('max');
+
+	if ($("#prestamosabonoSuma").val() > abonomax) {
+		Swal.fire({
+			title: 'Abono Superior Al Saldo',
+			text: "El abono supera al Saldo Pendiente",
+			type: 'warning',
+			confirmButtonColor: '#3085d6',
+			confirmButtonText: '! Cerrar ¡'
+		}).then((result) => {
+			if (result.value) {
+				$("#prestamosabonoSuma").val("");
+			}
+		})
+	} else {
+
+		$(this).attr('AbonoReal', $(this).val());
+		$(this).val($.number($(this).val(), 2, ".", ","));
+		const saldo = $("#prestamosabonosaldo").attr("saldo");
+		const abonoReal = $(this).attr("AbonoReal")
+		$("#prestamosabonosaldo").val(saldo - abonoReal);
+		$("#prestamosabonosaldo").val($.number($('#prestamosabonosaldo').val(), 2, ".", ","));
+	}
 
 });
 
