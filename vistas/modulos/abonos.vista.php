@@ -21,9 +21,9 @@
     <div class="row">
       <div class="col-12">
         <div class="card">
-            <div class="card-header">
-              <!--<button type="button" id="btnmodalnuevoabono" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-nuevo-abono"><i class="fas fa-plus"></i> Nuevo Abono</button>-->
-            </div>
+            <!--<div class="card-header">
+              <!~~<button type="button" id="btnmodalnuevoabono" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-nuevo-abono"><i class="fas fa-plus"></i> Nuevo Abono</button>~~>
+            </div>-->
             <!-- /.card-header -->
             <div class="card-body">
               <table style="width: 100%;" id="tablaabonos" class="table table-bordered table-hover">

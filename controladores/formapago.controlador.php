@@ -47,8 +47,8 @@ class FormaPagoControlador{
 			if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["frm_Nombre"])) {
 
 				$frm_Id = intval($_POST["frm_Id"]);
-				$frm_Codigo = trim($_POST["frm_Codigo"]);
-				$frm_Nombre = trim($_POST["frm_Nombre"]);
+				$frm_Codigo = strtoupper(trim($_POST["frm_Codigo"]));
+				$frm_Nombre = strtoupper(trim($_POST["frm_Nombre"]));
 				$frm_Activo = intval($_POST["frm_Activo"]);
 
 
@@ -71,7 +71,7 @@ class FormaPagoControlador{
 
 			}else{
 
-				return "Revisar Campos Alguno debe contener un caracter no permitido o esta vacio";
+				return $arrayName = array('codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio');
 
 			}
 

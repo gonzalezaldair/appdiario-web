@@ -67,7 +67,7 @@ class CobrosControlador{
 
 			}else
 			{
-				return "Revisar Campos Alguno debe contener un caracter no permitido o esta vacio";
+				return $arrayName = array('codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio');
 			}
 
 		}

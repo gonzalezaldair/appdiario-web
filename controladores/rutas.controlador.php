@@ -32,8 +32,8 @@ class RutasControlador{
 			if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["rut_Nombre"])) {
 
 				$rut_Id = intval($_POST["rut_Id"]);
-				$rut_Codigo = trim($_POST["rut_Codigo"]);
-				$rut_Nombre = trim($_POST["rut_Nombre"]);
+				$rut_Codigo = strtoupper (trim($_POST["rut_Codigo"]));
+				$rut_Nombre = strtoupper (trim($_POST["rut_Nombre"]));
 				$rut_Cobro = intval($_POST["rut_Cobro"]);
 				$rut_Activo = intval($_POST["rut_Activo"]);
 
@@ -52,6 +52,8 @@ class RutasControlador{
 					$respuestaModelo = RutasModelo::mdlguardarRutas($tabla, $datosControlador);
 					return $respuestaModelo;
 				}
+			}else{
+				return $arrayName = array('codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio' );
 			}
 
 		}

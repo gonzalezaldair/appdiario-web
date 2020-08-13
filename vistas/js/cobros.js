@@ -132,18 +132,29 @@ $('#modal-nuevo-cobro').on('click', '.btn-guardar-cobro', function(event) {
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			Swal.fire({
-				title: 'Guardar Datos',
-				text: "Datos Guardados Correctamente.",
-				type: 'success',
-				confirmButtonColor: '#3085d6',
-				confirmButtonText: '! Cerrar ¡'
-			}).then((result) => {
-				if (result.value) {
-					tablaCobros.ajax.reload();
-				}
-			})
-			$("#modal-nuevo-cobro").modal("hide");
+
+			if (respuesta.mensaje === 'ok') {
+				Swal.fire({
+					title: 'Guardar Datos',
+					text: "Datos Guardados Correctamente.",
+					type: 'success',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				}).then((result) => {
+					if (result.value) {
+						tablaCobros.ajax.reload();
+					}
+				})
+				$("#modal-nuevo-cobro").modal("hide");
+			} else {
+				Swal.fire({
+					title: 'Advertencia',
+					text: "Error: " + respuesta.codigo,
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				});
+			}
 		})
 		.fail(function(respuesta) {
 			console.log("error ", respuesta);
@@ -174,8 +185,28 @@ $('#tablaCobros').on('click', '.btneliminarcobro', function(event) {
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			$("#modal-nuevo-cobro").modal("hide");
-			tablaCobros.ajax.reload();
+
+			if (respuesta.mensaje === 'ok') {
+				Swal.fire({
+					title: 'Eliminar Datos',
+					text: "Datos Actualizados Correctamente.",
+					type: 'success',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				}).then((result) => {
+					if (result.value) {
+						tablaCobros.ajax.reload();
+					}
+				})
+			} else {
+				Swal.fire({
+					title: 'Advertencia',
+					text: "Error: " + respuesta.codigo,
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				});
+			}
 		})
 		.fail(function(respuesta) {
 			console.log("error ", respuesta);
