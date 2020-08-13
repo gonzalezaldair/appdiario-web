@@ -34,13 +34,16 @@ $.ajax({
 	.done(function(respuesta) {
 		//console.log("respuesta", respuesta);
 		for (var i = 0; i < respuesta.length; i++) {
-			$("#rutaCobro").append('<option value='+respuesta[i].cob_Id+'>'+respuesta[i].cob_Nombre+'</option>');
+			if (respuesta[i].cob_Activo == 1) {
+				$("#rutaCobro").append('<option value=' + respuesta[i].cob_Id + '>' + respuesta[i].cob_Nombre + '</option>');
+			}else{
+				$("#rutaCobro").append('<option value=' + respuesta[i].cob_Id + ' disabled>' + respuesta[i].cob_Nombre + '</option>');
+			}
 		}
 	})
 	.fail(function(respuesta) {
 		console.log("error ", respuesta);
 	});
-
 
 
 
@@ -59,7 +62,8 @@ $("#btnmodalnuevaruta").on('click', function(event) {
 	$("#rutaId").val("");
 	$("#rutaCodigo").val("");
 	$("#rutaNombre").val("");
-	$("#rutaCobro").val(1);
+	$("select#rutaCobro")[0].selectedIndex = 0;
+	$(".selectrutaActivo").hide();
 	let datos = new FormData();
 	datos.append("acc", "consecutivo");
 	$.ajax({
@@ -127,18 +131,28 @@ $('#modal-nueva-ruta').on('click', '.btn-guardar-ruta', function(event) {
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			Swal.fire({
-				title: 'Guardar Datos',
-				text: "Datos Guardados Correctamente.",
-				type: 'success',
-				confirmButtonColor: '#3085d6',
-				confirmButtonText: '! Cerrar ¡'
-			}).then((result) => {
-				if (result.value) {
-					tablaRuta.ajax.reload();
-				}
-			})
-			$("#modal-nueva-ruta").modal('hide');
+			if (respuesta.mensaje === 'ok') {
+				Swal.fire({
+					title: 'Guardar Datos',
+					text: "Datos Guardados Correctamente.",
+					type: 'success',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				}).then((result) => {
+					if (result.value) {
+						tablaRuta.ajax.reload();
+					}
+				})
+				$("#modal-nueva-ruta").modal("hide");
+			} else {
+				Swal.fire({
+					title: 'Advertencia',
+					text: "Error: " + respuesta.codigo,
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				});
+			}
 		})
 		.fail(function(respuesta) {
 			console.log("error ", respuesta);
@@ -208,7 +222,27 @@ $('#tablarutas').on('click', '.btneliminarruta', function(event) {
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			tablaRuta.ajax.reload();
+			if (respuesta.mensaje === 'ok') {
+				Swal.fire({
+					title: 'Eliminar Datos',
+					text: "Datos Guardados Correctamente.",
+					type: 'success',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				}).then((result) => {
+					if (result.value) {
+						tablaRuta.ajax.reload();
+					}
+				})
+			} else {
+				Swal.fire({
+					title: 'Advertencia',
+					text: "Error: " + respuesta.codigo,
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				});
+			}
 		})
 		.fail(function(respuesta) {
 			console.log("error ", respuesta);

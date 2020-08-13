@@ -79,7 +79,9 @@ $.ajax({
 	.done(function(respuesta) {
 		//console.log("respuesta", respuesta);
 		for (var i = 0; i < respuesta.length; i++) {
-			$("#clienteRUTA").append('<option value='+respuesta[i].rut_Id+'>'+respuesta[i].rut_Nombre+'</option>');
+			if (respuesta[i].rut_Activo == 1) {
+				$("#clienteRUTA").append('<option value=' + respuesta[i].rut_Id + '>' + respuesta[i].rut_Nombre + '</option>');
+			}
 		}
 	})
 	.fail(function(respuesta) {
@@ -104,7 +106,10 @@ $.ajax({
 	})
 	.done(function(respuesta) {
 		for (var i = 0; i < respuesta.length; i++) {
-			$("#comboformapago").append('<option value='+respuesta[i].frm_Id+'>'+respuesta[i].frm_Nombre+'</option>');
+			if (respuesta[i].frm_Activo == 1) {
+				$("#comboformapago").append('<option value=' + respuesta[i].frm_Id + '>' + respuesta[i].frm_Nombre + '</option>');
+			}
+
 		}
 	})
 	.fail(function(respuesta) {
@@ -124,8 +129,9 @@ let tablaclientes = $('#tablaclientes').DataTable({
 	"language": lenguajeTabla
 });
 
-
-
+/**
+ * GUARDAR CLIENTE
+ */
 
 $("#modal-nuevo-cliente").on('click', '.btn-guardar-cliente', function(event) {
 	event.preventDefault();
@@ -162,18 +168,29 @@ $("#modal-nuevo-cliente").on('click', '.btn-guardar-cliente', function(event) {
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			Swal.fire({
-				title: 'Guardar Datos',
-				text: "Datos Guardados Correctamente.",
-				type: 'success',
-				confirmButtonColor: '#3085d6',
-				confirmButtonText: '! Cerrar ¡'
-			}).then((result) => {
-				if (result.value) {
-					tablaclientes.ajax.reload();
-				}
-			})
-			$("#modal-nuevo-cliente").modal("hide");
+
+			if (respuesta.mensaje === 'ok') {
+				Swal.fire({
+					title: 'Guardar Datos',
+					text: "Datos Guardados Correctamente.",
+					type: 'success',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				}).then((result) => {
+					if (result.value) {
+						tablaclientes.ajax.reload();
+					}
+				})
+				$("#modal-nuevo-cliente").modal("hide");
+			} else {
+				Swal.fire({
+					title: 'Advertencia',
+					text: "Error: " + respuesta.codigo,
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				});
+			}
 		})
 		.fail(function(respuesta) {
 			console.log("respuesta", respuesta.responseText);
@@ -192,7 +209,8 @@ $('#tablaclientes').on('click', '.btnupdcliente', function(event) {
 	const clienteid = $(this).attr('clienteid');
 	const clientecedula = $(this).attr('clientecedula');
 	let datos = new FormData();
-	datos.append("clienteid", clienteid);
+	datos.append("valor", clienteid);
+	datos.append("item", "cli_Id");
 	datos.append("acc", "traer");
 	$.ajax({
 			url: "ajax/clientes.ajax.php",
@@ -264,6 +282,7 @@ $('#tablaclientes').on('click', '.btnnuevoprestamo', function(event) {
 	$("#idCliente").val(clienteid);
 	$("#interesPrestamo").val("");
 	$("#sumaPrestamo").attr('MontoReal',"");
+	$("#sumaPrestamo").val("");
 	$("#cuotasPrestamo").val("");
 	$("#observacionesPrestamo").val("");
 	$("#modal-nuevo-prestamo").modal("show");
@@ -305,12 +324,21 @@ $("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo', function(event) 
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			Swal.fire(
-				'Guardar Datos!',
-				'Prestamo Guardado Correctamente.',
-				'success'
-			)
-			$("#modal-nuevo-prestamo").modal("hide");
+			console.log("respuesta", respuesta);
+			if (respuesta.mensaje === 'ok') {
+				Swal.fire(
+					'Guardar Datos!',
+					'Prestamo Guardado Correctamente.',
+					'success'
+				);
+				$("#modal-nuevo-prestamo").modal("hide");
+			} else {
+				Swal.fire(
+					'Advertencia !',
+					'Error: ' + respuesta.codigo,
+					'warning'
+				)
+			}
 		})
 		.fail(function(respuesta) {
 			console.log("respuesta", respuesta.responseText);

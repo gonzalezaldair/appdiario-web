@@ -38,17 +38,20 @@ $("#btnmodalnuevousuario").on('click', function(event) {
 	/* Act on the event */
 
 	$("#usuarioCedula").val("");
+	$("#usuarioCedula").attr('readonly', false);
 	$("#usuarioId").val("");
 	$("#usuarioUsuario").val("");
+	$("#usuarioUsuario").attr('readonly', true);
 	$("#usuarioPassword").val("");
+	$("#usuarioPassword").attr('readonly', false);
 	$("#usuarioNombre").val("");
 	$("#usuarioCelular").val("");
 	$("#usuarioCorreo").val("");
 	$("#usuarioDireccion").val("");
 	$("#usuarioRUTA").val(1);
-	$("#usuarioPERFIL").val(1);
 	$("#usuarioActivo").val(1);
 	$(".selectrutaActivo").hide();
+	$(".divusuarioPassword").show();
 	$("#modal-nuevo-usuario .modal-title").text("Nuevo Usuario");
 	$("#modal-nuevo-usuario .modal-header").removeClass('bg-success');
 	$("#modal-nuevo-usuario .modal-header").addClass('bg-primary');
@@ -77,7 +80,9 @@ $.ajax({
 	.done(function(respuesta) {
 		//console.log("respuesta", respuesta);
 		for (var i = 0; i < respuesta.length; i++) {
-			$("#usuarioRUTA").append('<option value='+respuesta[i].rut_Id+'>'+respuesta[i].rut_Nombre+'</option>');
+			if (respuesta[i].rut_Activo == 1) {
+				$("#usuarioRUTA").append('<option value=' + respuesta[i].rut_Id + '>' + respuesta[i].rut_Nombre + '</option>');
+			}
 		}
 	})
 	.fail(function(respuesta) {
@@ -105,7 +110,9 @@ $.ajax({
 	.done(function(respuesta) {
 		//console.log("respuesta", respuesta);
 		for (var i = 0; i < respuesta.length; i++) {
-			$("#usuarioPERFIL").append('<option value='+respuesta[i].per_Id+'>'+respuesta[i].per_Nombre+'</option>');
+			if (respuesta[i].per_Activo == 1) {
+				$("#usuarioPERFIL").append('<option value='+respuesta[i].per_Id+'>'+respuesta[i].per_Nombre+'</option>');
+			}
 		}
 	})
 	.fail(function(respuesta) {
@@ -138,7 +145,8 @@ $('#tablausuario').on('click', '.btnupdusuario', function(event) {
 	const usuarioid = $(this).attr('usuarioid');
 	const usuariocedula = $(this).attr('usuariocedula');
 	let datos = new FormData();
-	datos.append("usuarioid", usuarioid);
+	datos.append("valor", usuarioid);
+	datos.append("item", "usu_Id");
 	datos.append("acc", "traer");
 	$.ajax({
 			url: "ajax/usuario.ajax.php",
@@ -151,11 +159,12 @@ $('#tablausuario').on('click', '.btnupdusuario', function(event) {
 		})
 		.done(function(respuesta) {
 			$("#usuarioCedula").val(respuesta["usu_Cedula"]);
-			$("#usuarioCedula").attr('disabled', true);
+			$("#usuarioCedula").attr('readonly', true);
 			$("#usuarioId").val(respuesta["usu_Id"]);
 			$("#usuarioUsuario").val(respuesta["usu_Login"]);
-			$("#usuarioUsuario").attr('disabled', true);
+			$("#usuarioUsuario").attr('readonly', true);
 			$("#usuarioPassword").val(respuesta["usu_Password"]);
+			$("#usuarioPassword").attr('readonly', false);
 			$("#usuarioNombre").val(respuesta["usu_Nombre"]);
 			$("#usuarioCelular").val(respuesta["usu_Celular"]);
 			$("#usuarioCorreo").val(respuesta["usu_Correo"]);
@@ -164,6 +173,7 @@ $('#tablausuario').on('click', '.btnupdusuario', function(event) {
 			$("#usuarioPERFIL").val(respuesta["usu_Perfil"]);
 			$("#usuarioActivo").val(respuesta["usu_Activo"]);
 			$(".selectrutaActivo").show();
+			$(".divusuarioPassword").hide();
 			$("#modal-nuevo-usuario .modal-title").text("Editar Usuario");
 			$("#modal-nuevo-usuario .modal-header").addClass('bg-success');
 			$("#modal-nuevo-usuario .modal-header").removeClass('bg-primary');
@@ -174,6 +184,10 @@ $('#tablausuario').on('click', '.btnupdusuario', function(event) {
 		});
 
 });
+
+/**
+ * PERMISOS USUARIO
+ */
 
 
 $("#tablausuario").on('click', '.btnpermisosusuario', function(event) {
@@ -254,6 +268,102 @@ $("#tablausuario").on('click', '.btnpermisosusuario', function(event) {
 });
 
 
+
+/**
+ * COMPROBAR SI LA CEDULA YA EXISTE
+ */
+
+
+$("#modal-nuevo-usuario").on('change', '#usuarioCedula', function(event) {
+	event.preventDefault();
+	/* Act on the event */
+	const valor = $(this).val();
+	let datos = new FormData();
+	datos.append("valor", valor);
+	datos.append("item", "usu_Cedula");
+	datos.append("acc", "traer");
+	$.ajax({
+			url: "ajax/usuario.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+		.done(function(response) {
+			if (typeof response["usu_Cedula"] !== 'undefined') {
+				Swal.fire({
+					title: 'Advertencia',
+					text: "Cedula Ya se encuentra registrada.",
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				}).then((result) => {
+					if (result.value) {
+						$("#usuarioCedula").val("");
+					}
+				})
+			} else {
+				$("#usuarioUsuario").val(valor);
+			}
+		})
+		.fail(function() {
+			console.log("error");
+		});
+});
+
+
+/**
+ * COMPROBAR SI EL NUMERO DE CELULAR YA EXISTE
+ */
+
+
+$("#modal-nuevo-usuario").on('change', '#usuarioCelular', function(event) {
+	event.preventDefault();
+	/* Act on the event */
+	const valor = $(this).val();
+	let datos = new FormData();
+	datos.append("valor", valor);
+	datos.append("item", "usu_Celular");
+	datos.append("acc", "traer");
+	$.ajax({
+			url: "ajax/usuario.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+		.done(function(response) {
+			if (typeof response["usu_Cedula"] !== 'undefined') {
+				Swal.fire({
+					title: 'Advertencia',
+					text: "Celular Ya se encuentra registrada.",
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				}).then((result) => {
+					if (result.value) {
+
+						$("#usuarioCelular").focus();
+						$("#usuarioCelular").val("");
+					}
+				})
+			}
+		})
+		.fail(function(response) {
+			console.log("error: ", response.responseText);
+		});
+});
+
+
+/**
+ * GUARDAR USUARIO
+ */
+
+
 $("#modal-nuevo-usuario").on('click', '.btn-guardar-usuario', function(event) {
 	event.preventDefault();
 	/* Act on the event */
@@ -292,7 +402,10 @@ $("#modal-nuevo-usuario").on('click', '.btn-guardar-usuario', function(event) {
 			dataType: "json",
 		})
 		.done(function(respuesta) {
-			Swal.fire({
+
+			if (respuesta.mensaje === 'ok')
+			{
+				Swal.fire({
 				title: 'Guardar Datos',
 				text: "Datos Guardados Correctamente.",
 				type: 'success',
@@ -300,14 +413,80 @@ $("#modal-nuevo-usuario").on('click', '.btn-guardar-usuario', function(event) {
 				confirmButtonText: '! Cerrar ¡'
 			}).then((result) => {
 				if (result.value) {
+					$("#modal-nuevo-usuario").modal("hide");
 					tablaUsuario.ajax.reload();
 				}
 			})
+			}else{
+				Swal.fire({
+				title: 'Advertencia',
+				text: "Error: "+respuesta.codigo,
+				type: 'warning',
+				confirmButtonColor: '#3085d6',
+				confirmButtonText: '! Cerrar ¡'
+			}).then((result) => {
+				if (result.value) {
+				}
+			})
+			}
+
 		})
 		.fail(function(respuesta) {
 			console.log("respuesta", respuesta.responseText);
 			console.log("error");
 		});
 
+
+});
+
+
+/**
+ * ELIMINAR USUARIO
+ */
+
+$("#tablausuario").on('click', '.btneliminarusuario', function(event) {
+	event.preventDefault();
+	/* Act on the event */
+	const usuarioid = $(this).attr('usuarioid');
+	const usuariocedula = $(this).attr('usuariocedula');
+	let datos = new FormData();
+	datos.append("valor", usuarioid);
+	datos.append("item", "usu_Id");
+	datos.append("acc", "eliminar");
+	$.ajax({
+			url: "ajax/usuario.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+		.done(function(respuesta) {
+			if (respuesta.mensaje === 'ok') {
+				Swal.fire({
+					title: 'Eliminar Datos',
+					text: "Datos Actualizados Correctamente.",
+					type: 'success',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				}).then((result) => {
+					if (result.value) {
+						tablaUsuario.ajax.reload();
+					}
+				})
+			} else {
+				Swal.fire({
+					title: 'Advertencia',
+					text: "Error: " + respuesta.codigo,
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: '! Cerrar ¡'
+				});
+			}
+		})
+		.fail(function(respuesta) {
+			console.log("error ", respuesta);
+		});
 
 });
