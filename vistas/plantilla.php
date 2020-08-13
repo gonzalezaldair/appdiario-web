@@ -1,5 +1,4 @@
-
-
+<?php session_start(); ?>
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -35,7 +34,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <body class="hold-transition sidebar-mini">
 <?php
 
-  echo '<div class="wrapper">';
+  if(isset($_SESSION["validar"]) && $_SESSION["validar"] === true)
+  {
+
+    echo '<div class="wrapper">';
     include 'modulos/navegador.php';
     echo '<div class="content-wrapper">';
       if(isset($_GET["action"]))
@@ -68,9 +70,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   echo '</div>';
 
+  }else{
+    include 'modulos/ingreso.vista.php';
+  }
+
 
  ?>
-<input type="hidden" name="" value="2" id="user_Id">
+<input type="hidden" value="<?php echo $_SESSION["usuario_Id"]; ?>" id="user_Id">
 
  <!--=====================================
   PLUGINS DE JAVASCRIPT
