@@ -12,27 +12,64 @@ class AbonosModelo{
 
 	public static function mdlMostrarAbonos($tabla, $item, $valor)
 	{
+
 		if($item != null){
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
+			try {
 
-			$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
 
-			$stmt -> execute();
+				$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
 
-			return $stmt -> fetch();
+				$stmt -> execute();
+
+				return $stmt -> fetch();
+
+			} catch (PDOException $e){
+
+				$err = $stmt->errorInfo();
+				$arrayName = array(
+					'mensaje' => $e->getMessage(),
+					'codigo' => $err[1],
+					'sqlstate' => $e->getCode(),
+					'script' => $e->getFile(),
+					'linea' => $e->getLine(),
+					'excepcionprevia' => $e->getPrevious(),
+					'cadena' => $e->__toString(),
+					'errorinfo' => $err[2]
+				);
+
+				return $arrayName;
+			}
 
 		}else{
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
+			try {
 
-			$stmt -> execute();
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla ORDER BY abo_Id DESC");
 
-			return $stmt -> fetchAll();
+				$stmt -> execute();
+
+				return $stmt -> fetchAll();
+
+			} catch (PDOException $e){
+
+				$err = $stmt->errorInfo();
+				$arrayName = array(
+					'mensaje' => $e->getMessage(),
+					'codigo' => $err[1],
+					'sqlstate' => $e->getCode(),
+					'script' => $e->getFile(),
+					'linea' => $e->getLine(),
+					'excepcionprevia' => $e->getPrevious(),
+					'cadena' => $e->__toString(),
+					'errorinfo' => $err[2]
+				);
+
+				return $arrayName;
+			}
 
 		}
-
-		$stmt -> close();
 
 		$stmt = null;
 	}
@@ -40,23 +77,40 @@ class AbonosModelo{
 
 	public static function mdlGuardarAbonos($tabla, $datosModelo)
 	{
-		$usuario = 2;
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (abo_PRESTAMO, abo_Monto, abo_Fecha) VALUES (:abo_PRESTAMO, :abo_Monto, :abo_Fecha)");
+		try {
 
-		$stmt -> bindParam(":abo_PRESTAMO", $datosModelo["abo_PRESTAMO"], PDO::PARAM_INT);
-		$stmt -> bindParam(":abo_Monto", $datosModelo["abo_Monto"], PDO::PARAM_INT);
-		$stmt -> bindParam(":abo_Fecha", $datosModelo["abo_Fecha"], PDO::PARAM_STR);
+			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (abo_PRESTAMO, abo_Monto, abo_Fecha) VALUES (:abo_PRESTAMO, :abo_Monto, :abo_Fecha)");
 
-		if($stmt->execute())
-		{
-			return "ok";
-		}
-		else
-		{
+			$stmt -> bindParam(":abo_PRESTAMO", $datosModelo["abo_PRESTAMO"], PDO::PARAM_INT);
+			$stmt -> bindParam(":abo_Monto", $datosModelo["abo_Monto"], PDO::PARAM_INT);
+			$stmt -> bindParam(":abo_Fecha", $datosModelo["abo_Fecha"], PDO::PARAM_STR);
+
+
+			$stmt->execute();
+
+			$stmt = null;
+
+			$arrayName = array(
+				'mensaje' => "ok"
+			);
+
+		} catch (PDOException $e){
+
 			$err = $stmt->errorInfo();
-			return $err[2];
+			$arrayName = array(
+				'mensaje' => $e->getMessage(),
+				'codigo' => $err[1],
+				'sqlstate' => $e->getCode(),
+				'script' => $e->getFile(),
+				'linea' => $e->getLine(),
+				'excepcionprevia' => $e->getPrevious(),
+				'cadena' => $e->__toString(),
+				'errorinfo' => $err[2]
+			);
+
+			return $arrayName;
 		}
-		$stmt -> close();
+
 		$stmt = null;
 	}
 }
