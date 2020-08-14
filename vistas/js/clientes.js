@@ -293,7 +293,7 @@ $('#tablaclientes').on('click', '.btnnuevoprestamo', function(event) {
 	GUARDAR PRESTAMO
 =============================================*/
 
-$("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo', function(event) {
+$("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo-cliente', function(event) {
 	event.preventDefault();
 	/* Act on the event */
 	const pre_Id = ($("#idPrestamo").val() != "") ? $("#idPrestamo").val() : 0;

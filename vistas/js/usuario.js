@@ -142,6 +142,7 @@ let tablaUsuario = $('#tablausuario').DataTable( {
 
 $('#tablausuario').on('click', '.btnupdusuario', function(event) {
 	event.preventDefault();
+	$("#errorUsuario").html("");
 	const usuarioid = $(this).attr('usuarioid');
 	const usuariocedula = $(this).attr('usuariocedula');
 	let datos = new FormData();
@@ -368,74 +369,94 @@ $("#modal-nuevo-usuario").on('click', '.btn-guardar-usuario', function(event) {
 	event.preventDefault();
 	/* Act on the event */
 
+	$("#errorUsuario").html("error usuario");
+	let mensajesError = [];
+
 	const user_Cedula = $("#usuarioCedula").val();
+	let expr = /^[0-9]+$/;
+	if (user_Cedula === "" && !expr.test(user_Cedula)) {
+		mensajesError.push('Error Cedula: Revisar Campo debe contener un caracter no permitido o esta vacio');
+	}
 	const user_Id = ($("#usuarioId").val() != "") ? $("#usuarioId").val() : 0;
 	const user_Usuario = $("#usuarioUsuario").val();
 	const user_Password = $("#usuarioPassword").val();
+	expr = /^[a-zA-Z0-9ñÑ]+$/;
+	if (user_Password === "" && !expr.test(user_Password)) {
+		mensajesError.push('Error Contraseña: Revisar Campo debe contener un caracter no permitido o esta vacio');
+	}
 	const user_Nombre = $("#usuarioNombre").val();
+	expr = /^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/;
+	if (user_Nombre === "" && !expr.test(user_Nombre)) {
+		mensajesError.push('Error Nombre: Revisar Campo debe contener un caracter no permitido o esta vacio');
+	}
 	const user_Celular = $("#usuarioCelular").val();
+	expr = /^[0-9]+$/;
+	if (user_Celular === "" && !expr.test(user_Celular)) {
+		mensajesError.push('Error Celular: Revisar Campo debe contener un caracter no permitido o esta vacio');
+	}
 	const user_Correo = $("#usuarioCorreo").val();
 	const user_Direccion = $("#usuarioDireccion").val();
 	const user_Ruta = $("#usuarioRUTA").val();
 	const user_Perfil = $("#usuarioPERFIL").val();
 	const user_Activo = $("#usuarioActivo").val();
-	let datos = new FormData();
-	datos.append("usu_Id", user_Id);
-	datos.append("usu_Cedula", user_Cedula);
-	datos.append("usu_Login", user_Usuario);
-	datos.append("usu_Password", user_Password);
-	datos.append("usu_Nombre", user_Nombre);
-	datos.append("usu_Celular", user_Celular);
-	datos.append("usu_Correo", user_Correo);
-	datos.append("usu_Direccion", user_Direccion);
-	datos.append("usu_RUTA", user_Ruta);
-	datos.append("usu_Perfil", user_Perfil);
-	datos.append("usu_Activo", user_Activo);
-	datos.append("acc", "add");
-	$.ajax({
-			url: "ajax/usuario.ajax.php",
-			method: "POST",
-			data: datos,
-			cache: false,
-			contentType: false,
-			processData: false,
-			dataType: "json",
-		})
-		.done(function(respuesta) {
-
-			if (respuesta.mensaje === 'ok')
-			{
-				Swal.fire({
-				title: 'Guardar Datos',
-				text: "Datos Guardados Correctamente.",
-				type: 'success',
-				confirmButtonColor: '#3085d6',
-				confirmButtonText: '! Cerrar ¡'
-			}).then((result) => {
-				if (result.value) {
-					$("#modal-nuevo-usuario").modal("hide");
-					tablaUsuario.ajax.reload();
-				}
+	if (mensajesError.length == 0) {
+		let datos = new FormData();
+		datos.append("usu_Id", user_Id);
+		datos.append("usu_Cedula", user_Cedula);
+		datos.append("usu_Login", user_Usuario);
+		datos.append("usu_Password", user_Password);
+		datos.append("usu_Nombre", user_Nombre);
+		datos.append("usu_Celular", user_Celular);
+		datos.append("usu_Correo", user_Correo);
+		datos.append("usu_Direccion", user_Direccion);
+		datos.append("usu_RUTA", user_Ruta);
+		datos.append("usu_Perfil", user_Perfil);
+		datos.append("usu_Activo", user_Activo);
+		datos.append("acc", "add");
+		$.ajax({
+				url: "ajax/usuario.ajax.php",
+				method: "POST",
+				data: datos,
+				cache: false,
+				contentType: false,
+				processData: false,
+				dataType: "json",
 			})
-			}else{
-				Swal.fire({
-				title: 'Advertencia',
-				text: "Error: "+respuesta.codigo,
-				type: 'warning',
-				confirmButtonColor: '#3085d6',
-				confirmButtonText: '! Cerrar ¡'
-			}).then((result) => {
-				if (result.value) {
+			.done(function(respuesta) {
+
+				if (respuesta.mensaje === 'ok') {
+					Swal.fire({
+						title: 'Guardar Datos',
+						text: "Datos Guardados Correctamente.",
+						type: 'success',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: '! Cerrar ¡'
+					}).then((result) => {
+						if (result.value) {
+							$("#modal-nuevo-usuario").modal("hide");
+							tablaUsuario.ajax.reload();
+						}
+					})
+				} else {
+					Swal.fire({
+						title: 'Advertencia',
+						text: "Error: " + respuesta.codigo,
+						type: 'warning',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: '! Cerrar ¡'
+					}).then((result) => {
+						if (result.value) {}
+					})
 				}
+
 			})
-			}
-
-		})
-		.fail(function(respuesta) {
-			console.log("respuesta", respuesta.responseText);
-			console.log("error");
-		});
-
+			.fail(function(respuesta) {
+				console.log("respuesta", respuesta.responseText);
+				console.log("error");
+			});
+	} else {
+		$("#errorUsuario").html(mensajesError.join('<br>'));
+	}
 
 });
 

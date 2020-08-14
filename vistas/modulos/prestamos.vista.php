@@ -106,7 +106,7 @@
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-comments-dollar"></i></span>
+            <span class="input-group-text"><i class="fas fa-percent"></i></span>
           </div>
           <input id="prestamoInteres" type="text" class="form-control form-control-lg validarNumero" placeholder="Ingresar Interes">
         </div>
@@ -122,6 +122,7 @@
           </div>
           <textarea id="prestamoObservaciones" class="form-control" placeholder="Ingresar Observaciones"></textarea>
         </div>
+        <div id="errorPrestamos" class="text-danger"></div>
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>

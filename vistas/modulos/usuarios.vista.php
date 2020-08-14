@@ -128,6 +128,7 @@
             <option value="1">Activo</option>
           </select>
         </div>
+        <div id="errorUsuario" class="text-danger"></div>
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
