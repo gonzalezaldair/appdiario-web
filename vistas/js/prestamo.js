@@ -32,12 +32,16 @@ $.ajax({
 		dataType: "json",
 	})
 	.done(function(respuesta) {
-		for (var i = 0; i < respuesta.length; i++) {
-			if (respuesta[i].frm_Activo == 1) {
-				$("#prestamoFormaPago").append('<option value=' + respuesta[i].frm_Id + '>' + respuesta[i].frm_Nombre + '</option>');
+		if (respuesta.length > 0) {
+			for (var i = 0; i < respuesta.length; i++) {
+				if (respuesta[i].frm_Activo == 1) {
+					$("#prestamoFormaPago").append('<option value=' + respuesta[i].frm_Id + '>' + respuesta[i].frm_Nombre + '</option>');
+				}
 			}
-
+		} else {
+			$("#prestamoFormaPago").parent().after('<div class="alert alert-warning">Debe agregar Formas de Pago. <a href="forma-pago">Ir a Formas de Pago</a></div>');
 		}
+
 	})
 	.fail(function(respuesta) {
 		console.log("error ", respuesta);
@@ -52,7 +56,7 @@ $("#btnmodalnuevoprestamo").on('click', function(event) {
 	/* Act on the event */
 	$("#errorPrestamos").html();
 	$("#prestamoId").val("");
-	$("#prestamoFormaPago").val(1);
+	/*$("#prestamoFormaPago").val(1);*/
 	$("#prestamoCliente").val("");
 	$("#prestamoInteres").val("");
 	$("#prestamoMontoPrestado").val("");
@@ -336,13 +340,17 @@ $('#modal-nuevo-prestamo').on('change', '#prestamoMontoPrestado', function(event
 
 
 
-$("#prestamosabonoSuma").on('change', function(event) {
+$("#modal-nuevo-abono").on('change','#prestamosabonoSuma', function(event) {
 	event.preventDefault();
 	/* Act on the event */
 
-	const abonomax = $("#prestamosabonoSuma").attr('max');
+	$(this).attr('AbonoReal', $(this).val());
+	$(this).val($.number($(this).val(), 2, ".", ","));
 
-	if ($("#prestamosabonoSuma").attr('AbonoReal') > abonomax) {
+	const abonomax = parseInt($("#prestamosabonoSuma").attr('max'));
+	const abonoreal = parseInt($("#prestamosabonoSuma").attr('AbonoReal'));
+
+	if (abonoreal > abonomax) {
 		Swal.fire({
 			title: 'Abono Superior Al Saldo',
 			text: "El abono supera al Saldo Pendiente",
@@ -355,9 +363,6 @@ $("#prestamosabonoSuma").on('change', function(event) {
 			}
 		})
 	} else {
-
-		$(this).attr('AbonoReal', $(this).val());
-		$(this).val($.number($(this).val(), 2, ".", ","));
 		const saldo = $("#prestamosabonosaldo").attr("saldo");
 		const abonoReal = $(this).attr("AbonoReal")
 		$("#prestamosabonosaldo").val(saldo - abonoReal);
