@@ -105,11 +105,15 @@ $.ajax({
 		dataType: "json",
 	})
 	.done(function(respuesta) {
-		for (var i = 0; i < respuesta.length; i++) {
-			if (respuesta[i].frm_Activo == 1) {
-				$("#comboformapago").append('<option value=' + respuesta[i].frm_Id + '>' + respuesta[i].frm_Nombre + '</option>');
-			}
+		if (respuesta.length > 0) {
+			for (var i = 0; i < respuesta.length; i++) {
+				if (respuesta[i].frm_Activo == 1) {
+					$("#comboformapago").append('<option value=' + respuesta[i].frm_Id + '>' + respuesta[i].frm_Nombre + '</option>');
+				}
 
+			}
+		} else {
+			$("#comboformapago").parent().after('<div class="alert alert-warning">Debe agregar Formas de Pago. <a href="forma-pago">Ir a Formas de Pago</a></div>');
 		}
 	})
 	.fail(function(respuesta) {
