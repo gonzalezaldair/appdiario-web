@@ -33,7 +33,7 @@ class AbonosControlador{
 				$abo_Id = intval($_POST["abo_Id"]);
 				$abo_PRESTAMO = intval($_POST["abo_PRESTAMO"]);
 				$abo_Monto = intval($_POST["abo_Monto"]);
-				$abo_Fecha = date("Y-m-d h:m:s");
+				$abo_Fecha = date("Y-m-d H:i:s");
 
 				$datosControlador = array(
 					'abo_Id' => $abo_Id,

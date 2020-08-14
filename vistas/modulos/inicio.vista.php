@@ -32,7 +32,7 @@ $Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
 <div class="content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-12 col-sm-6 col-md-3">
+      <div class="col-6 col-sm-6 col-md-3">
         <div class="info-box">
           <span class="info-box-icon bg-info elevation-1"><i class="fas fa-user-friends"></i></span>
           <div class="info-box-content">
@@ -47,7 +47,7 @@ $Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
         <!-- /.info-box -->
       </div>
       <!-- /.col -->
-      <div class="col-12 col-sm-6 col-md-3">
+      <div class="col-6 col-sm-6 col-md-3">
         <div class="info-box mb-3">
           <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-road"></i></span>
 
@@ -64,7 +64,7 @@ $Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
       <!-- fix for small devices only -->
       <div class="clearfix hidden-md-up"></div>
 
-      <div class="col-12 col-sm-6 col-md-3">
+      <div class="col-6 col-sm-6 col-md-3">
         <div class="info-box mb-3">
           <span class="info-box-icon bg-success elevation-1"><i class="fas fa-dollar-sign"></i></span>
 
@@ -77,7 +77,7 @@ $Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
         <!-- /.info-box -->
       </div>
       <!-- /.col -->
-      <div class="col-12 col-sm-6 col-md-3">
+      <div class="col-6 col-sm-6 col-md-3">
         <div class="info-box mb-3">
           <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
 
