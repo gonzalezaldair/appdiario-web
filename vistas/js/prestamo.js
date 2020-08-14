@@ -50,7 +50,7 @@ $.ajax({
 $("#btnmodalnuevoprestamo").on('click', function(event) {
 	event.preventDefault();
 	/* Act on the event */
-
+	$("#errorPrestamos").html();
 	$("#prestamoId").val("");
 	$("#prestamoFormaPago").val(1);
 	$("#prestamoCliente").val("");
@@ -97,61 +97,79 @@ let tablaPrestamos = $('#tablaPrestamos').DataTable( {
 $("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo', function(event) {
 	event.preventDefault();
 	/* Act on the event */
+	$("#errorPrestamos").html("");
+	let mensajesError = [];
 	const pre_Id = ($("#prestamoId").val() != "") ? $("#prestamoId").val() : 0;
 	const pre_Cliente = $("#prestamoCliente").val();
 	const pre_FormaPago = $("#prestamoFormaPago").val();
 	const pre_Interes = $("#prestamoInteres").val();
+	let expr = /^[0-9]+$/;
+	if (pre_Interes === "" && !expr.test(pre_Interes)) {
+		mensajesError.push('Error Interes: Revisar Campo debe contener un caracter no permitido o esta vacio');
+	}
 	const pre_MontoPrestado = $("#prestamoMontoPrestado").attr('MontoReal');
+	expr = /^[0-9]+$/;
+	if (pre_MontoPrestado === "" && !expr.test(pre_MontoPrestado)) {
+		mensajesError.push('Error MontoPrestado: Revisar Campo debe contener un caracter no permitido o esta vacio');
+	}
 	const pre_Cuotas = $("#prestamoCuotas").val();
+	expr = /^[0-9]+$/;
+	if (pre_Cuotas === "" && !expr.test(pre_Cuotas)) {
+		mensajesError.push('Error Cuotas: Revisar Campo debe contener un caracter no permitido o esta vacio');
+	}
 	const pre_Observaciones = $("#prestamoObservaciones").val();
-	let datos = new FormData();
-	datos.append("pre_Id", pre_Id);
-	datos.append("pre_CLIENTE", pre_Cliente);
-	datos.append("pre_FormaPago", pre_FormaPago);
-	datos.append("pre_Interes", pre_Interes);
-	//datos.append("pre_MontoInteres", 100000);
-	datos.append("pre_MontoPrestado", pre_MontoPrestado);
-	datos.append("pre_Cuotas", pre_Cuotas);
-	datos.append("pre_Observaciones", pre_Observaciones);
-	datos.append("pre_USUARIO", user_Id);
-	datos.append("acc", "add");
-	$.ajax({
-			url: "ajax/prestamos.ajax.php",
-			method: "POST",
-			data: datos,
-			cache: false,
-			contentType: false,
-			processData: false,
-			dataType: "json",
-		})
-		.done(function(respuesta) {
-			if (respuesta.mensaje === 'ok') {
-				Swal.fire({
-					title: 'Guardar Datos',
-					text: "Datos Guardados Correctamente.",
-					type: 'success',
-					confirmButtonColor: '#3085d6',
-					confirmButtonText: '! Cerrar ¡'
-				}).then((result) => {
-					if (result.value) {
-						tablaPrestamos.ajax.reload();
-					}
-				})
-				$("#modal-nuevo-prestamo").modal("hide");
-			} else {
-				Swal.fire({
-					title: 'Advertencia',
-					text: "Error: " + respuesta.codigo,
-					type: 'warning',
-					confirmButtonColor: '#3085d6',
-					confirmButtonText: '! Cerrar ¡'
-				});
-			}
-		})
-		.fail(function(respuesta) {
-			console.log("respuesta", respuesta.responseText);
-			console.log("error");
-		});
+	if (mensajesError.length == 0) {
+		let datos = new FormData();
+		datos.append("pre_Id", pre_Id);
+		datos.append("pre_CLIENTE", pre_Cliente);
+		datos.append("pre_FormaPago", pre_FormaPago);
+		datos.append("pre_Interes", pre_Interes);
+		//datos.append("pre_MontoInteres", 100000);
+		datos.append("pre_MontoPrestado", pre_MontoPrestado);
+		datos.append("pre_Cuotas", pre_Cuotas);
+		datos.append("pre_Observaciones", pre_Observaciones);
+		datos.append("pre_USUARIO", user_Id);
+		datos.append("acc", "add");
+		$.ajax({
+				url: "ajax/prestamos.ajax.php",
+				method: "POST",
+				data: datos,
+				cache: false,
+				contentType: false,
+				processData: false,
+				dataType: "json",
+			})
+			.done(function(respuesta) {
+				if (respuesta.mensaje == 'ok') {
+					Swal.fire({
+						title: 'Guardar Datos',
+						text: "Datos Guardados Correctamente.",
+						type: 'success',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: '! Cerrar ¡'
+					}).then((result) => {
+						if (result.value) {
+							tablaPrestamos.ajax.reload();
+						}
+					})
+					$("#modal-nuevo-prestamo").modal("hide");
+				} else {
+					Swal.fire({
+						title: 'Advertencia',
+						text: "Error: " + respuesta.codigo,
+						type: 'warning',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: '! Cerrar ¡'
+					});
+				}
+			})
+			.fail(function(respuesta) {
+				console.log("respuesta", respuesta.responseText);
+				console.log("error");
+			});
+	} else {
+		$("#errorPrestamos").html(mensajesError.join('<br>'));
+	}
 });
 
 
@@ -173,6 +191,7 @@ $("input.validarNumero").on("input", function() {
 
 $('#tablaPrestamos').on('click', '.btnupdprestamo', function(event) {
 	event.preventDefault();
+	$("#errorPrestamos").html("");
 	const prestamoid = $(this).attr('prestamoid');
 	let datos = new FormData();
 	datos.append("prestamoid", prestamoid);
@@ -190,7 +209,7 @@ $('#tablaPrestamos').on('click', '.btnupdprestamo', function(event) {
 			$("#prestamoId").val(respuesta["pre_Id"]);
 			$("#prestamoCliente").val(respuesta["pre_CLIENTE"]);
 			$("#prestamoFormaPago").val(respuesta["pre_FormaPago"]);
-			$("#prestamoInteres").val(respuesta["pre_Interes"]+" %");
+			$("#prestamoInteres").val(respuesta["pre_Interes"]);
 			$("#prestamoInteres").attr('readonly', true);
 			$("#prestamoMontoPrestado").attr('readonly', true);
 			$("#prestamoCliente").attr('readonly', true);
@@ -240,48 +259,60 @@ $('#modal-nuevo-abono').on('click', '.btn-guardar-abono', function(event) {
 	const abo_Id = ($("#abo_Id").val() != "") ? $("#abo_Id").val() : 0;
 	const abo_PRESTAMO = $("#prestamoabonoid").val();
 	const abo_Monto = $("#prestamosabonoSuma").attr('AbonoReal');
-	let datos = new FormData();
-	datos.append("abo_Id", abo_Id);
-	datos.append("abo_PRESTAMO", abo_PRESTAMO);
-	datos.append("abo_Monto", abo_Monto);
-	datos.append("acc", "add");
-	$.ajax({
-			url: "ajax/abonos.ajax.php",
-			method: "POST",
-			data: datos,
-			cache: false,
-			contentType: false,
-			processData: false,
-			dataType: "json",
-		})
-		.done(function(respuesta) {
-			if (respuesta.mensaje === 'ok') {
-				Swal.fire({
-					title: 'Guardar Abono',
-					text: "Datos Guardados Correctamente.",
-					type: 'success',
-					confirmButtonColor: '#3085d6',
-					confirmButtonText: '! Cerrar ¡'
-				}).then((result) => {
-					if (result.value) {
-						$("#modal-nuevo-abono").modal("hide");
-					}
-				})
+	let expr = /^[0-9]+$/;
+	if (abo_Monto !== "" && expr.test(abo_Monto)) {
+		let datos = new FormData();
+		datos.append("abo_Id", abo_Id);
+		datos.append("abo_PRESTAMO", abo_PRESTAMO);
+		datos.append("abo_Monto", abo_Monto);
+		datos.append("acc", "add");
+		$.ajax({
+				url: "ajax/abonos.ajax.php",
+				method: "POST",
+				data: datos,
+				cache: false,
+				contentType: false,
+				processData: false,
+				dataType: "json",
+			})
+			.done(function(respuesta) {
+				if (respuesta.mensaje === 'ok') {
+					Swal.fire({
+						title: 'Guardar Abono',
+						text: "Datos Guardados Correctamente.",
+						type: 'success',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: '! Cerrar ¡'
+					}).then((result) => {
+						if (result.value) {
+							tablaPrestamos.ajax.reload();
+							$("#modal-nuevo-abono").modal("hide");
+						}
+					})
 
-			} else {
-				Swal.fire({
-					title: 'Advertencia',
-					text: "Error: " + respuesta.codigo,
-					type: 'warning',
-					confirmButtonColor: '#3085d6',
-					confirmButtonText: '! Cerrar ¡'
-				});
-			}
-		})
-		.fail(function(respuesta) {
-			console.info("respuesta", respuesta.responseText);
-			console.log("error");
+				} else {
+					Swal.fire({
+						title: 'Advertencia',
+						text: "Error: " + respuesta.codigo,
+						type: 'warning',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: '! Cerrar ¡'
+					});
+				}
+			})
+			.fail(function(respuesta) {
+				console.info("respuesta", respuesta.responseText);
+				console.log("error");
+			});
+	} else {
+		Swal.fire({
+			title: 'Advertencia',
+			text: "Error: Campo Monto Abono esta vacio o contiene caracteres no permitidos",
+			type: 'warning',
+			confirmButtonColor: '#3085d6',
+			confirmButtonText: '! Cerrar ¡'
 		});
+	}
 
 });
 
@@ -311,7 +342,7 @@ $("#prestamosabonoSuma").on('change', function(event) {
 
 	const abonomax = $("#prestamosabonoSuma").attr('max');
 
-	if ($("#prestamosabonoSuma").val() > abonomax) {
+	if ($("#prestamosabonoSuma").attr('AbonoReal') > abonomax) {
 		Swal.fire({
 			title: 'Abono Superior Al Saldo',
 			text: "El abono supera al Saldo Pendiente",

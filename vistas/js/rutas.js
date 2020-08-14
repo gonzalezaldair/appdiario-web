@@ -109,55 +109,65 @@ let tablaRuta = $('#tablarutas').DataTable( {
 $('#modal-nueva-ruta').on('click', '.btn-guardar-ruta', function(event) {
 	event.preventDefault();
 	//const rutid = $("#rutaId").val();
-	const rutid = ($("#rutaId").val() != "") ? $("#rutaId").val() : 0 ;
+	const rutid = ($("#rutaId").val() != "") ? $("#rutaId").val() : 0;
 	const rutcodigo = $("#rutaCodigo").val();
 	const rutnombre = $("#rutaNombre").val();
 	const rutcobro = $("#rutaCobro").val();
 	const rutactivo = $("#rutaActivo").val();
-	let datos = new FormData();
-	datos.append("rut_Id", rutid);
-	datos.append("rut_Codigo", rutcodigo);
-	datos.append("rut_Nombre", rutnombre);
-	datos.append("rut_Cobro", rutcobro);
-	datos.append("rut_Activo", rutactivo);
-	datos.append("acc", "add");
-	$.ajax({
-			url: "ajax/rutas.ajax.php",
-			method: "POST",
-			data: datos,
-			cache: false,
-			contentType: false,
-			processData: false,
-			dataType: "json",
-		})
-		.done(function(respuesta) {
-			if (respuesta.mensaje === 'ok') {
-				Swal.fire({
-					title: 'Guardar Datos',
-					text: "Datos Guardados Correctamente.",
-					type: 'success',
-					confirmButtonColor: '#3085d6',
-					confirmButtonText: '! Cerrar ¡'
-				}).then((result) => {
-					if (result.value) {
-						tablaRuta.ajax.reload();
-					}
-				})
-				$("#modal-nueva-ruta").modal("hide");
-			} else {
-				Swal.fire({
-					title: 'Advertencia',
-					text: "Error: " + respuesta.codigo,
-					type: 'warning',
-					confirmButtonColor: '#3085d6',
-					confirmButtonText: '! Cerrar ¡'
-				});
-			}
-		})
-		.fail(function(respuesta) {
-			console.log("error ", respuesta);
+	const expr = /^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/;
+	if (rutnombre != "" && expr.test(rutnombre)) {
+		let datos = new FormData();
+		datos.append("rut_Id", rutid);
+		datos.append("rut_Codigo", rutcodigo);
+		datos.append("rut_Nombre", rutnombre);
+		datos.append("rut_Cobro", rutcobro);
+		datos.append("rut_Activo", rutactivo);
+		datos.append("acc", "add");
+		$.ajax({
+				url: "ajax/rutas.ajax.php",
+				method: "POST",
+				data: datos,
+				cache: false,
+				contentType: false,
+				processData: false,
+				dataType: "json",
+			})
+			.done(function(respuesta) {
+				if (respuesta.mensaje === 'ok') {
+					Swal.fire({
+						title: 'Guardar Datos',
+						text: "Datos Guardados Correctamente.",
+						type: 'success',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: '! Cerrar ¡'
+					}).then((result) => {
+						if (result.value) {
+							tablaRuta.ajax.reload();
+						}
+					})
+					$("#modal-nueva-ruta").modal("hide");
+				} else {
+					Swal.fire({
+						title: 'Advertencia',
+						text: "Error: " + respuesta.codigo,
+						type: 'warning',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: '! Cerrar ¡'
+					});
+				}
+			})
+			.fail(function(respuesta) {
+				console.log("error ", respuesta);
+			});
+	} else {
+		Swal.fire({
+			title: 'Advertencia',
+			text: "Error: Campo Nombre esta vacio o tiene caracteres no permitidos",
+			type: 'warning',
+			confirmButtonColor: '#3085d6',
+			confirmButtonText: '! Cerrar ¡'
 		});
-
+	}
 });
 
 

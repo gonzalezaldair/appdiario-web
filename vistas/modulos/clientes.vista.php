@@ -186,7 +186,7 @@
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-        <button type="button" class="btn btn-primary btn-guardar-prestamo">Guardar</button>
+        <button type="button" class="btn btn-primary btn-guardar-prestamo-cliente">Guardar</button>
       </div>
     </div>
     <!-- /.modal-content -->

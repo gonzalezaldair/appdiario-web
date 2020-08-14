@@ -112,54 +112,64 @@ $('#tablaCobros').on('click', '.btnupdcobro', function(event) {
 
 $('#modal-nuevo-cobro').on('click', '.btn-guardar-cobro', function(event) {
 	event.preventDefault();
-	const cobid = $("#cobroId").val();
+	const cobid = ($("#cobroId").val() != "") ? $("#cobroId").val() : 0;
 	const cobcodigo = $("#cobroCodigo").val();
 	const cobnombre = $("#cobroNombre").val();
 	const cobactivo = $("#cobroActivo").val();
-	let datos = new FormData();
-	datos.append("cob_Id", cobid);
-	datos.append("cob_Codigo", cobcodigo);
-	datos.append("cob_Nombre", cobnombre);
-	datos.append("cob_Activo", cobactivo);
-	datos.append("acc", "add");
-	$.ajax({
-			url: "ajax/cobros.ajax.php",
-			method: "POST",
-			data: datos,
-			cache: false,
-			contentType: false,
-			processData: false,
-			dataType: "json",
-		})
-		.done(function(respuesta) {
+	var expr = /^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/;
+	if (cobnombre != "" && expr.test(cobnombre) ) {
+		let datos = new FormData();
+		datos.append("cob_Id", cobid);
+		datos.append("cob_Codigo", cobcodigo);
+		datos.append("cob_Nombre", cobnombre);
+		datos.append("cob_Activo", cobactivo);
+		datos.append("acc", "add");
+		$.ajax({
+				url: "ajax/cobros.ajax.php",
+				method: "POST",
+				data: datos,
+				cache: false,
+				contentType: false,
+				processData: false,
+				dataType: "json",
+			})
+			.done(function(respuesta) {
 
-			if (respuesta.mensaje === 'ok') {
-				Swal.fire({
-					title: 'Guardar Datos',
-					text: "Datos Guardados Correctamente.",
-					type: 'success',
-					confirmButtonColor: '#3085d6',
-					confirmButtonText: '! Cerrar ¡'
-				}).then((result) => {
-					if (result.value) {
-						tablaCobros.ajax.reload();
-					}
-				})
-				$("#modal-nuevo-cobro").modal("hide");
-			} else {
-				Swal.fire({
-					title: 'Advertencia',
-					text: "Error: " + respuesta.codigo,
-					type: 'warning',
-					confirmButtonColor: '#3085d6',
-					confirmButtonText: '! Cerrar ¡'
-				});
-			}
-		})
-		.fail(function(respuesta) {
-			console.log("error ", respuesta);
+				if (respuesta.mensaje === 'ok') {
+					Swal.fire({
+						title: 'Guardar Datos',
+						text: "Datos Guardados Correctamente.",
+						type: 'success',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: '! Cerrar ¡'
+					}).then((result) => {
+						if (result.value) {
+							tablaCobros.ajax.reload();
+						}
+					})
+					$("#modal-nuevo-cobro").modal("hide");
+				} else {
+					Swal.fire({
+						title: 'Advertencia',
+						text: "Error: " + respuesta.codigo,
+						type: 'warning',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: '! Cerrar ¡'
+					});
+				}
+			})
+			.fail(function(respuesta) {
+				console.log("error ", respuesta);
+			});
+	} else {
+		Swal.fire({
+			title: 'Advertencia',
+			text: "Error: Campo Nombre esta vacio o tiene caracteres no permitidos",
+			type: 'warning',
+			confirmButtonColor: '#3085d6',
+			confirmButtonText: '! Cerrar ¡'
 		});
-
+	}
 });
 
 
