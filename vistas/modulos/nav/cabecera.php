@@ -8,7 +8,7 @@
   </ul>
 
   <!-- SEARCH FORM -->
-  <form class="form-inline ml-3">
+  <form class="form-inline ml-3 d-none d-sm-block">
     <div class="input-group input-group-sm">
       <input id="buscarmenu" class="form-control form-control-navbar" type="text" placeholder="Buscar Modulo" aria-label="Search">
       <!--<div class="input-group-append">

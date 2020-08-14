@@ -94,6 +94,8 @@ class AbonosModelo{
 				'mensaje' => "ok"
 			);
 
+			return $arrayName;
+
 		} catch (PDOException $e){
 
 			$err = $stmt->errorInfo();
