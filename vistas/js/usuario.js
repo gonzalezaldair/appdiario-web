@@ -369,7 +369,7 @@ $("#modal-nuevo-usuario").on('click', '.btn-guardar-usuario', function(event) {
 	event.preventDefault();
 	/* Act on the event */
 
-	$("#errorUsuario").html("error usuario");
+	$("#errorUsuario").html("");
 	let mensajesError = [];
 
 	const user_Cedula = $("#usuarioCedula").val();
@@ -379,7 +379,7 @@ $("#modal-nuevo-usuario").on('click', '.btn-guardar-usuario', function(event) {
 	}
 	const user_Id = ($("#usuarioId").val() != "") ? $("#usuarioId").val() : 0;
 	const user_Usuario = $("#usuarioUsuario").val();
-	const user_Password = $("#usuarioPassword").val();
+	console.log("user_Usuario", user_Usuario);
 	expr = /^[a-zA-Z0-9ñÑ]+$/;
 	if (user_Password === "" && !expr.test(user_Password)) {
 		mensajesError.push('Error Contraseña: Revisar Campo debe contener un caracter no permitido o esta vacio');

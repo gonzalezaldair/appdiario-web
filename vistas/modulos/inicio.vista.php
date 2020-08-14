@@ -8,7 +8,6 @@ $prestamos = PrestamosControlador::ctrMostrarPrestamos($item, $valor);
 $PrestamosTablaInicio = PrestamosControlador::ctrdatatableprestamos();
 $usuario = UsuariosControlador::ctrMostrarUsuarios($item, $valor);
 $Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
-//echo '<pre>'; print_r($PrestamosTablaInicio); echo '</pre>';
  ?>
 <!-- Content Header (Page header) -->
 <div class="content-header">
@@ -124,15 +123,17 @@ $Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
                 </thead>
                 <tbody>
                   <?php
-                  for ($i=0; $i < 7; $i++) {
-                    echo '<tr>
-                            <td><a href="#">'.$PrestamosTablaInicio[$i]["pre_Id"].'</a></td>
-                            <td>'.$PrestamosTablaInicio[$i]["cli_Nombre"].'</td>
-                            <td>$ '.number_format($PrestamosTablaInicio[$i]["pre_MontoPrestado"], 2, ",",".").'</td>
-                            <td>'.$PrestamosTablaInicio[$i]["usu_Nombre"].'</td>
-                          </tr>';
+                    if (is_array($PrestamosTablaInicio) && count($PrestamosTablaInicio) > 0) {
+                      $numrow = (count($PrestamosTablaInicio) > 7) ? 7 :  count($PrestamosTablaInicio);
+                     for ($i=0; $i < $numrow; $i++) {
+                      echo '<tr>
+                      <td><a href="#">'.$PrestamosTablaInicio[$i]["pre_Id"].'</a></td>
+                      <td>'.$PrestamosTablaInicio[$i]["cli_Nombre"].'</td>
+                      <td>$ '.number_format($PrestamosTablaInicio[$i]["pre_MontoPrestado"], 2, ",",".").'</td>
+                      <td>'.$PrestamosTablaInicio[$i]["usu_Nombre"].'</td>
+                      </tr>';
+                    }
                   }
-
                   ?>
                 </tbody>
               </table>
@@ -167,7 +168,9 @@ $Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
           <div class="card-body p-0">
             <ul class="products-list product-list-in-card pl-2 pr-2">
               <?php
-                  for ($i=0; $i < 6; $i++) {
+                  if (is_array($Abonos) && count($Abonos) > 0) {
+                    $numrow = (count($Abonos) > 6) ? 6 :  count($Abonos);
+                   for ($i=0; $i < $numrow; $i++) {
                     $monto =number_format($Abonos[$i]["abo_Monto"], 2, ",",".");
                     echo '<li class="item">
                             <div class="product-img">
@@ -182,6 +185,8 @@ $Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
                             </div>
                           </li>';
                   }
+                }
+
 
                   ?>
                   <!--<li class="item">
