@@ -42,32 +42,39 @@ class CobrosControlador{
 		$fecha = date('Y-m-d');
 		$tabla = "cobro";
 		if (isset($_POST)) {
-
-			if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["cob_Nombre"])) {
-
-				$cob_Id = intval($_POST["cob_Id"]);
-				$cob_Codigo = trim($_POST["cob_Codigo"]);
-				$cob_Nombre = trim($_POST["cob_Nombre"]);
-				$cob_Activo = intval($_POST["cob_Activo"]);
-				$cob_Fecha = trim($fecha);
-
-				$datosControlador = array(
-					'cob_Id' => $_POST["cob_Id"],
-					'cob_Codigo' => $_POST["cob_Codigo"],
-					'cob_Nombre' => $_POST["cob_Nombre"],
-					'cob_Activo' => $_POST["cob_Activo"],
-					'cob_Fecha' => $cob_Fecha
-				);
-
-				if ($cob_Id > 0) {
-					return $respuestaModelo = CobrosModelo::mdlActualizarCobros($tabla,$datosControlador);
-				}else{
-					return $respuestaModelo = CobrosModelo::mdlguardarCobros($tabla,$datosControlador);
-				}
-
-			}else
+			session_start();
+			if (in_array(9, $_SESSION["permisos"]) || in_array(11, $_SESSION["permisos"]))
 			{
-				return $arrayName = array('codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio');
+				if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["cob_Nombre"])) {
+
+					$cob_Id = intval($_POST["cob_Id"]);
+					$cob_Codigo = trim($_POST["cob_Codigo"]);
+					$cob_Nombre = trim($_POST["cob_Nombre"]);
+					$cob_Activo = intval($_POST["cob_Activo"]);
+					$cob_Fecha = trim($fecha);
+
+					$datosControlador = array(
+						'cob_Id' => $_POST["cob_Id"],
+						'cob_Codigo' => $_POST["cob_Codigo"],
+						'cob_Nombre' => $_POST["cob_Nombre"],
+						'cob_Activo' => $_POST["cob_Activo"],
+						'cob_Fecha' => $cob_Fecha
+					);
+
+					if ($cob_Id > 0) {
+						return $respuestaModelo = CobrosModelo::mdlActualizarCobros($tabla,$datosControlador);
+					}else{
+						return $respuestaModelo = CobrosModelo::mdlguardarCobros($tabla,$datosControlador);
+					}
+
+				}else
+				{
+					return $arrayName = array('codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio');
+				}
+			}else{
+				$arrayName = array('codigo' => 'No tienes permisos para realizar esta accion');
+
+				return $arrayName;
 			}
 
 		}
@@ -83,8 +90,16 @@ class CobrosControlador{
 	{
 		$tabla = "cobro";
 		if (isset($_POST["cobid"])) {
-			$respuestaModelo = CobrosModelo::mdlEliminarCobros($tabla,"cob_Id", $_POST["cobid"]);
-			return $respuestaModelo;
+			session_start();
+			if (in_array(12, $_SESSION["permisos"]))
+			{
+				$respuestaModelo = CobrosModelo::mdlEliminarCobros($tabla,"cob_Id", $_POST["cobid"]);
+				return $respuestaModelo;
+			}else{
+				$arrayName = array('codigo' => 'No tienes permisos para realizar esta accion');
+
+				return $arrayName;
+			}
 		}
 	}
 

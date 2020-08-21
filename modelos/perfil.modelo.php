@@ -234,4 +234,81 @@ class PerfilModelo{
 
 		$stmt = null;
 	}
+
+	/**
+	 * ELIMINAR PERMISOS
+	 */
+	public static function mdlEliminarPermisosPerfil($tabla,$perfil)
+	{
+
+		try {
+
+			$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE po_PERFIL = :po_PERFIL");
+			$stmt -> bindParam(":po_PERFIL", $perfil);
+
+			$stmt->execute();
+
+			$stmt = null;
+
+			$arrayName = array(
+				'mensaje' => "ok"
+			);
+
+			return $arrayName;
+
+		} catch (PDOException $e){
+
+			$err = $stmt->errorInfo();
+			$arrayName = array(
+				'mensaje' => $e->getMessage(),
+				'codigo' => $err[1],
+				'sqlstate' => $e->getCode(),
+				'script' => $e->getFile(),
+				'linea' => $e->getLine(),
+				'excepcionprevia' => $e->getPrevious(),
+				'cadena' => $e->__toString(),
+				'errorinfo' => $err[2]
+			);
+
+			return $arrayName;
+		}
+
+		$stmt = null;
+	}
+
+	public static function mdlGuardarNuevosPermisos($query)
+	{
+		try {
+
+			$stmt = Conexion::conectar()->prepare($query);
+
+			$stmt->execute();
+
+			$stmt = null;
+
+			$arrayName = array(
+				'mensaje' => "ok"
+			);
+
+			return $arrayName;
+
+		} catch (PDOException $e){
+
+			$err = $stmt->errorInfo();
+			$arrayName = array(
+				'mensaje' => $e->getMessage(),
+				'codigo' => $err[1],
+				'sqlstate' => $e->getCode(),
+				'script' => $e->getFile(),
+				'linea' => $e->getLine(),
+				'excepcionprevia' => $e->getPrevious(),
+				'cadena' => $e->__toString(),
+				'errorinfo' => $err[2]
+			);
+
+			return $arrayName;
+		}
+
+		$stmt = null;
+	}
 }

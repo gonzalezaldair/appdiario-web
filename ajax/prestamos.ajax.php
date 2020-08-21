@@ -9,8 +9,8 @@ class MostrarPrestamos{
 
 	public function TablaPrestamos()
 	{
-
-    	$Prestamos = PrestamosControlador::ctrdatatableprestamos();
+		session_start();
+    	$Prestamos = PrestamosControlador::ctrdatatableprestamos($_SESSION["usuario_Id"]);
     	//var_dump($Prestamos);
 
     	if (count($Prestamos) == 0) {
@@ -28,7 +28,7 @@ class MostrarPrestamos{
 
 			$saldo = $Prestamos[$i]["Saldo"];
 			if ($saldo > 0) {
-				$botones = "<div class='btn-group' role='group' aria-label='Basic example'> <button type='button' class='btn btn-success btnupdprestamo' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-warning btnabono' saldo='".$saldo."' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-coins'></i></i></button> <button type='button' class='btn btn-danger btneliminarprestamo' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-trash'></i></button> </div>";
+				$botones = "<div class='btn-group' role='group' aria-label='Basic example'> <button type='button' class='btn btn-success btnupdprestamo' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-warning btnabono' saldo='".$saldo."' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-coins'></i></i></button> </div>";
 			}else{
 				$botones = "";
 			}

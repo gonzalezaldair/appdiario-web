@@ -164,7 +164,7 @@
           </thead>
           <tbody id="bodytabpermisos">
             <?php
-              /*$modulos = UsuariosControlador::ctrModulosPermisos();
+              $modulos = UsuariosControlador::ctrModulosPermisos();
               $i=1;
               foreach ($modulos as $key => $value) {
                 echo '<tr>
@@ -175,7 +175,7 @@
                         <td><input id="'.$value["mod_Nombre"].'_Borrar" type="checkbox" name="Borrar_'.$i.'" value="'.$value["Borrar"].'"></td>
                       </tr>';
                       $i++;
-              }*/
+              }
              ?>
           </tbody>
         </table>

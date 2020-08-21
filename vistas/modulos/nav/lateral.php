@@ -1,3 +1,8 @@
+<?php
+
+//$modulos = ModulosControlador::ctrMostrarModulos(null, null, "ASC");
+$modulos = ModulosControlador::ctrMostrarModulosPersonalizados($_SESSION["usuario_PERFIL"]);
+?>
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-light-primary elevation-4">
   <!-- Brand Logo -->
@@ -33,101 +38,20 @@
             </p>
           </a>
         </li>
-        <!--<li class="nav-item has-treeview">
-          <a href="#" class="nav-link">
-            <i class="fas fa-coins"></i>
-            <p>
-              Prestamos
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="prestamos" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Prestamos</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="abonos" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Abono</p>
-              </a>
-            </li>
-          </ul>
-        </li>-->
-        <li class="nav-item">
-          <a href="abonos" class="nav-link">
-            <i class="nav-icon fas fa-coins"></i>
-            <p>
-              Abonos
-              <!--<span class="right badge badge-danger">New</span>-->
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="prestamos" class="nav-link">
-            <i class="nav-icon fas fa-dollar-sign"></i>
-            <p>
-              Prestamos
-              <!--<span class="right badge badge-danger">New</span>-->
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="forma-pago" class="nav-link">
-            <i class="nav-icon fas fa-money-check-alt"></i>
-            <p>
-              Forma de Pago
-              <!--<span class="right badge badge-danger">New</span>-->
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="ruta" class="nav-link">
-            <i class="nav-icon fas fa-map-marked-alt"></i>
-            <p>
-              Ruta
-              <!--<span class="right badge badge-danger">New</span>-->
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="clientes" class="nav-link">
-            <i class="nav-icon fas fa-user-friends"></i>
-            <p>
-              Clientes
-              <!--<span class="right badge badge-danger">New</span>-->
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="cobro" class="nav-link">
-            <i class="nav-icon fas fa-layer-group"></i>
-            <p>
-              Cobro
-              <!--<span class="right badge badge-danger">New</span>-->
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="perfil" class="nav-link">
-            <i class="nav-icon fas fa-clipboard-list"></i>
-            <p>
-              Perfil
-              <!--<span class="right badge badge-danger">New</span>-->
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="usuarios" class="nav-link">
-            <i class=" nav-icon fas fa-user"></i>
-            <p>
-              Usuario
-              <!--<span class="right badge badge-danger">New</span>-->
-            </p>
-          </a>
-        </li>
+        <?php
+
+            for ($i=0; $i < count($modulos); $i++) {
+              echo '<li class="nav-item">
+                    <a href="'.$modulos[$i]["mod_Url"].'" class="nav-link">
+                      <i class="nav-icon '.$modulos[$i]["mod_Icon"].'"></i>
+                      <p>
+                        '.$modulos[$i]["mod_Nombre"].'
+                        <!--<span class="right badge badge-danger">New</span>-->
+                      </p>
+                    </a>
+                  </li>';
+            }
+         ?>
       </ul>
     </nav>
     <!-- /.sidebar-menu -->

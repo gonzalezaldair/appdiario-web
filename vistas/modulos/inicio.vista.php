@@ -5,7 +5,7 @@ $valor = null;
 $Rutas = RutasControlador::ctrMostrarRutas($item, $valor);
 $clientes = ClientesControlador::ctrMostrarClientes($item, $valor);
 $prestamos = PrestamosControlador::ctrMostrarPrestamos($item, $valor);
-$PrestamosTablaInicio = PrestamosControlador::ctrdatatableprestamos();
+$PrestamosTablaInicio = PrestamosControlador::ctrdatatableprestamos($_SESSION["usuario_Id"]);
 $usuario = UsuariosControlador::ctrMostrarUsuarios($item, $valor);
 $Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
  ?>

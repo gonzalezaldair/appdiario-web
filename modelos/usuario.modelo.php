@@ -115,7 +115,7 @@ class UsuariosModelo{
 
 		try {
 
-			$stmt = Conexion::conectar()->prepare("select t1.mod_Nombre, (select t2.rol_Id from roles t2 WHERE t2.rol_Nombre = 'Crear' AND t2.rol_MODULO = t1.mod_Id) as 'Crear', (select t2.rol_Id from roles t2 WHERE t2.rol_Nombre = 'Actualizar' AND t2.rol_MODULO = t1.mod_Id) as 'Actualizar', (select t2.rol_Id from roles t2 WHERE t2.rol_Nombre = 'Leer' AND t2.rol_MODULO = t1.mod_Id) as 'Leer', (select t2.rol_Id from roles t2 WHERE t2.rol_Nombre = 'Borrar' AND t2.rol_MODULO = t1.mod_Id) as 'Borrar'FROM modulos t1");
+			$stmt = Conexion::conectar()->prepare("SELECT t.mod_Nombre, (SELECT operaciones.ope_Id FROM operaciones WHERE operaciones.ope_MODULO = t.mod_Id AND operaciones.ope_Nombre = 'CREAR') AS Crear, (SELECT operaciones.ope_Id FROM operaciones WHERE operaciones.ope_MODULO = t.mod_Id AND operaciones.ope_Nombre = 'LEER') AS Leer, (SELECT operaciones.ope_Id FROM operaciones WHERE operaciones.ope_MODULO = t.mod_Id AND operaciones.ope_Nombre = 'ACTUALIZAR') AS Actualizar, (SELECT operaciones.ope_Id FROM operaciones WHERE operaciones.ope_MODULO = t.mod_Id AND operaciones.ope_Nombre = 'BORRAR') AS Eliminar FROM modulos t");
 
 			$stmt -> execute();
 
