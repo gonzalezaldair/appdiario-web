@@ -28,6 +28,13 @@ class ingresoControlador
 						$_SESSION["usuario_Login"] = $respuesta["usu_Login"];
 						$_SESSION["usuario_Id"] = $respuesta["usu_Id"];
 						$_SESSION["usuario_Nombre"] = $respuesta["usu_Nombre"];
+						$_SESSION["usuario_PERFIL"] = $respuesta["usu_Perfil"];
+						$_SESSION["permisos"][] = array();
+						$permisos = ModulosControlador::ctrMostrarPermisos($respuesta["usu_Perfil"]);
+						for ($i=0; $i < count($permisos); $i++) {
+							$_SESSION["permisos"][$i] = $permisos[$i]["po_OPERACION"];
+						}
+						//$_SESSION["modulos_permisos"] = ModulosControlador::ctrMostrarModulosPersonalizados($respuesta["usu_Id"]);
 						echo '<script> window.location = "inicio"; </script>';
 
 					}else{

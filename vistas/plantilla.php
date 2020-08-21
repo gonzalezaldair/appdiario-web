@@ -25,6 +25,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="vistas/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
   <!-- Toastr -->
   <link rel="stylesheet" href="vistas/plugins/toastr/toastr.min.css">
+  <!-- daterange picker -->
+  <link rel="stylesheet" href="vistas/plugins/daterangepicker/daterangepicker.css">
   <!-- Estilos Personalizados -->
   <link rel="stylesheet" href="vistas/dist/css/masestilos.css?v=<?php echo filemtime("vistas/dist/css/masestilos.css"); ?>">
   <!-- Google Font: Source Sans Pro -->
@@ -52,7 +54,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $_GET["action"] == "ruta" ||
             $_GET["action"] == "salir" ||
             $_GET["action"] == "perfil" ||
-            $_GET["action"] == "usuarios"
+            $_GET["action"] == "usuarios" ||
+            $_GET["action"] == "reportes"
 
             ) {
           include "modulos/".$_GET["action"].".vista.php";
@@ -97,6 +100,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="vistas/plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- Toastr -->
 <script src="vistas/plugins/toastr/toastr.min.js"></script>
+<!-- InputMask -->
+<script src="vistas/plugins/moment/moment.min.js"></script>
+<script src="vistas/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+<!-- date-range-picker -->
+<script src="vistas/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- AdminLTE App -->
 <script src="vistas/dist/js/adminlte.min.js"></script>
 <!-- Jquery Number -->
@@ -116,6 +124,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="vistas/js/usuario.js?v=<?php echo filemtime("vistas/js/usuario.js"); ?>"></script>
 <script src="vistas/js/abonos.js?v=<?php echo filemtime("vistas/js/abonos.js"); ?>"></script>
 <script src="vistas/js/perfil.js?v=<?php echo filemtime("vistas/js/perfil.js"); ?>"></script>
+<script src="vistas/js/reportes.js?v=<?php echo filemtime("vistas/js/reportes.js"); ?>"></script>
 
 </body>
 </html>
