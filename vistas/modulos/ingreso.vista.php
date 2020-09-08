@@ -10,7 +10,7 @@
 
 				<form method="post">
 					<div class="input-group mb-3">
-						<input type="text" name="ingresoUsuario" class="form-control" placeholder="Ingresar Usuario" required>
+						<input type="text" name="ingresoUsuario" class="form-control" placeholder="Ingresar Usuario" required autocomplete="off">
 						<div class="input-group-append">
 							<div class="input-group-text">
 								<span class="fas fa-user"></span>
