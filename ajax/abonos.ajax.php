@@ -3,34 +3,34 @@
 require_once '../modelos/abonos.modelo.php';
 require_once '../controladores/abonos.controlador.php';
 
-class MostrarAbonos{
+class MostrarAbonos
+{
 
 	public function TablaAbonos()
 	{
 
 		$item = null;
-    	$valor = null;
+		$valor = null;
 
-    	$Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
+		$Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
 
-    	if (count($Abonos) == 0) {
+		if (count($Abonos) == 0) {
 
-    		echo '{"data": []}';
+			echo '{"data": []}';
 
-		  	return;
-    	}
+			return;
+		}
 
-    	$datosJson = '{
+		$datosJson = '{
 		  "data": [';
 
-		for($i = 0; $i < count($Abonos); $i++)
-		{
+		for ($i = 0; $i < count($Abonos); $i++) {
 			//$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdabono' aboid='".$Abonos[$i]["abo_Id"]."' aboprestamo='".$Abonos[$i]["abo_PRESTAMO"]."' ><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarabono' aboid='".$Abonos[$i]["abo_Id"]."' aboprestamo='".$Abonos[$i]["abo_PRESTAMO"]."' ><i class='fas fa-trash'></i></button></div>";
-			$monto =number_format($Abonos[$i]["abo_Monto"], 2, ",",".");
-			$datosJson .='[
-			      "'.$Abonos[$i]["abo_PRESTAMO"].'",
-			      "'.$monto.'",
-			      "'.$Abonos[$i]["abo_Fecha"].'"
+			$monto = number_format($Abonos[$i]["abo_Monto"], 2, ",", ".");
+			$datosJson .= '[
+			      "' . $Abonos[$i]["abo_PRESTAMO"] . '",
+			      "' . $monto . '",
+			      "' . $Abonos[$i]["abo_Fecha"] . '"
 			    ],';
 		}
 
@@ -41,25 +41,22 @@ class MostrarAbonos{
 		}';
 
 		echo $datosJson;
-
 	}
 }
 
+$acc = $_POST["acc"] ?? $_GET["acc"] ?? "ver";
 
-if (isset($_POST["acc"])) {
-	$acc = trim($_POST["acc"]);
-}else if (isset($_GET["acc"])) {
-	$acc = trim($_GET["acc"]);
-}else{
-	$acc = "ver";
+if (!isset($_SESSION)) {
+	session_start();
 }
 
+date_default_timezone_set('America/Bogota');
 
 
 switch ($acc) {
 	case 'ver':
 		$ver = new MostrarAbonos();
-		$ver -> TablaAbonos();
+		$ver->TablaAbonos();
 		break;
 	case 'add':
 		$traer = AbonosControlador::ctrGuardarAbonos();

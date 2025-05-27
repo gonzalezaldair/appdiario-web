@@ -7,36 +7,36 @@ require_once '../controladores/perfil.controlador.php';
 require_once '../modelos/modulos.modelo.php';
 require_once '../controladores/modulos.controlador.php';
 
-class MostrarPerfil{
+class MostrarPerfil
+{
 
 	public function TablaPerfil()
 	{
 
 		$item = null;
-    	$valor = null;
+		$valor = null;
 
-    	$Perfil = PerfilControlador::ctrMostrarPerfil($item, $valor);
+		$Perfil = PerfilControlador::ctrMostrarPerfil($item, $valor);
 
-    	if (count($Perfil) == 0) {
+		if (count($Perfil) == 0) {
 
-    		echo '{"data": []}';
+			echo '{"data": []}';
 
-		  	return;
-    	}
+			return;
+		}
 
-    	$datosJson = '{
+		$datosJson = '{
 		  "data": [';
 
-		for($i = 0; $i < count($Perfil); $i++)
-		{
-			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdperfil' perfilid='".$Perfil[$i]["per_Id"]."' perfilcodigo='".$Perfil[$i]["per_Codigo"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-warning btnpermisosperfil' perfilid='".$Perfil[$i]["per_Id"]."' perfilcodigo='".$Perfil[$i]["per_Codigo"]."'><i class='fas fa-user-lock'></i></button><button type='button' class='btn btn-danger btneliminarperfil' perfilid='".$Perfil[$i]["per_Id"]."'><i class='fas fa-trash'></i></button></div>";
-			$activo = ($Perfil[$i]["per_Activo"] == 1) ? "<span class='badge badge-success'>Activo</span>" : "<span class='badge badge-danger'>Inactivo</span>" ;
-			$datosJson .='[
-			      "'.$Perfil[$i]["per_Id"].'",
-			      "'.$Perfil[$i]["per_Codigo"].'",
-			      "'.$Perfil[$i]["per_Nombre"].'",
-			      "'.$activo.'",
-			      "'.$botones.'"
+		for ($i = 0; $i < count($Perfil); $i++) {
+			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdperfil' perfilid='" . $Perfil[$i]["per_Id"] . "' perfilcodigo='" . $Perfil[$i]["per_Codigo"] . "'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-warning btnpermisosperfil' perfilid='" . $Perfil[$i]["per_Id"] . "' perfilcodigo='" . $Perfil[$i]["per_Codigo"] . "'><i class='fas fa-user-lock'></i></button><button type='button' class='btn btn-danger btneliminarperfil' perfilid='" . $Perfil[$i]["per_Id"] . "'><i class='fas fa-trash'></i></button></div>";
+			$activo = ($Perfil[$i]["per_Activo"] == 1) ? "<span class='badge badge-success'>Activo</span>" : "<span class='badge badge-danger'>Inactivo</span>";
+			$datosJson .= '[
+			      "' . $Perfil[$i]["per_Id"] . '",
+			      "' . $Perfil[$i]["per_Codigo"] . '",
+			      "' . $Perfil[$i]["per_Nombre"] . '",
+			      "' . $activo . '",
+			      "' . $botones . '"
 			    ],';
 		}
 
@@ -47,25 +47,22 @@ class MostrarPerfil{
 		}';
 
 		echo $datosJson;
-
 	}
 }
 
 
-if (isset($_POST["acc"])) {
-	$acc = trim($_POST["acc"]);
-}else if (isset($_GET["acc"])) {
-	$acc = trim($_GET["acc"]);
-}else{
-	$acc = "ver";
+$acc = $_POST["acc"] ?? $_GET["acc"] ?? "ver";
+
+if (!isset($_SESSION)) {
+	session_start();
 }
 
-
+date_default_timezone_set('America/Bogota');
 
 switch ($acc) {
 	case 'ver':
 		$ver = new MostrarPerfil();
-		$ver -> TablaPerfil();
+		$ver->TablaPerfil();
 		break;
 	case 'add':
 		$add = PerfilControlador::ctrguardarPerfil();
@@ -89,9 +86,9 @@ switch ($acc) {
 		break;
 	case 'consecutivo':
 		$consecutivo = PerfilControlador::ctrConsecutivo();
-		$numero = intval(substr($consecutivo[0], 4)+1);
-		$prefijo = substr($consecutivo[0], 0,4);
-		echo json_encode($prefijo.$numero);
+		$numero = intval(substr($consecutivo[0], 4) + 1);
+		$prefijo = substr($consecutivo[0], 0, 4);
+		echo json_encode($prefijo . $numero);
 		break;
 	case 'traerpermisos':
 		$valor = trim($_POST["perid"]);
@@ -102,21 +99,24 @@ switch ($acc) {
 		$valor = trim($_POST["perid"]);
 		$nuevospermisos = PerfilControlador::ctrGuardarNuevosPermisos();
 		$permisos = ModulosControlador::ctrMostrarPermisos($valor);
-		session_start();
-		if (isset($_SESSION["permisos"])) {
+
+		$_SESSION["permisos"] = array_column($permisos, 'po_OPERACION');
+
+		echo json_encode($nuevospermisos);
+		/*if (isset($_SESSION["permisos"])) {
 			unset($_SESSION["permisos"]);
 			$_SESSION["permisos"][] = array();
-			for ($i=0; $i < count($permisos); $i++) {
+			for ($i = 0; $i < count($permisos); $i++) {
 				$_SESSION["permisos"][$i] = $permisos[$i]["po_OPERACION"];
 			}
 			echo json_encode($nuevospermisos);
-		}else{
+		} else {
 			$_SESSION["permisos"][] = array();
-			for ($i=0; $i < count($permisos); $i++) {
+			for ($i = 0; $i < count($permisos); $i++) {
 				$_SESSION["permisos"][$i] = $permisos[$i]["po_OPERACION"];
 			}
 			echo json_encode($nuevospermisos);
-		}
+		}*/
 		break;
 
 	default:

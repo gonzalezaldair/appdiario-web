@@ -5,51 +5,53 @@ date_default_timezone_set('America/Bogota');
 require_once '../modelos/prestamos.modelo.php';
 require_once '../controladores/prestamos.controlador.php';
 
-class MostrarPrestamos{
+class MostrarPrestamos
+{
 
 	public function TablaPrestamos()
 	{
-		session_start();
-    	$Prestamos = PrestamosControlador::ctrdatatableprestamos($_SESSION["usuario_Id"]);
-    	//var_dump($Prestamos);
+		$Prestamos = PrestamosControlador::ctrdatatableprestamos($_SESSION["usuario_Id"]);
+		//var_dump($Prestamos);
 
-    	if (count($Prestamos) == 0) {
+		if (count($Prestamos) == 0) {
 
-    		echo '{"data": []}';
+			echo '{"data": []}';
 
-		  	return;
-    	}
+			return;
+		}
 
-    	$datosJson = '{
+		$datosJson = '{
 		  "data": [';
 
-		for($i = 0; $i < count($Prestamos); $i++)
-		{
+		for ($i = 0; $i < count($Prestamos); $i++) {
 
 			$saldo = $Prestamos[$i]["Saldo"];
-			if ($saldo > 0) {
-				$botones = "<div class='btn-group' role='group' aria-label='Basic example'> <button type='button' class='btn btn-success btnupdprestamo' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-warning btnabono' saldo='".$saldo."' prestamoid='".$Prestamos[$i]["pre_Id"]."'><i class='fas fa-coins'></i></i></button> </div>";
-			}else{
+
+			$interes = number_format($Prestamos[$i]["interes"], 2, ",", ".");
+			$prestado = number_format($Prestamos[$i]["pre_MontoPrestado"], 2, ",", ".");
+			$prestadointeres = number_format($Prestamos[$i]["pre_MontoInteres"], 2, ",", ".");
+			$saldo = number_format($saldo, 2, ",", ".");
+			$valorCuotas = round(($Prestamos[$i]["pre_MontoInteres"] / $Prestamos[$i]["pre_Cuotas"]) / 100) * 100;
+
+			if ($Prestamos[$i]["Saldo"] > 0) {
+				$botones = "<div class='btn-group' role='group' aria-label='Basic example'> <button type='button' class='btn btn-success btnupdprestamo' prestamoid='" . $Prestamos[$i]["pre_Id"] . "'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-warning btnabono' saldo='" . $Prestamos[$i]["Saldo"] . "' prestamoid='" . $Prestamos[$i]["pre_Id"] . "' pre_Cuotas='" . $Prestamos[$i]["pre_Cuotas"] . "' totalPrestado='" . $Prestamos[$i]["pre_MontoInteres"] . "'><i class='fas fa-coins'></i></i></button> </div>";
+			} else {
 				$botones = "";
 			}
 
-
-			$interes = number_format($Prestamos[$i]["interes"], 2, ",",".");
-			$prestado = number_format($Prestamos[$i]["pre_MontoPrestado"], 2, ",",".");
-			$prestadointeres = number_format($Prestamos[$i]["pre_MontoInteres"], 2, ",",".");
-			$saldo = number_format($saldo, 2, ",",".");
-			$datosJson .='[
-			      "'.$Prestamos[$i]["pre_Fecha"].'",
-			      "'.$Prestamos[$i]["cli_Nombre"].'",
-			      "'.$Prestamos[$i]["frm_Nombre"].'",
-			      "'.$interes.'",
-			      "'.$prestado.'",
-			      "'.$prestadointeres.'",
-			      "'.$Prestamos[$i]["pre_Cuotas"].'",
-			      "'.$Prestamos[$i]["pre_Observaciones"].'",
-			      "'.$Prestamos[$i]["usu_Nombre"].'",
-			      "'.$saldo.'",
-			      "'.$botones.'"
+			$datosJson .= '[
+			      "' . $Prestamos[$i]["pre_Fecha"] . '",
+			      "' . $Prestamos[$i]["cli_Nombre"] . '",
+			      "' . $Prestamos[$i]["frm_Nombre"] . '",
+			      "' . $interes . '",
+			      "' . $prestado . '",
+			      "' . $prestadointeres . '",
+			      "' . $Prestamos[$i]["pre_Cuotas"] . '",
+			      "' . number_format($valorCuotas, 2, ",", ".") . '",
+			      "' . $Prestamos[$i]["pre_Observaciones"] . '",
+			      "' . $Prestamos[$i]["usu_Nombre"] . '",
+			      "' . $saldo . '",
+			      "' . $botones . '"
 			    ],';
 		}
 
@@ -60,25 +62,22 @@ class MostrarPrestamos{
 		}';
 
 		echo $datosJson;
-
 	}
 }
 
 
-if (isset($_POST["acc"])) {
-	$acc = trim($_POST["acc"]);
-}else if (isset($_GET["acc"])) {
-	$acc = trim($_GET["acc"]);
-}else{
-	$acc = "ver";
+$acc = $_POST["acc"] ?? $_GET["acc"] ?? "ver";
+
+if (!isset($_SESSION)) {
+	session_start();
 }
 
-
+date_default_timezone_set('America/Bogota');
 
 switch ($acc) {
 	case 'ver':
 		$ver = new MostrarPrestamos();
-		$ver -> TablaPrestamos();
+		$ver->TablaPrestamos();
 		break;
 	case 'add':
 		$add = PrestamosControlador::ctrguardarPrestamo();

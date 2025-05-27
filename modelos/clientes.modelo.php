@@ -2,7 +2,8 @@
 
 require_once 'conexion.php';
 
-class ClientesModelo{
+class ClientesModelo
+{
 
 
 	/*=============================================
@@ -13,69 +14,49 @@ class ClientesModelo{
 	public static function mdlMostrarClientes($tabla, $item, $valor)
 	{
 
-		if($item != null){
+		if ($item != null) {
 
 			try {
 
 				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
 
-				$stmt -> bindParam(":".$item, $valor);
+				$stmt->bindParam(":" . $item, $valor);
 
-				$stmt -> execute();
+				$stmt->execute();
 
-				return $stmt -> fetch();
-
+				return $stmt->fetch();
 			} catch (PDOException $e) {
 
-				$err = $stmt->errorInfo();
-				$arrayName = array(
-					'mensaje' => $e->getMessage(),
-					'codigo' => $err[1],
-					'sqlstate' => $e->getCode(),
-					'script' => $e->getFile(),
-					'linea' => $e->getLine(),
+				return [
+					'mensaje'         => $e->getMessage(),
+					'codigo'          => $e->getCode(),
+					'script'          => $e->getFile(),
+					'linea'           => $e->getLine(),
 					'excepcionprevia' => $e->getPrevious(),
-					'cadena' => $e->__toString(),
-					'errorinfo' => $err[2]
-				);
-
-				return $arrayName;
-
+					'cadena'          => $e->__toString()
+				];
 			}
-
-		}else{
+		} else {
 
 			try {
 
 				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
 
-				$stmt -> execute();
+				$stmt->execute();
 
-				return $stmt -> fetchAll();
-
+				return $stmt->fetchAll();
 			} catch (PDOException $e) {
 
-				$err = $stmt->errorInfo();
-				$arrayName = array(
-					'mensaje' => $e->getMessage(),
-					'codigo' => $err[1],
-					'sqlstate' => $e->getCode(),
-					'script' => $e->getFile(),
-					'linea' => $e->getLine(),
+				return [
+					'mensaje'         => $e->getMessage(),
+					'codigo'          => $e->getCode(),
+					'script'          => $e->getFile(),
+					'linea'           => $e->getLine(),
 					'excepcionprevia' => $e->getPrevious(),
-					'cadena' => $e->__toString(),
-					'errorinfo' => $err[2]
-				);
-
-				return $arrayName;
-
+					'cadena'          => $e->__toString()
+				];
 			}
-
-
-
 		}
-
-		$stmt = null;
 	}
 
 
@@ -84,34 +65,28 @@ class ClientesModelo{
 
 		try {
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE cli_Celular like '%$valor%' OR cli_Cedula like '%$valor%'");
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE cli_Cedula LIKE :cli_Cedula or cli_Celular LIKE :cli_Cedula");
 
-			$stmt -> bindParam(":".$item, $valor);
+			$valor = "%" . trim($valor) . "%";
 
-			$stmt -> execute();
+			$stmt->bindParam(":cli_Cedula", $valor, PDO::PARAM_STR);
 
-			return $stmt -> fetchAll();
+			// Ejecutar la consulta
+			$stmt->execute();
 
+			return $stmt->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
 
 
-			$err = $stmt->errorInfo();
-			$arrayName = array(
-				'mensaje' => $e->getMessage(),
-				'codigo' => $err[1],
-				'sqlstate' => $e->getCode(),
-				'script' => $e->getFile(),
-				'linea' => $e->getLine(),
+			return [
+				'mensaje'         => $e->getMessage(),
+				'codigo'          => $e->getCode(),
+				'script'          => $e->getFile(),
+				'linea'           => $e->getLine(),
 				'excepcionprevia' => $e->getPrevious(),
-				'cadena' => $e->__toString(),
-				'errorinfo' => $err[2]
-			);
-
-			return $arrayName;
-
+				'cadena'          => $e->__toString()
+			];
 		}
-
-		$stmt = null;
 	}
 
 	public static function mdlGuardarClientes($tabla, $datosModelo)
@@ -120,44 +95,30 @@ class ClientesModelo{
 
 			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(cli_Cedula, cli_Nombre, cli_Celular, cli_Direccion, cli_Correo, cli_Posicion, cli_RUTA, cli_DiaCobro) VALUES (:cli_Cedula, :cli_Nombre, :cli_Celular, :cli_Direccion, :cli_Correo, 0, :cli_RUTA, :cli_DiaCobro)");
 
-			$stmt -> bindParam(":cli_Cedula", $datosModelo["cli_Cedula"], PDO::PARAM_INT);
-			$stmt -> bindParam(":cli_Nombre", $datosModelo["cli_Nombre"], PDO::PARAM_STR);
-			$stmt -> bindParam(":cli_Celular", $datosModelo["cli_Celular"], PDO::PARAM_INT);
-			$stmt -> bindParam(":cli_Direccion", $datosModelo["cli_Direccion"], PDO::PARAM_STR);
-			$stmt -> bindParam(":cli_Correo", $datosModelo["cli_Correo"], PDO::PARAM_STR);
-			$stmt -> bindParam(":cli_RUTA", $datosModelo["cli_RUTA"], PDO::PARAM_INT);
-			$stmt -> bindParam(":cli_DiaCobro", $datosModelo["cli_DiaCobro"], PDO::PARAM_INT);
+			$stmt->bindParam(":cli_Cedula", $datosModelo["cli_Cedula"], PDO::PARAM_INT);
+			$stmt->bindParam(":cli_Nombre", $datosModelo["cli_Nombre"], PDO::PARAM_STR);
+			$stmt->bindParam(":cli_Celular", $datosModelo["cli_Celular"], PDO::PARAM_INT);
+			$stmt->bindParam(":cli_Direccion", $datosModelo["cli_Direccion"], PDO::PARAM_STR);
+			$stmt->bindParam(":cli_Correo", $datosModelo["cli_Correo"], PDO::PARAM_STR);
+			$stmt->bindParam(":cli_RUTA", $datosModelo["cli_RUTA"], PDO::PARAM_INT);
+			$stmt->bindParam(":cli_DiaCobro", $datosModelo["cli_DiaCobro"], PDO::PARAM_INT);
 
 			$stmt->execute();
 
-			$stmt = null;
 
-			$arrayName = array(
-				'mensaje' => "ok"
-			);
 
-			return $arrayName;
-
+			return ["mensaje" => "ok"];
 		} catch (PDOException $e) {
 
-
-			$err = $stmt->errorInfo();
-			$arrayName = array(
-				'mensaje' => $e->getMessage(),
-				'codigo' => $err[1],
-				'sqlstate' => $e->getCode(),
-				'script' => $e->getFile(),
-				'linea' => $e->getLine(),
+			return [
+				'mensaje'         => $e->getMessage(),
+				'codigo'          => $e->getCode(),
+				'script'          => $e->getFile(),
+				'linea'           => $e->getLine(),
 				'excepcionprevia' => $e->getPrevious(),
-				'cadena' => $e->__toString(),
-				'errorinfo' => $err[2]
-			);
-
-			return $arrayName;
-
+				'cadena'          => $e->__toString()
+			];
 		}
-
-		$stmt = null;
 	}
 
 
@@ -168,44 +129,32 @@ class ClientesModelo{
 
 			$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET cli_Nombre=:cli_Nombre,cli_Celular=:cli_Celular,cli_Direccion=:cli_Direccion,cli_Correo=:cli_Correo,cli_Posicion=:cli_Posicion,cli_RUTA=:cli_RUTA,cli_DiaCobro=:cli_DiaCobro,cli_Activo=:cli_Activo  WHERE cli_Id = :id");
 
-			$stmt -> bindParam(":cli_Nombre", $datosModelo["cli_Nombre"], PDO::PARAM_STR);
-			$stmt -> bindParam(":cli_Celular", $datosModelo["cli_Celular"], PDO::PARAM_INT);
-			$stmt -> bindParam(":cli_Direccion", $datosModelo["cli_Direccion"], PDO::PARAM_STR);
-			$stmt -> bindParam(":cli_Correo", $datosModelo["cli_Correo"], PDO::PARAM_STR);
-			$stmt -> bindParam(":cli_Posicion", $datosModelo["cli_Posicion"], PDO::PARAM_INT);
-			$stmt -> bindParam(":cli_RUTA", $datosModelo["cli_RUTA"], PDO::PARAM_INT);
-			$stmt -> bindParam(":cli_DiaCobro", $datosModelo["cli_DiaCobro"], PDO::PARAM_INT);
-			$stmt -> bindParam(":cli_Activo", $datosModelo["cli_Activo"], PDO::PARAM_INT);
-			$stmt -> bindParam(":id", $datosModelo["cli_Id"], PDO::PARAM_INT);
+			$stmt->bindParam(":cli_Nombre", $datosModelo["cli_Nombre"], PDO::PARAM_STR);
+			$stmt->bindParam(":cli_Celular", $datosModelo["cli_Celular"], PDO::PARAM_INT);
+			$stmt->bindParam(":cli_Direccion", $datosModelo["cli_Direccion"], PDO::PARAM_STR);
+			$stmt->bindParam(":cli_Correo", $datosModelo["cli_Correo"], PDO::PARAM_STR);
+			$stmt->bindParam(":cli_Posicion", $datosModelo["cli_Posicion"], PDO::PARAM_INT);
+			$stmt->bindParam(":cli_RUTA", $datosModelo["cli_RUTA"], PDO::PARAM_INT);
+			$stmt->bindParam(":cli_DiaCobro", $datosModelo["cli_DiaCobro"], PDO::PARAM_INT);
+			$stmt->bindParam(":cli_Activo", $datosModelo["cli_Activo"], PDO::PARAM_INT);
+			$stmt->bindParam(":id", $datosModelo["cli_Id"], PDO::PARAM_INT);
 
 
 			$stmt->execute();
 
-			$stmt = null;
 
-			$arrayName = array(
-				'mensaje' => "ok"
-			);
 
-			return $arrayName;
+			return ["mensaje" => "ok"];
+		} catch (PDOException $e) {
 
-		} catch (PDOException $e){
-
-			$err = $stmt->errorInfo();
-			$arrayName = array(
-				'mensaje' => $e->getMessage(),
-				'codigo' => $err[1],
-				'sqlstate' => $e->getCode(),
-				'script' => $e->getFile(),
-				'linea' => $e->getLine(),
+			return [
+				'mensaje'         => $e->getMessage(),
+				'codigo'          => $e->getCode(),
+				'script'          => $e->getFile(),
+				'linea'           => $e->getLine(),
 				'excepcionprevia' => $e->getPrevious(),
-				'cadena' => $e->__toString(),
-				'errorinfo' => $err[2]
-			);
-
-			return $arrayName;
+				'cadena'          => $e->__toString()
+			];
 		}
-
-		$stmt = null;
 	}
 }

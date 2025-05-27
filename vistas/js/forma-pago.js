@@ -20,7 +20,7 @@ $.ajax({
 =============================================*/
 
 
-$("#btnmodalnuevaformapago").on('click', function(event) {
+$("#btnmodalnuevaformapago").on('click', function (event) {
 	event.preventDefault();
 	/* Act on the event */
 
@@ -34,19 +34,20 @@ $("#btnmodalnuevaformapago").on('click', function(event) {
 	let datos = new FormData();
 	datos.append("acc", "consecutivo");
 	$.ajax({
-			url: "ajax/formapago.ajax.php",
-			method: "POST",
-			data: datos,
-			cache: false,
-			contentType: false,
-			processData: false,
-			dataType: "json",
-		})
-		.done(function(respuesta) {
+		url: "ajax/formapago.ajax.php",
+		method: "POST",
+		data: datos,
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+	})
+		.done(function (respuesta) {
+			console.log(respuesta);
 			$("#FormaPagocodigo").val(respuesta);
 			$("#modal-nueva-forma-pago").modal("show");
 		})
-		.fail(function(respuesta) {
+		.fail(function (respuesta) {
 			console.log("respuesta", respuesta);
 			console.log("error");
 		});
@@ -58,19 +59,19 @@ CARGAR LA TABLA DINÁMICA DE formapago
 =============================================*/
 
 
-let tablaformapago = $('#tablaformapago').DataTable( {
-    "ajax": "ajax/formapago.ajax.php",
-    "deferRender": true,
+let tablaformapago = $('#tablaformapago').DataTable({
+	"ajax": "ajax/formapago.ajax.php",
+	"deferRender": true,
 	"retrieve": true,
 	"processing": true,
 	"language": lenguajeTabla
-} );
+});
 
 /*=============================================
 	GUARDAR FORMA PAGO
 =============================================*/
 
-$("#modal-nueva-forma-pago").on('click', '.btn-guardar-formapago', function(event) {
+$("#modal-nueva-forma-pago").on('click', '.btn-guardar-formapago', function (event) {
 	event.preventDefault();
 	/* Act on the event */
 	//const frmid = $("#FormaPagoid").val();
@@ -87,15 +88,17 @@ $("#modal-nueva-forma-pago").on('click', '.btn-guardar-formapago', function(even
 		datos.append("frm_Activo", frmactivo);
 		datos.append("acc", "add");
 		$.ajax({
-				url: "ajax/formapago.ajax.php",
-				method: "POST",
-				data: datos,
-				cache: false,
-				contentType: false,
-				processData: false,
-				dataType: "json",
-			})
-			.done(function(respuesta) {
+			url: "ajax/formapago.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+			.done(function (respuesta) {
+
+				console.log("respuesta ", respuesta);
 
 				if (respuesta.mensaje === 'ok') {
 					Swal.fire({
@@ -120,7 +123,7 @@ $("#modal-nueva-forma-pago").on('click', '.btn-guardar-formapago', function(even
 					});
 				}
 			})
-			.fail(function(respuesta) {
+			.fail(function (respuesta) {
 				console.log("error ", respuesta);
 			});
 	} else {
@@ -140,7 +143,7 @@ $("#modal-nueva-forma-pago").on('click', '.btn-guardar-formapago', function(even
 =============================================*/
 
 
-$('#tablaformapago').on('click', '.btnupdformapago', function(event) {
+$('#tablaformapago').on('click', '.btnupdformapago', function (event) {
 	event.preventDefault();
 	const frmid = $(this).attr('frmid');
 	const frmcodigo = $(this).attr('frmcodigo');
@@ -148,15 +151,15 @@ $('#tablaformapago').on('click', '.btnupdformapago', function(event) {
 	datos.append("frmid", frmid);
 	datos.append("acc", "traer");
 	$.ajax({
-			url: "ajax/formapago.ajax.php",
-			method: "POST",
-			data: datos,
-			cache: false,
-			contentType: false,
-			processData: false,
-			dataType: "json",
-		})
-		.done(function(respuesta) {
+		url: "ajax/formapago.ajax.php",
+		method: "POST",
+		data: datos,
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+	})
+		.done(function (respuesta) {
 			$("#FormaPagoid").val(respuesta["frm_Id"]);
 			$("#FormaPagocodigo").val(respuesta["frm_Codigo"]);
 			$("#FormaPagonombre").val(respuesta["frm_Nombre"]);
@@ -167,7 +170,7 @@ $('#tablaformapago').on('click', '.btnupdformapago', function(event) {
 			$("#modal-nueva-forma-pago .modal-header").removeClass('bg-primary');
 			$("#modal-nueva-forma-pago").modal("show");
 		})
-		.fail(function(respuesta) {
+		.fail(function (respuesta) {
 			console.log("error ", respuesta);
 		});
 
@@ -179,7 +182,7 @@ $('#tablaformapago').on('click', '.btnupdformapago', function(event) {
 =============================================*/
 
 
-$('#tablaformapago').on('click', '.btneliminarformapago', function(event) {
+$('#tablaformapago').on('click', '.btneliminarformapago', function (event) {
 	event.preventDefault();
 	const frmid = $(this).attr('frmid');
 	const frmcodigo = $(this).attr('frmcodigo');
@@ -187,15 +190,15 @@ $('#tablaformapago').on('click', '.btneliminarformapago', function(event) {
 	datos.append("frm_Id", frmid);
 	datos.append("acc", "eliminarfrmpago");
 	$.ajax({
-			url: "ajax/formapago.ajax.php",
-			method: "POST",
-			data: datos,
-			cache: false,
-			contentType: false,
-			processData: false,
-			dataType: "json",
-		})
-		.done(function(respuesta) {
+		url: "ajax/formapago.ajax.php",
+		method: "POST",
+		data: datos,
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+	})
+		.done(function (respuesta) {
 			if (respuesta.mensaje === 'ok') {
 				Swal.fire({
 					title: 'Guardar Datos',
@@ -219,7 +222,7 @@ $('#tablaformapago').on('click', '.btneliminarformapago', function(event) {
 				});
 			}
 		})
-		.fail(function(respuesta) {
+		.fail(function (respuesta) {
 			console.log("error ", respuesta);
 		});
 

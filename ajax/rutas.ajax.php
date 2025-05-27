@@ -5,38 +5,38 @@ require_once '../controladores/rutas.controlador.php';
 require_once '../modelos/cobros.modelo.php';
 require_once '../controladores/cobros.controlador.php';
 
-class MostrarRutas{
+class MostrarRutas
+{
 
 	public function TablaRutas()
 	{
 
 		$item = null;
-    	$valor = null;
+		$valor = null;
 
-    	$Rutas = RutasControlador::ctrMostrarRutas($item, $valor);
+		$Rutas = RutasControlador::ctrMostrarRutas($item, $valor);
 
-    	if (count($Rutas) == 0) {
+		if (count($Rutas) == 0) {
 
-    		echo '{"data": []}';
+			echo '{"data": []}';
 
-		  	return;
-    	}
+			return;
+		}
 
-    	$datosJson = '{
+		$datosJson = '{
 		  "data": [';
 
-		for($i = 0; $i < count($Rutas); $i++)
-		{
-			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdruta' rutid='".$Rutas[$i]["rut_Id"]."' rutcodigo='".$Rutas[$i]["rut_Codigo"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarruta' rutid='".$Rutas[$i]["rut_Id"]."'><i class='fas fa-trash'></i></button></div>";
+		for ($i = 0; $i < count($Rutas); $i++) {
+			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdruta' rutid='" . $Rutas[$i]["rut_Id"] . "' rutcodigo='" . $Rutas[$i]["rut_Codigo"] . "'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarruta' rutid='" . $Rutas[$i]["rut_Id"] . "'><i class='fas fa-trash'></i></button></div>";
 			$cobro = CobrosControlador::ctrMostrarCobros("cob_Id", $Rutas[$i]["rut_COBRO"]);
-			$activo = ($Rutas[$i]["rut_Activo"] == 1) ? "<span class='badge badge-success'>Activo</span>" : "<span class='badge badge-danger'>Inactivo</span>" ;
-			$datosJson .='[
-			      "'.$Rutas[$i]["rut_Id"].'",
-			      "'.$Rutas[$i]["rut_Codigo"].'",
-			      "'.$Rutas[$i]["rut_Nombre"].'",
-			      "'.$cobro["cob_Nombre"].'",
-			      "'.$activo.'",
-			      "'.$botones.'"
+			$activo = ($Rutas[$i]["rut_Activo"] == 1) ? "<span class='badge badge-success'>Activo</span>" : "<span class='badge badge-danger'>Inactivo</span>";
+			$datosJson .= '[
+			      "' . $Rutas[$i]["rut_Id"] . '",
+			      "' . $Rutas[$i]["rut_Codigo"] . '",
+			      "' . $Rutas[$i]["rut_Nombre"] . '",
+			      "' . $cobro["cob_Nombre"] . '",
+			      "' . $activo . '",
+			      "' . $botones . '"
 			    ],';
 		}
 
@@ -47,25 +47,22 @@ class MostrarRutas{
 		}';
 
 		echo $datosJson;
-
 	}
 }
 
 
-if (isset($_POST["acc"])) {
-	$acc = trim($_POST["acc"]);
-}else if (isset($_GET["acc"])) {
-	$acc = trim($_GET["acc"]);
-}else{
-	$acc = "ver";
+$acc = $_POST["acc"] ?? $_GET["acc"] ?? "ver";
+
+if (!isset($_SESSION)) {
+	session_start();
 }
 
-
+date_default_timezone_set('America/Bogota');
 
 switch ($acc) {
 	case 'ver':
 		$ver = new MostrarRutas();
-		$ver -> TablaRutas();
+		$ver->TablaRutas();
 		break;
 	case 'add':
 		$traer = RutasControlador::ctrguardarRutas();
@@ -91,9 +88,9 @@ switch ($acc) {
 		break;
 	case 'consecutivo':
 		$consecutivo = RutasControlador::ctrConsecutivo();
-		$numero = intval(substr($consecutivo[0], 4)+1);
-		$prefijo = substr($consecutivo[0], 0,4);
-		echo json_encode($prefijo.$numero);
+		$numero = intval(substr($consecutivo[0], 4) + 1);
+		$prefijo = substr($consecutivo[0], 0, 4);
+		echo json_encode($prefijo . $numero);
 		break;
 	default:
 		# code...

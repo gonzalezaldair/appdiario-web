@@ -3,36 +3,36 @@
 require_once '../modelos/formapago.modelo.php';
 require_once '../controladores/formapago.controlador.php';
 
-class MostrarFormaPago{
+class MostrarFormaPago
+{
 
 	public function TablaFormaPago()
 	{
 
 		$item = null;
-    	$valor = null;
+		$valor = null;
 
-    	$FormaPago = FormaPagoControlador::ctrMostrarFormaPago($item, $valor);
+		$FormaPago = FormaPagoControlador::ctrMostrarFormaPago($item, $valor);
 
-    	if (count($FormaPago) == 0) {
+		if (count($FormaPago) == 0) {
 
-    		echo '{"data": []}';
+			echo '{"data": []}';
 
-		  	return;
-    	}
+			return;
+		}
 
-    	$datosJson = '{
+		$datosJson = '{
 		  "data": [';
 
-		for($i = 0; $i < count($FormaPago); $i++)
-		{
-			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdformapago' frmid='".$FormaPago[$i]["frm_Id"]."' frmcodigo='".$FormaPago[$i]["frm_Codigo"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarformapago' frmid='".$FormaPago[$i]["frm_Id"]."'><i class='fas fa-trash'></i></button></div>";
-			$activo = ($FormaPago[$i]["frm_Activo"] == 1) ? "<span class='badge badge-success'>Activo</span>" : "<span class='badge badge-danger'>Inactivo</span>" ;
-			$datosJson .='[
-				  "'.$FormaPago[$i]["frm_Id"].'",
-			      "'.$FormaPago[$i]["frm_Codigo"].'",
-			      "'.$FormaPago[$i]["frm_Nombre"].'",
-			      "'.$activo.'",
-			      "'.$botones.'"
+		for ($i = 0; $i < count($FormaPago); $i++) {
+			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdformapago' frmid='" . $FormaPago[$i]["frm_Id"] . "' frmcodigo='" . $FormaPago[$i]["frm_Codigo"] . "'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarformapago' frmid='" . $FormaPago[$i]["frm_Id"] . "'><i class='fas fa-trash'></i></button></div>";
+			$activo = ($FormaPago[$i]["frm_Activo"] == 1) ? "<span class='badge badge-success'>Activo</span>" : "<span class='badge badge-danger'>Inactivo</span>";
+			$datosJson .= '[
+				  "' . $FormaPago[$i]["frm_Id"] . '",
+			      "' . $FormaPago[$i]["frm_Codigo"] . '",
+			      "' . $FormaPago[$i]["frm_Nombre"] . '",
+			      "' . $activo . '",
+			      "' . $botones . '"
 			    ],';
 		}
 
@@ -43,25 +43,22 @@ class MostrarFormaPago{
 		}';
 
 		echo $datosJson;
-
 	}
 }
 
 
-if (isset($_POST["acc"])) {
-	$acc = trim($_POST["acc"]);
-}else if (isset($_GET["acc"])) {
-	$acc = trim($_GET["acc"]);
-}else{
-	$acc = "ver";
+$acc = $_POST["acc"] ?? $_GET["acc"] ?? "ver";
+
+if (!isset($_SESSION)) {
+	session_start();
 }
 
-
+date_default_timezone_set('America/Bogota');
 
 switch ($acc) {
 	case 'ver':
 		$ver = new MostrarFormaPago();
-		$ver -> TablaFormaPago();
+		$ver->TablaFormaPago();
 		break;
 	case 'add':
 		$add = FormaPagoControlador::ctrguardarFormaPago();
@@ -87,9 +84,10 @@ switch ($acc) {
 		break;
 	case 'consecutivo':
 		$consecutivo = FormaPagoControlador::ctrConsecutivo();
-		$numero = intval(substr($consecutivo[0], 4)+1);
-		$prefijo = substr($consecutivo[0], 0,4);
-		echo json_encode($prefijo.$numero);
+		//echo json_encode($consecutivo);
+		$consecutivo =  $consecutivo[0] + 1;
+		$prefijo = ($consecutivo >= 10) ? $consecutivo : "0" . $consecutivo;
+		echo json_encode($prefijo);
 		break;
 	default:
 		# code...

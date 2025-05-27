@@ -9,52 +9,52 @@ require_once '../controladores/rutas.controlador.php';
 require_once '../modelos/perfil.modelo.php';
 require_once '../controladores/perfil.controlador.php';
 
-class MostrarUsuarios{
+class MostrarUsuarios
+{
 
 	public function TablaUsuarios()
 	{
 
 		$item = null;
-    	$valor = null;
+		$valor = null;
 
-    	$Usuarios = UsuariosControlador::ctrMostrarUsuarios($item, $valor);
+		$Usuarios = UsuariosControlador::ctrMostrarUsuarios($item, $valor);
 
-    	if (count($Usuarios) == 0) {
+		if (count($Usuarios) == 0) {
 
-    		echo '{"data": []}';
+			echo '{"data": []}';
 
-		  	return;
-    	}
+			return;
+		}
 
-    	$datosJson = '{
+		$datosJson = '{
 		  "data": [';
 
-		for($i = 0; $i < count($Usuarios); $i++)
-		{
+		for ($i = 0; $i < count($Usuarios); $i++) {
 			//$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdusuario' usuarioid='".$Usuarios[$i]["usu_Id"]."' usuariocedula='".$Usuarios[$i]["usu_Cedula"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-warning btnpermisosusuario' usuarioid='".$Usuarios[$i]["usu_Id"]."'><i class='fas fa-user-lock'></i></button><button type='button' class='btn btn-danger btneliminarusuario' usuarioid='".$Usuarios[$i]["usu_Id"]."'><i class='fas fa-trash'></i></button></div>";
 
-			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdusuario' usuarioid='".$Usuarios[$i]["usu_Id"]."' usuariocedula='".$Usuarios[$i]["usu_Cedula"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarusuario' usuarioid='".$Usuarios[$i]["usu_Id"]."'><i class='fas fa-trash'></i></button></div>";
+			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdusuario' usuarioid='" . $Usuarios[$i]["usu_Id"] . "' usuariocedula='" . $Usuarios[$i]["usu_Cedula"] . "'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarusuario' usuarioid='" . $Usuarios[$i]["usu_Id"] . "'><i class='fas fa-trash'></i></button></div>";
 
 			$item = "rut_Id";
-    		$valor = $Usuarios[$i]["usu_RUTA"];
-    		$Rutas = RutasControlador::ctrMostrarRutas($item, $valor);
-    		$item1 = "per_Id";
-    		$valor1 = $Usuarios[$i]["usu_Perfil"];
-    		$perfil = PerfilControlador::ctrMostrarPerfil($item1, $valor1);
-    		if ($Usuarios[$i]["usu_Activo"] == 1) {
-    			$estado = "<span class='badge badge-success'>Activo</span>";
-    		}else{
-    			$estado = "<span class='badge badge-danger'>Inactivo</span>";
-    		}
-			$datosJson .='[
-			      "'.$Usuarios[$i]["usu_Login"].'",
-			      "'.$Usuarios[$i]["usu_Nombre"].'",
-			      "'.$Usuarios[$i]["usu_Celular"].'",
-			      "'.$Usuarios[$i]["usu_Direccion"].'",
-			      "'.$Rutas["rut_Nombre"].'",
-			      "'.$perfil["per_Nombre"].'",
-			      "'.$estado.'",
-			      "'.$botones.'"
+			$valor = $Usuarios[$i]["usu_RUTA"];
+			$Rutas = RutasControlador::ctrMostrarRutas($item, $valor);
+			$item1 = "per_Id";
+			$valor1 = $Usuarios[$i]["usu_Perfil"];
+			$perfil = PerfilControlador::ctrMostrarPerfil($item1, $valor1);
+			if ($Usuarios[$i]["usu_Activo"] == 1) {
+				$estado = "<span class='badge badge-success'>Activo</span>";
+			} else {
+				$estado = "<span class='badge badge-danger'>Inactivo</span>";
+			}
+			$datosJson .= '[
+			      "' . $Usuarios[$i]["usu_Login"] . '",
+			      "' . $Usuarios[$i]["usu_Nombre"] . '",
+			      "' . $Usuarios[$i]["usu_Celular"] . '",
+			      "' . $Usuarios[$i]["usu_Direccion"] . '",
+			      "' . $Rutas["rut_Nombre"] . '",
+			      "' . $perfil["per_Nombre"] . '",
+			      "' . $estado . '",
+			      "' . $botones . '"
 			    ],';
 		}
 
@@ -65,25 +65,22 @@ class MostrarUsuarios{
 		}';
 
 		echo $datosJson;
-
 	}
 }
 
 
-if (isset($_POST["acc"])) {
-	$acc = trim($_POST["acc"]);
-}else if (isset($_GET["acc"])) {
-	$acc = trim($_GET["acc"]);
-}else{
-	$acc = "ver";
+$acc = $_POST["acc"] ?? $_GET["acc"] ?? "ver";
+
+if (!isset($_SESSION)) {
+	session_start();
 }
 
-
+date_default_timezone_set('America/Bogota');
 
 switch ($acc) {
 	case 'ver':
 		$ver = new MostrarUsuarios();
-		$ver -> TablaUsuarios();
+		$ver->TablaUsuarios();
 		break;
 	case 'add':
 		$add = UsuariosControlador::ctrGuardarUsuario();

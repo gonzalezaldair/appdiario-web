@@ -18,7 +18,7 @@ $.ajax({
 =============================================*/
 
 
-$("#btn-modal-nuevo-cliente").on('click', function(event) {
+$("#btn-modal-nuevo-cliente").on('click', function (event) {
 	event.preventDefault();
 	/* Act on the event */
 
@@ -47,11 +47,11 @@ CARGAR COMBO DIAS
 $.ajax({
 
 	url: "vistas/js/diassemana.json",
-	success: function(respuesta) {
+	success: function (respuesta) {
 		$("#clienteDiaCobro").html("");
 		//console.log("respuesta", respuesta);
 		for (var i = 0; i < respuesta.length; i++) {
-			$("#clienteDiaCobro").append('<option value='+respuesta[i].code+'>'+respuesta[i].name+'</option>');
+			$("#clienteDiaCobro").append('<option value=' + respuesta[i].code + '>' + respuesta[i].name + '</option>');
 		}
 
 	}
@@ -68,15 +68,15 @@ $("#clienteRUTA").html("");
 let datos = new FormData();
 datos.append("acc", "comborutas");
 $.ajax({
-		url: "ajax/rutas.ajax.php",
-		method: "POST",
-		data: datos,
-		cache: false,
-		contentType: false,
-		processData: false,
-		dataType: "json",
-	})
-	.done(function(respuesta) {
+	url: "ajax/rutas.ajax.php",
+	method: "POST",
+	data: datos,
+	cache: false,
+	contentType: false,
+	processData: false,
+	dataType: "json",
+})
+	.done(function (respuesta) {
 		//console.log("respuesta", respuesta);
 		for (var i = 0; i < respuesta.length; i++) {
 			if (respuesta[i].rut_Activo == 1) {
@@ -84,7 +84,7 @@ $.ajax({
 			}
 		}
 	})
-	.fail(function(respuesta) {
+	.fail(function (respuesta) {
 		console.log("error ", respuesta);
 	});
 
@@ -96,16 +96,17 @@ $("#comboformapago").html("");
 let formapago = new FormData();
 formapago.append("acc", "comboFormaPago");
 $.ajax({
-		url: "ajax/formapago.ajax.php",
-		method: "POST",
-		data: formapago,
-		cache: false,
-		contentType: false,
-		processData: false,
-		dataType: "json",
-	})
-	.done(function(respuesta) {
+	url: "ajax/formapago.ajax.php",
+	method: "POST",
+	data: formapago,
+	cache: false,
+	contentType: false,
+	processData: false,
+	dataType: "json",
+})
+	.done(function (respuesta) {
 		if (respuesta.length > 0) {
+			$("#comboformapago").append('<option value=0>Seleccione :</option>');
 			for (var i = 0; i < respuesta.length; i++) {
 				if (respuesta[i].frm_Activo == 1) {
 					$("#comboformapago").append('<option value=' + respuesta[i].frm_Id + '>' + respuesta[i].frm_Nombre + '</option>');
@@ -116,11 +117,21 @@ $.ajax({
 			$("#comboformapago").parent().after('<div class="alert alert-warning">Debe agregar Formas de Pago. <a href="forma-pago">Ir a Formas de Pago</a></div>');
 		}
 	})
-	.fail(function(respuesta) {
+	.fail(function (respuesta) {
 		console.log("error ", respuesta);
 	});
 
+$("#comboformapago").on('change', function (event) {
+	event.preventDefault();
+	const valor = $('#comboformapago option:selected').text().toUpperCase();
 
+	if (valor == "DIARIO") {
+		$("#cuotasPrestamo").val(35);
+	} else {
+		$("#cuotasPrestamo").val("");
+	}
+
+});
 
 /*=============================================
 CARGAR LA TABLA DINÁMICA DE CLIENTES
@@ -137,7 +148,7 @@ let tablaclientes = $('#tablaclientes').DataTable({
  * GUARDAR CLIENTE
  */
 
-$("#modal-nuevo-cliente").on('click', '.btn-guardar-cliente', function(event) {
+$("#modal-nuevo-cliente").on('click', '.btn-guardar-cliente', function (event) {
 	event.preventDefault();
 	/* Act on the event */
 	const cli_Cedula = $("#clienteCedula").val();
@@ -163,15 +174,15 @@ $("#modal-nuevo-cliente").on('click', '.btn-guardar-cliente', function(event) {
 	datos.append("cli_Activo", cli_Activo);
 	datos.append("acc", "add");
 	$.ajax({
-			url: "ajax/clientes.ajax.php",
-			method: "POST",
-			data: datos,
-			cache: false,
-			contentType: false,
-			processData: false,
-			dataType: "json",
-		})
-		.done(function(respuesta) {
+		url: "ajax/clientes.ajax.php",
+		method: "POST",
+		data: datos,
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+	})
+		.done(function (respuesta) {
 
 			if (respuesta.mensaje === 'ok') {
 				Swal.fire({
@@ -196,7 +207,7 @@ $("#modal-nuevo-cliente").on('click', '.btn-guardar-cliente', function(event) {
 				});
 			}
 		})
-		.fail(function(respuesta) {
+		.fail(function (respuesta) {
 			console.log("respuesta", respuesta.responseText);
 			console.log("error");
 		});
@@ -208,7 +219,7 @@ $("#modal-nuevo-cliente").on('click', '.btn-guardar-cliente', function(event) {
 =============================================*/
 
 
-$('#tablaclientes').on('click', '.btnupdcliente', function(event) {
+$('#tablaclientes').on('click', '.btnupdcliente', function (event) {
 	event.preventDefault();
 	const clienteid = $(this).attr('clienteid');
 	const clientecedula = $(this).attr('clientecedula');
@@ -217,15 +228,15 @@ $('#tablaclientes').on('click', '.btnupdcliente', function(event) {
 	datos.append("item", "cli_Id");
 	datos.append("acc", "traer");
 	$.ajax({
-			url: "ajax/clientes.ajax.php",
-			method: "POST",
-			data: datos,
-			cache: false,
-			contentType: false,
-			processData: false,
-			dataType: "json",
-		})
-		.done(function(respuesta) {
+		url: "ajax/clientes.ajax.php",
+		method: "POST",
+		data: datos,
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+	})
+		.done(function (respuesta) {
 			$("#clienteCedula").val(respuesta["cli_Cedula"]);
 			$("#clienteid").val(respuesta["cli_Id"]);
 			$("#clienteNombre").val(respuesta["cli_Nombre"]);
@@ -243,7 +254,7 @@ $('#tablaclientes').on('click', '.btnupdcliente', function(event) {
 			$("#modal-nuevo-cliente .modal-header").removeClass('bg-primary');
 			$("#modal-nuevo-cliente").modal("show");
 		})
-		.fail(function(respuesta) {
+		.fail(function (respuesta) {
 			console.log("error ", respuesta);
 		});
 
@@ -255,7 +266,7 @@ $('#tablaclientes').on('click', '.btnupdcliente', function(event) {
 =============================================*/
 
 
-$("input.validarNumero").on("input", function() {
+$("input.validarNumero").on("input", function () {
 	this.value = this.value.replace(/[^0-9.]/g, '');
 });
 
@@ -264,12 +275,12 @@ $("input.validarNumero").on("input", function() {
 	MOSTRAR EN FORMATO DINERO prestamoMontoPrestado
 =============================================*/
 
-$('#modal-nuevo-prestamo').on('change', '#sumaPrestamo', function(event) {
+$('#modal-nuevo-prestamo').on('change', '#sumaPrestamo', function (event) {
 	event.preventDefault();
 	/* Act on the event */
 
 	$('#sumaPrestamo').attr('MontoReal', $('#sumaPrestamo').val());
-	$('#sumaPrestamo').val($.number($('#sumaPrestamo').val(), 2,".",","));
+	$('#sumaPrestamo').val($.number($('#sumaPrestamo').val(), 2, ".", ","));
 });
 
 
@@ -278,14 +289,14 @@ $('#modal-nuevo-prestamo').on('change', '#sumaPrestamo', function(event) {
 =============================================*/
 
 
-$('#tablaclientes').on('click', '.btnnuevoprestamo', function(event) {
+$('#tablaclientes').on('click', '.btnnuevoprestamo', function (event) {
 	event.preventDefault();
 	const clienteid = $(this).attr('clienteid');
 	const clientecedula = $(this).attr('clientecedula');
 	$("#clientePrestamo").val(clientecedula);
 	$("#idCliente").val(clienteid);
-	$("#interesPrestamo").val("");
-	$("#sumaPrestamo").attr('MontoReal',"");
+	$("#interesPrestamo").attr('readonly', true).val(20);
+	$("#sumaPrestamo").attr('MontoReal', "");
 	$("#sumaPrestamo").val("");
 	$("#cuotasPrestamo").val("");
 	$("#observacionesPrestamo").val("");
@@ -297,7 +308,7 @@ $('#tablaclientes').on('click', '.btnnuevoprestamo', function(event) {
 	GUARDAR PRESTAMO
 =============================================*/
 
-$("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo-cliente', function(event) {
+$("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo-cliente', function (event) {
 	event.preventDefault();
 	/* Act on the event */
 	const pre_Id = ($("#idPrestamo").val() != "") ? $("#idPrestamo").val() : 0;
@@ -319,15 +330,15 @@ $("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo-cliente', function
 	datos.append("pre_USUARIO", user_Id);
 	datos.append("acc", "add");
 	$.ajax({
-			url: "ajax/prestamos.ajax.php",
-			method: "POST",
-			data: datos,
-			cache: false,
-			contentType: false,
-			processData: false,
-			dataType: "json",
-		})
-		.done(function(respuesta) {
+		url: "ajax/prestamos.ajax.php",
+		method: "POST",
+		data: datos,
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+	})
+		.done(function (respuesta) {
 			console.log("respuesta", respuesta);
 			if (respuesta.mensaje === 'ok') {
 				Swal.fire(
@@ -344,7 +355,7 @@ $("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo-cliente', function
 				)
 			}
 		})
-		.fail(function(respuesta) {
+		.fail(function (respuesta) {
 			console.log("respuesta", respuesta.responseText);
 			console.log("error");
 		});
@@ -356,7 +367,7 @@ $("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo-cliente', function
 =============================================*/
 
 
-$("#modal-nuevo-cliente").on('change', '#clienteCedula', function(event) {
+$("#modal-nuevo-cliente").on('change', '#clienteCedula', function (event) {
 	event.preventDefault();
 	/* Act on the event */
 
@@ -368,15 +379,15 @@ $("#modal-nuevo-cliente").on('change', '#clienteCedula', function(event) {
 	datos.append("item", "cli_Cedula");
 	datos.append("acc", "existe");
 	$.ajax({
-			url: "ajax/clientes.ajax.php",
-			method: "POST",
-			data: datos,
-			cache: false,
-			contentType: false,
-			processData: false,
-			dataType: "json",
-		})
-		.done(function(respuesta) {
+		url: "ajax/clientes.ajax.php",
+		method: "POST",
+		data: datos,
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+	})
+		.done(function (respuesta) {
 			//console.log("respuesta ", respuesta);
 			if (respuesta) {
 				$("#clienteCedula").parent().after('<div class="alert alert-warning">Este Cliente ya existe en la base de datos</div>');
@@ -389,7 +400,7 @@ $("#modal-nuevo-cliente").on('change', '#clienteCedula', function(event) {
 				})*/
 			}
 		})
-		.fail(function(respuesta) {
+		.fail(function (respuesta) {
 			console.log("respuesta.responseText ", respuesta.responseText);
 			console.log("error");
 		});
@@ -401,7 +412,7 @@ $("#modal-nuevo-cliente").on('change', '#clienteCedula', function(event) {
 =============================================*/
 
 
-$("#modal-nuevo-cliente").on('change', '#clienteCelular', function(event) {
+$("#modal-nuevo-cliente").on('change', '#clienteCelular', function (event) {
 	event.preventDefault();
 	/* Act on the event */
 
@@ -413,15 +424,15 @@ $("#modal-nuevo-cliente").on('change', '#clienteCelular', function(event) {
 	datos.append("item", "cli_Celular");
 	datos.append("acc", "existe");
 	$.ajax({
-			url: "ajax/clientes.ajax.php",
-			method: "POST",
-			data: datos,
-			cache: false,
-			contentType: false,
-			processData: false,
-			dataType: "json",
-		})
-		.done(function(respuesta) {
+		url: "ajax/clientes.ajax.php",
+		method: "POST",
+		data: datos,
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+	})
+		.done(function (respuesta) {
 			//console.log("respuesta ", respuesta);
 			if (respuesta) {
 				$("#clienteCelular").parent().after('<div class="alert alert-warning">Este Telefono ya existe en la base de datos</div>');
@@ -434,7 +445,7 @@ $("#modal-nuevo-cliente").on('change', '#clienteCelular', function(event) {
 				})*/
 			}
 		})
-		.fail(function(respuesta) {
+		.fail(function (respuesta) {
 			console.log("respuesta.responseText ", respuesta.responseText);
 			console.log("error");
 		});

@@ -3,37 +3,37 @@
 require_once '../modelos/cobros.modelo.php';
 require_once '../controladores/cobros.controlador.php';
 
-class MostrarCobros{
+class MostrarCobros
+{
 
 	public function TablaCobros()
 	{
 
 		$item = null;
-    	$valor = null;
+		$valor = null;
 
-    	$Cobros = CobrosControlador::ctrMostrarCobros($item, $valor);
+		$Cobros = CobrosControlador::ctrMostrarCobros($item, $valor);
 
-    	if (count($Cobros) == 0) {
+		if (count($Cobros) == 0) {
 
-    		echo '{"data": []}';
+			echo '{"data": []}';
 
-		  	return;
-    	}
+			return;
+		}
 
-    	$datosJson = '{
+		$datosJson = '{
 		  "data": [';
 
-		for($i = 0; $i < count($Cobros); $i++)
-		{
-			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button data-toggle='tooltip' data-placement='bottom' title='Actualizar Cobro' type='button' class='btn btn-success btnupdcobro' cobid='".$Cobros[$i]["cob_Id"]."' cobcodigo='".$Cobros[$i]["cob_Codigo"]."'><i class='fas fa-edit'></i></button><button data-toggle='tooltip' data-placement='bottom' title='Eliminar Cobro' type='button' class='btn btn-danger btneliminarcobro' cobid='".$Cobros[$i]["cob_Id"]."'><i class='fas fa-trash'></i></button></div>";
-			$activo = ($Cobros[$i]["cob_Activo"] == 1) ? "<span class='badge badge-success'>Activo</span>" : "<span class='badge badge-danger'>Inactivo</span>" ;
-			$datosJson .='[
-			      "'.$Cobros[$i]["cob_Id"].'",
-			      "'.$Cobros[$i]["cob_Codigo"].'",
-			      "'.$Cobros[$i]["cob_Nombre"].'",
-			      "'.$Cobros[$i]["cob_Fecha"].'",
-			      "'.$activo.'",
-			      "'.$botones.'"
+		for ($i = 0; $i < count($Cobros); $i++) {
+			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button data-toggle='tooltip' data-placement='bottom' title='Actualizar Cobro' type='button' class='btn btn-success btnupdcobro' cobid='" . $Cobros[$i]["cob_Id"] . "' cobcodigo='" . $Cobros[$i]["cob_Codigo"] . "'><i class='fas fa-edit'></i></button><button data-toggle='tooltip' data-placement='bottom' title='Eliminar Cobro' type='button' class='btn btn-danger btneliminarcobro' cobid='" . $Cobros[$i]["cob_Id"] . "'><i class='fas fa-trash'></i></button></div>";
+			$activo = ($Cobros[$i]["cob_Activo"] == 1) ? "<span class='badge badge-success'>Activo</span>" : "<span class='badge badge-danger'>Inactivo</span>";
+			$datosJson .= '[
+			      "' . $Cobros[$i]["cob_Id"] . '",
+			      "' . $Cobros[$i]["cob_Codigo"] . '",
+			      "' . $Cobros[$i]["cob_Nombre"] . '",
+			      "' . $Cobros[$i]["cob_Fecha"] . '",
+			      "' . $activo . '",
+			      "' . $botones . '"
 			    ],';
 		}
 
@@ -44,25 +44,22 @@ class MostrarCobros{
 		}';
 
 		echo $datosJson;
-
 	}
 }
 
 
-if (isset($_POST["acc"])) {
-	$acc = trim($_POST["acc"]);
-}else if (isset($_GET["acc"])) {
-	$acc = trim($_GET["acc"]);
-}else{
-	$acc = "ver";
+$acc = $_POST["acc"] ?? $_GET["acc"] ?? "ver";
+
+if (!isset($_SESSION)) {
+	session_start();
 }
 
-
+date_default_timezone_set('America/Bogota');
 
 switch ($acc) {
 	case 'ver':
 		$ver = new MostrarCobros();
-		$ver -> TablaCobros();
+		$ver->TablaCobros();
 		break;
 	case 'traer':
 		$item = "cob_Id";
@@ -86,9 +83,9 @@ switch ($acc) {
 		break;
 	case 'consecutivo':
 		$consecutivo = CobrosControlador::ctrConsecutivo();
-		$numero = intval(substr($consecutivo[0], 4)+1);
-		$prefijo = substr($consecutivo[0], 0,4);
-		echo json_encode($prefijo.$numero);
+		$numero = intval(substr($consecutivo[0], 4) + 1);
+		$prefijo = substr($consecutivo[0], 0, 4);
+		echo json_encode($prefijo . $numero);
 		break;
 	default:
 		# code...

@@ -2,7 +2,8 @@
 
 
 
-class ClientesControlador{
+class ClientesControlador
+{
 
 
 
@@ -10,40 +11,43 @@ class ClientesControlador{
 	MOSTRAR CLIENTES
 	=============================================*/
 
-	public static function ctrMostrarClientes($item, $valor){
+	public static function ctrMostrarClientes($item, $valor)
+	{
 
 		$tabla = "cliente";
 
 		$respuesta = ClientesModelo::mdlMostrarClientes($tabla, $item, $valor);
 
 		return $respuesta;
-
 	}
-	public static function ctrLiveSearch($item, $valor){
+	public static function ctrLiveSearch($item, $valor)
+	{
 
 		$tabla = "cliente";
 
 		$respuesta = ClientesModelo::mdlLiveSearch($tabla, $item, $valor);
 
 		return $respuesta;
-
 	}
 
 
-	public static function ctrGuardarClientes(){
+	public static function ctrGuardarClientes()
+	{
 
 		$tabla = "cliente";
 
 		if (isset($_POST)) {
 
-			session_start();
+			if (in_array(5, $_SESSION["permisos"]) || in_array(7, $_SESSION["permisos"])) {
 
-			if (in_array(5, $_SESSION["permisos"]) || in_array(7, $_SESSION["permisos"]))
-			{
-				$correo = ($_POST["cli_Correo"] != "") ? $_POST["cli_Correo"] : "notiene@notiene.com" ;
-				$direccion = ($_POST["cli_Direccion"] != "") ? $_POST["cli_Direccion"] : "Sin Direccion" ;
+				$correo = ($_POST["cli_Correo"] != "") ? $_POST["cli_Correo"] : "notiene@notiene.com";
+				$direccion = ($_POST["cli_Direccion"] != "") ? $_POST["cli_Direccion"] : "Sin Direccion";
 
-				if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["cli_Nombre"]) && preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $direccion) && preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $correo) ) {
+				if (
+					preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["cli_Nombre"])
+					&& preg_match('/^$|^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $direccion)
+					&& preg_match('/^$|^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $correo)
+				) {
 
 					$cli_Id = intval($_POST["cli_Id"]);
 					$cli_Cedula = intval($_POST["cli_Cedula"]);
@@ -71,26 +75,18 @@ class ClientesControlador{
 
 					if ($cli_Id > 0) {
 
-						return $respuestaModelo = ClientesModelo::mdlactualizarClientes($tabla,$datosControlador);
+						return ClientesModelo::mdlactualizarClientes($tabla, $datosControlador);
+					} else {
 
-					}else{
-
-						return $respuestaModelo = ClientesModelo::mdlGuardarClientes($tabla,$datosControlador);
-
+						return ClientesModelo::mdlGuardarClientes($tabla, $datosControlador);
 					}
+				} else {
 
-				}else{
-
-					return $arrayName = array('codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio');
-
+					return ['codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio'];
 				}
-			}else{
-				$arrayName = array('codigo' => 'No tienes permisos para realizar esta accion');
-
-				return $arrayName;
+			} else {
+				return ['codigo' => 'No tienes permisos para realizar esta accion'];
 			}
-
 		}
 	}
-
 }

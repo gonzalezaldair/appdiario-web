@@ -2,7 +2,8 @@
 
 
 
-class AbonosControlador{
+class AbonosControlador
+{
 
 
 
@@ -10,14 +11,14 @@ class AbonosControlador{
 	MOSTRAR Abonos
 	=============================================*/
 
-	public static function ctrMostrarAbonos($item, $valor){
+	public static function ctrMostrarAbonos($item, $valor)
+	{
 
 		$tabla = "abono";
 
 		$respuesta = AbonosModelo::mdlMostrarAbonos($tabla, $item, $valor);
 
 		return $respuesta;
-
 	}
 
 
@@ -26,7 +27,6 @@ class AbonosControlador{
 		$tabla = "abono";
 
 		if (isset($_POST)) {
-			session_start();
 
 			if (in_array(1, $_SESSION["permisos"])) {
 				if (preg_match('/^[0-9]+$/', $_POST["abo_Monto"])) {
@@ -46,27 +46,18 @@ class AbonosControlador{
 
 					if ($abo_Id > 0) {
 
-						return $respuestaModelo = AbonosModelo::mdlActualizarAbonos($tabla, $datosControlador);
+						return  AbonosModelo::mdlActualizarAbonos($tabla, $datosControlador);
+					} else {
 
-					}else{
-
-						return $respuestaModelo = AbonosModelo::mdlGuardarAbonos($tabla, $datosControlador);
+						return  AbonosModelo::mdlGuardarAbonos($tabla, $datosControlador);
 					}
-				}else{
+				} else {
 
-					$arrayName = array('codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio');
-
-					return $arrayName;
-
+					return ['codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio'];
 				}
-			}else{
-				$arrayName = array('codigo' => 'No tienes permisos para realizar esta accion');
-
-				return $arrayName;
+			} else {
+				return ['codigo' => 'No tienes permisos para realizar esta accion'];
 			}
-
 		}
 	}
-
-
 }

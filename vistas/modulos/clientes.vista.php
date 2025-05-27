@@ -1,3 +1,6 @@
+<?php if (!$_SESSION["cuandre_caja"]) {
+  echo '<script> window.location = "cajas"; </script>';
+}  ?>
 <!-- Content Header (Page header) -->
 <div class="content-header">
   <div class="container-fluid">
@@ -21,13 +24,16 @@
     <div class="row">
       <div class="col-12">
         <div class="card">
-            <div class="card-header">
-              <button type="button" id="btn-modal-nuevo-cliente" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-nuevo-cliente"><i class="fas fa-plus"></i> Nuevo Cliente</button>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <table style="width: 100%" id="tablaclientes" class="table table-bordered table-hover dt-responsive">
-                <thead>
+          <div class="card-header">
+            <button type="button" id="btn-modal-nuevo-cliente" class="btn btn-primary btn-sm"
+              data-toggle="modal" data-target="#modal-nuevo-cliente"><i class="fas fa-plus"></i> Nuevo
+              Cliente</button>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table style="width: 100%" id="tablaclientes"
+              class="table table-bordered table-hover dt-responsive">
+              <thead>
                 <tr>
                   <th>Cedula</th>
                   <th>Nombres</th>
@@ -39,12 +45,12 @@
                   <th>Estado</th>
                   <th>Acciones</th>
                 </tr>
-                </thead>
-              </table>
-            </div>
-            <!-- /.card-body -->
+              </thead>
+            </table>
           </div>
-          <!-- /.card -->
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
       </div>
     </div>
     <!-- /.row -->
@@ -68,31 +74,36 @@
             <span class="input-group-text"><i class="fas fa-id-card"></i></span>
           </div>
           <input type="hidden" name="clienteid" id="clienteid">
-          <input type="text" id="clienteCedula" name="clienteCedula" class="form-control form-control-lg" placeholder="Ingresar Cedula">
+          <input type="text" id="clienteCedula" name="clienteCedula" class="form-control form-control-lg"
+            placeholder="Ingresar Cedula">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-signature"></i></span>
           </div>
-          <input type="text" id="clienteNombre" name="clienteNombre" class="form-control form-control-lg" placeholder="Ingresar Nombre y Apellido">
+          <input type="text" id="clienteNombre" name="clienteNombre" class="form-control form-control-lg"
+            placeholder="Ingresar Nombre y Apellido">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-phone"></i></span>
           </div>
-          <input maxlength="11" type="text" id="clienteCelular" class="form-control form-control-lg" placeholder="Ingresar Celular">
+          <input maxlength="11" type="text" id="clienteCelular" class="form-control form-control-lg"
+            placeholder="Ingresar Celular">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
           </div>
-          <input type="text" id="clienteDireccion" class="form-control form-control-lg" placeholder="Ingresar Direccion">
+          <input type="text" id="clienteDireccion" class="form-control form-control-lg"
+            placeholder="Ingresar Direccion">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
           </div>
-          <input type="text" id="clienteCorreo" class="form-control form-control-lg" placeholder="Ingresar Correo">
+          <input type="text" id="clienteCorreo" class="form-control form-control-lg"
+            placeholder="Ingresar Correo">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
@@ -119,7 +130,8 @@
         </div>
       </div>
       <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>
+          Close</button>
         <button type="button" class="btn btn-primary btn-guardar-cliente">Guardar</button>
         <!--<button class="btn btn-primary" type="button" disabled>
           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -149,8 +161,10 @@
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-id-card"></i></span>
           </div>
-          <input id="idCliente" type="hidden" class="form-control form-control-lg" placeholder="Ingresar Codigo" readonly>
-          <input id="clientePrestamo" type="text" class="form-control form-control-lg" placeholder="Ingresar Codigo" readonly>
+          <input id="idCliente" type="hidden" class="form-control form-control-lg"
+            placeholder="Ingresar Codigo" readonly>
+          <input id="clientePrestamo" type="text" class="form-control form-control-lg"
+            placeholder="Ingresar Codigo" readonly>
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
@@ -163,29 +177,34 @@
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
           </div>
-          <input id="sumaPrestamo" type="text" class="form-control form-control-lg validarNumero" placeholder="Ingresar Suma">
+          <input id="sumaPrestamo" type="text" class="form-control form-control-lg validarNumero"
+            placeholder="Ingresar Suma">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-comments-dollar"></i></span>
           </div>
-          <input id="interesPrestamo" type="text" class="form-control form-control-lg validarNumero" placeholder="Ingresar Interes">
+          <input id="interesPrestamo" type="text" class="form-control form-control-lg validarNumero"
+            placeholder="Ingresar Interes">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-sort-numeric-up"></i></span>
           </div>
-          <input id="cuotasPrestamo" type="text" class="form-control form-control-lg validarNumero" placeholder="Ingresar Cuotas">
+          <input id="cuotasPrestamo" type="text" class="form-control form-control-lg validarNumero"
+            placeholder="Ingresar Cuotas">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-comments"></i></span>
           </div>
-          <textarea id="observacionesPrestamo" class="form-control" placeholder="Ingresar Observaciones"></textarea>
+          <textarea id="observacionesPrestamo" class="form-control"
+            placeholder="Ingresar Observaciones"></textarea>
         </div>
       </div>
       <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>
+          Close</button>
         <button type="button" class="btn btn-primary btn-guardar-prestamo-cliente">Guardar</button>
       </div>
     </div>

@@ -2,20 +2,21 @@
 
 
 
-class PerfilControlador{
+class PerfilControlador
+{
 
 	/*=============================================
 	MOSTRAR Perfil
 	=============================================*/
 
-	public static function ctrMostrarPerfil($item, $valor){
+	public static function ctrMostrarPerfil($item, $valor)
+	{
 
 		$tabla = "perfiles";
 
 		$respuesta = PerfilModelo::mdlMostrarPerfil($tabla, $item, $valor);
 
 		return $respuesta;
-
 	}
 
 	/*=============================================
@@ -27,15 +28,13 @@ class PerfilControlador{
 	{
 		$tabla = "perfiles";
 		if (isset($_POST)) {
-			session_start();
 
-			if (in_array(17, $_SESSION["permisos"]) || in_array(19, $_SESSION["permisos"]))
-			{
+			if (in_array(17, $_SESSION["permisos"]) || in_array(19, $_SESSION["permisos"])) {
 				if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["per_Nombre"])) {
 
 					$per_Id = intval($_POST["per_Id"]);
-					$per_Codigo = strtoupper (trim($_POST["per_Codigo"]));
-					$per_Nombre = strtoupper (trim($_POST["per_Nombre"]));
+					$per_Codigo = strtoupper(trim($_POST["per_Codigo"]));
+					$per_Nombre = strtoupper(trim($_POST["per_Nombre"]));
 					$per_Activo = intval($_POST["per_Activo"]);
 
 					$datosControlador = array(
@@ -47,14 +46,14 @@ class PerfilControlador{
 
 					if ($per_Id > 0) {
 						return $respuestaModelo = PerfilModelo::mdlActualizarPerfil($tabla, $datosControlador);
-					}else{
+					} else {
 						return $respuestaModelo = PerfilModelo::mdlguardarPerfil($tabla, $datosControlador);
 					}
-				}else{
+				} else {
 
 					return $arrayName = array('codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio');
 				}
-			}else{
+			} else {
 				$arrayName = array('codigo' => 'No tienes permisos para realizar esta accion');
 
 				return $arrayName;
@@ -70,7 +69,7 @@ class PerfilControlador{
 	public static function ctrConsecutivo()
 	{
 		$tabla = "perfiles";
-		$respuestaModelo = PerfilModelo::mdlconsecutivo($tabla,"per_Codigo");
+		$respuestaModelo = PerfilModelo::mdlconsecutivo($tabla, "per_Codigo");
 		return $respuestaModelo;
 	}
 
@@ -79,24 +78,19 @@ class PerfilControlador{
 	public static function ctrEliminarPerfil()
 	{
 		$tabla = "perfiles";
-		session_start();
-		if (in_array(20, $_SESSION["permisos"]))
-		{
-			$per_Id = intval($_POST["perid"]);
-			$respuestaModelo = PerfilModelo::mdlEliminarPerfil($tabla,"per_Id", $per_Id);
-			return $respuestaModelo;
-		}else{
-			$arrayName = array('codigo' => 'No tienes permisos para realizar esta accion');
+		if (!in_array(20, $_SESSION["permisos"])) {
 
-			return $arrayName;
+			return ['codigo' => 'No tienes permisos para realizar esta accion'];
 		}
+
+		return PerfilModelo::mdlEliminarPerfil($tabla, "per_Id", intval($_POST["perid"]));
 	}
 
 	public static function ctrEliminarPermisosPerfil($perfil)
 	{
 		$tabla = "perfil_operaciones";
 		if (isset($_POST)) {
-			$respuestaModelo =PerfilModelo::mdlEliminarPermisosPerfil($tabla, $perfil);
+			$respuestaModelo = PerfilModelo::mdlEliminarPermisosPerfil($tabla, $perfil);
 			return $respuestaModelo;
 		}
 	}
@@ -111,24 +105,23 @@ class PerfilControlador{
 			if ($respuestaEliminar["mensaje"] == "ok") {
 
 				$query = 'INSERT INTO perfil_operaciones(po_PERFIL, po_OPERACION) VALUES ';
-				$permisos = (strlen($_POST["permisos"]) > 0) ? explode(",", $_POST["permisos"]) : false ;
+				$permisos = (strlen($_POST["permisos"]) > 0) ? explode(",", $_POST["permisos"]) : false;
 
 				if ($permisos !== false) {
-					for ($i=0; $i < count($permisos); $i++) {
-						$query .= '('.intval($_POST["perid"]).','.intval($permisos[$i]).'),';
+					for ($i = 0; $i < count($permisos); $i++) {
+						$query .= '(' . intval($_POST["perid"]) . ',' . intval($permisos[$i]) . '),';
 					}
 					$query = substr($query, 0, -1);
 
 					$respuestaModelo = PerfilModelo::mdlGuardarNuevosPermisos($query);
 
 					return $respuestaModelo;
-				}else{
+				} else {
 					return $respuestaEliminar;
 				}
-			}else{
+			} else {
 				return $respuestaEliminar;
 			}
 		}
 	}
-
 }

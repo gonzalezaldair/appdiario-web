@@ -8,7 +8,8 @@ $modulos = ModulosControlador::ctrMostrarModulosPersonalizados($_SESSION["usuari
   <!-- Brand Logo -->
   <a href="inicio" class="brand-link logo-inicio">
     <!--<img src="vistas/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"style="opacity: .8">-->
-    <img src="vistas/dist/img/fav-icon.png" alt="Logo App" class="brand-image img-circle elevation-3"style="opacity: .8">
+    <img src="vistas/dist/img/fav-icon.png" alt="Logo App" class="brand-image img-circle elevation-3"
+      style="opacity: .8">
     <span class="brand-text font-weight-light">COMERC. El Gato</span>
   </a>
 
@@ -20,7 +21,7 @@ $modulos = ModulosControlador::ctrMostrarModulosPersonalizados($_SESSION["usuari
         <img src="vistas/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block"><?php echo $_SESSION["usuario_Nombre"]; ?></a>
+        <a href="#" class="d-block"><?= $_SESSION["usuario_Nombre"]; ?></a>
       </div>
     </div>
 
@@ -38,20 +39,18 @@ $modulos = ModulosControlador::ctrMostrarModulosPersonalizados($_SESSION["usuari
             </p>
           </a>
         </li>
-        <?php
+        <?php for ($i = 0; $i < count($modulos); $i++) : ?>
+          <li class="nav-item">
+            <a href="<?= $modulos[$i]["mod_Url"] ?>" class="nav-link">
+              <i class="nav-icon <?= $modulos[$i]["mod_Icon"] ?>"></i>
+              <p>
+                <?= $modulos[$i]["mod_Nombre"] ?>
+                <!--<span class="right badge badge-danger">New</span>-->
+              </p>
+            </a>
+          </li>
 
-            for ($i=0; $i < count($modulos); $i++) {
-              echo '<li class="nav-item">
-                    <a href="'.$modulos[$i]["mod_Url"].'" class="nav-link">
-                      <i class="nav-icon '.$modulos[$i]["mod_Icon"].'"></i>
-                      <p>
-                        '.$modulos[$i]["mod_Nombre"].'
-                        <!--<span class="right badge badge-danger">New</span>-->
-                      </p>
-                    </a>
-                  </li>';
-            }
-         ?>
+        <?php endfor; ?>
       </ul>
     </nav>
     <!-- /.sidebar-menu -->

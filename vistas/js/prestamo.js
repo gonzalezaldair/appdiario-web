@@ -1,17 +1,17 @@
 /*=============================================
 CARGAR LA TABLA DINÁMICA DE CLIENTES
 =============================================*/
-/*
+
 $.ajax({
 
 	url: "ajax/prestamos.ajax.php",
-	success: function(respuesta) {
+	success: function (respuesta) {
 
 		console.log("respuesta", respuesta);
 
 	}
 
-})*/
+})
 
 
 /*=============================================
@@ -23,16 +23,17 @@ $("#prestamoFormaPago").html("");
 let comboFormapago = new FormData();
 comboFormapago.append("acc", "comboFormaPago");
 $.ajax({
-		url: "ajax/formapago.ajax.php",
-		method: "POST",
-		data: formapago,
-		cache: false,
-		contentType: false,
-		processData: false,
-		dataType: "json",
-	})
-	.done(function(respuesta) {
+	url: "ajax/formapago.ajax.php",
+	method: "POST",
+	data: formapago,
+	cache: false,
+	contentType: false,
+	processData: false,
+	dataType: "json",
+})
+	.done(function (respuesta) {
 		if (respuesta.length > 0) {
+			$("#prestamoFormaPago").append('<option value=0>Seleccione :</option>');
 			for (var i = 0; i < respuesta.length; i++) {
 				if (respuesta[i].frm_Activo == 1) {
 					$("#prestamoFormaPago").append('<option value=' + respuesta[i].frm_Id + '>' + respuesta[i].frm_Nombre + '</option>');
@@ -43,7 +44,7 @@ $.ajax({
 		}
 
 	})
-	.fail(function(respuesta) {
+	.fail(function (respuesta) {
 		console.log("error ", respuesta);
 	});
 /*=============================================
@@ -51,19 +52,19 @@ $.ajax({
 =============================================*/
 
 
-$("#btnmodalnuevoprestamo").on('click', function(event) {
+$("#btnmodalnuevoprestamo").on('click', function (event) {
 	event.preventDefault();
 	/* Act on the event */
 	$("#errorPrestamos").html();
 	$("#prestamoId").val("");
 	/*$("#prestamoFormaPago").val(1);*/
 	$("#prestamoCliente").val("");
-	$("#prestamoInteres").val("");
+	//$("#prestamoInteres").val("20");
 	$("#prestamoMontoPrestado").val("");
 	$("#prestamoCuotas").val("");
 	$("#prestamoObservaciones").val("");
 	$("#prestamoUsuario").val("");
-	$("#prestamoInteres").attr('readonly', false);
+	$("#prestamoInteres").attr('readonly', true);
 	$("#prestamoMontoPrestado").attr('readonly', false);
 	$("#prestamoCliente").attr('readonly', false);
 	$("#prestamoMontoInteres").val("");
@@ -77,20 +78,32 @@ $("#btnmodalnuevoprestamo").on('click', function(event) {
 });
 
 
+$("#prestamoFormaPago").on('change', function (event) {
+	event.preventDefault();
+	const valor = $('#prestamoFormaPago option:selected').text().toUpperCase();
+
+	if (valor == "DIARIO") {
+		$("#prestamoCuotas").val(35);
+	} else {
+		$("#prestamoCuotas").val("");
+	}
+
+});
+
 
 /*=============================================
 CARGAR LA TABLA DINÁMICA DE CLIENTES
 =============================================*/
 
 
-let tablaPrestamos = $('#tablaPrestamos').DataTable( {
-	"order": [[ 0, "desc" ]],
-    "ajax": "ajax/prestamos.ajax.php",
-    "deferRender": true,
+let tablaPrestamos = $('#tablaPrestamos').DataTable({
+	"order": [[0, "desc"]],
+	"ajax": "ajax/prestamos.ajax.php",
+	"deferRender": true,
 	"retrieve": true,
 	"processing": true,
 	"language": lenguajeTabla
-} );
+});
 
 
 /**
@@ -98,7 +111,7 @@ let tablaPrestamos = $('#tablaPrestamos').DataTable( {
  */
 
 
-$("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo', function(event) {
+$("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo', function (event) {
 	event.preventDefault();
 	/* Act on the event */
 	$("#errorPrestamos").html("");
@@ -135,15 +148,15 @@ $("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo', function(event) 
 		datos.append("pre_USUARIO", user_Id);
 		datos.append("acc", "add");
 		$.ajax({
-				url: "ajax/prestamos.ajax.php",
-				method: "POST",
-				data: datos,
-				cache: false,
-				contentType: false,
-				processData: false,
-				dataType: "json",
-			})
-			.done(function(respuesta) {
+			url: "ajax/prestamos.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+			.done(function (respuesta) {
 				if (respuesta.mensaje == 'ok') {
 					Swal.fire({
 						title: 'Guardar Datos',
@@ -167,7 +180,7 @@ $("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo', function(event) 
 					});
 				}
 			})
-			.fail(function(respuesta) {
+			.fail(function (respuesta) {
 				console.log("respuesta", respuesta.responseText);
 				console.log("error");
 			});
@@ -183,7 +196,7 @@ $("#modal-nuevo-prestamo").on('click', '.btn-guardar-prestamo', function(event) 
 =============================================*/
 
 
-$("input.validarNumero").on("input", function() {
+$("input.validarNumero").on("input", function () {
 	this.value = this.value.replace(/[^0-9.]/g, '');
 });
 
@@ -193,7 +206,7 @@ $("input.validarNumero").on("input", function() {
 =============================================*/
 
 
-$('#tablaPrestamos').on('click', '.btnupdprestamo', function(event) {
+$('#tablaPrestamos').on('click', '.btnupdprestamo', function (event) {
 	event.preventDefault();
 	$("#errorPrestamos").html("");
 	const prestamoid = $(this).attr('prestamoid');
@@ -201,15 +214,15 @@ $('#tablaPrestamos').on('click', '.btnupdprestamo', function(event) {
 	datos.append("prestamoid", prestamoid);
 	datos.append("acc", "traer");
 	$.ajax({
-			url: "ajax/prestamos.ajax.php",
-			method: "POST",
-			data: datos,
-			cache: false,
-			contentType: false,
-			processData: false,
-			dataType: "json",
-		})
-		.done(function(respuesta) {
+		url: "ajax/prestamos.ajax.php",
+		method: "POST",
+		data: datos,
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+	})
+		.done(function (respuesta) {
 			$("#prestamoId").val(respuesta["pre_Id"]);
 			$("#prestamoCliente").val(respuesta["pre_CLIENTE"]);
 			$("#prestamoFormaPago").val(respuesta["pre_FormaPago"]);
@@ -217,8 +230,8 @@ $('#tablaPrestamos').on('click', '.btnupdprestamo', function(event) {
 			$("#prestamoInteres").attr('readonly', true);
 			$("#prestamoMontoPrestado").attr('readonly', true);
 			$("#prestamoCliente").attr('readonly', true);
-			$("#prestamoMontoPrestado").val($.number(respuesta["pre_MontoPrestado"], 2,".",","));
-			$("#prestamoMontoPrestado").attr('MontoReal',respuesta["pre_MontoPrestado"]);
+			$("#prestamoMontoPrestado").val($.number(respuesta["pre_MontoPrestado"], 2, ".", ","));
+			$("#prestamoMontoPrestado").attr('MontoReal', respuesta["pre_MontoPrestado"]);
 			$("#prestamoCuotas").val(respuesta["pre_Cuotas"]);
 			$("#prestamoObservaciones").val(respuesta["pre_Observaciones"]);
 			$("#prestamoUsuario").val(respuesta["pre_USUARIO"]);
@@ -229,7 +242,7 @@ $('#tablaPrestamos').on('click', '.btnupdprestamo', function(event) {
 			$("#modal-nuevo-prestamo .modal-header").removeClass('bg-primary');
 			$("#modal-nuevo-prestamo").modal("show");
 		})
-		.fail(function(respuesta) {
+		.fail(function (respuesta) {
 			console.log("error ", respuesta);
 		});
 
@@ -239,15 +252,21 @@ $('#tablaPrestamos').on('click', '.btnupdprestamo', function(event) {
 	TRAER DATOS PARA HACER ABONO
 =============================================*/
 
-$('#tablaPrestamos').on('click', '.btnabono', function(event) {
+$('#tablaPrestamos').on('click', '.btnabono', function (event) {
 	event.preventDefault();
 	$("#prestamosabonoSuma").val(0);
 	const prestamoid = $(this).attr('prestamoid');
 	const saldo = $(this).attr('saldo');
-	$("#prestamosabonoSuma").attr('max', saldo);
+	const cuotas = $(this).attr('pre_Cuotas');
+	const total = $(this).attr('totalPrestado');
+	const redondeado = Math.round(parseFloat(total / cuotas) / 100) * 100;
+	const valorAbono = (saldo > redondeado) ? redondeado : saldo;
+
+	$("#prestamosabonoSuma").attr({ 'max': saldo, 'min': total / cuotas, 'AbonoReal': valorAbono });
+	$("#prestamosabonoSuma").val(valorAbono);
 	$("#prestamoabonoid").val(prestamoid);
-	$("#prestamosabonosaldo").val($.number(saldo, 2,".",","));
-	$("#prestamosabonosaldo").attr("saldo",saldo);
+	$("#prestamosabonosaldo").val($.number(saldo, 2, ".", ","));
+	$("#prestamosabonosaldo").attr("saldo", saldo);
 
 	$("#modal-nuevo-abono").modal("show");
 });
@@ -258,7 +277,7 @@ $('#tablaPrestamos').on('click', '.btnabono', function(event) {
 =============================================*/
 
 
-$('#modal-nuevo-abono').on('click', '.btn-guardar-abono', function(event) {
+$('#modal-nuevo-abono').on('click', '.btn-guardar-abono', function (event) {
 	event.preventDefault();
 	const abo_Id = ($("#abo_Id").val() != "") ? $("#abo_Id").val() : 0;
 	const abo_PRESTAMO = $("#prestamoabonoid").val();
@@ -271,15 +290,15 @@ $('#modal-nuevo-abono').on('click', '.btn-guardar-abono', function(event) {
 		datos.append("abo_Monto", abo_Monto);
 		datos.append("acc", "add");
 		$.ajax({
-				url: "ajax/abonos.ajax.php",
-				method: "POST",
-				data: datos,
-				cache: false,
-				contentType: false,
-				processData: false,
-				dataType: "json",
-			})
-			.done(function(respuesta) {
+			url: "ajax/abonos.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+		})
+			.done(function (respuesta) {
 				if (respuesta.mensaje === 'ok') {
 					Swal.fire({
 						title: 'Guardar Abono',
@@ -304,7 +323,7 @@ $('#modal-nuevo-abono').on('click', '.btn-guardar-abono', function(event) {
 					});
 				}
 			})
-			.fail(function(respuesta) {
+			.fail(function (respuesta) {
 				console.info("respuesta", respuesta.responseText);
 				console.log("error");
 			});
@@ -325,12 +344,12 @@ $('#modal-nuevo-abono').on('click', '.btn-guardar-abono', function(event) {
 	MOSTRAR EN FORMATO DINERO prestamoMontoPrestado
 =============================================*/
 
-$('#modal-nuevo-prestamo').on('change', '#prestamoMontoPrestado', function(event) {
+$('#modal-nuevo-prestamo').on('change', '#prestamoMontoPrestado', function (event) {
 	event.preventDefault();
 	/* Act on the event */
 
 	$('#prestamoMontoPrestado').attr('MontoReal', $('#prestamoMontoPrestado').val());
-	$('#prestamoMontoPrestado').val($.number($('#prestamoMontoPrestado').val(), 2,".",","));
+	$('#prestamoMontoPrestado').val($.number($('#prestamoMontoPrestado').val(), 2, ".", ","));
 });
 
 
@@ -340,7 +359,7 @@ $('#modal-nuevo-prestamo').on('change', '#prestamoMontoPrestado', function(event
 
 
 
-$("#modal-nuevo-abono").on('change','#prestamosabonoSuma', function(event) {
+$("#modal-nuevo-abono").on('change', '#prestamosabonoSuma', function (event) {
 	event.preventDefault();
 	/* Act on the event */
 
@@ -394,7 +413,7 @@ $("#modal-nuevo-abono").on('change','#prestamosabonoSuma', function(event) {
 =============================================*/
 
 
-$('#modal-nuevo-prestamo').on('keyup', '#prestamoCliente', function(event) {
+$('#modal-nuevo-prestamo').on('keyup', '#prestamoCliente', function (event) {
 	event.preventDefault();
 	/* Act on the event */
 	$('#livesearchPersonaPrestamos').html('');
@@ -406,21 +425,21 @@ $('#modal-nuevo-prestamo').on('keyup', '#prestamoCliente', function(event) {
 		datos.append("clienteid", valorbusqueda);
 		datos.append("acc", "livesearch");
 		$.ajax({
-				url: 'ajax/clientes.ajax.php',
-				type: 'post',
-				cache: false,
-				contentType: false,
-				processData: false,
-				data: datos,
-			})
-			.done(function(data) {
+			url: 'ajax/clientes.ajax.php',
+			type: 'post',
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: datos,
+		})
+			.done(function (data) {
+				$('#livesearchPersonaPrestamos').html('');
 				const obj = JSON.parse(data);
-				$.each(obj, function(index, value) {
+				$.each(obj, function (index, value) {
 					$('#livesearchPersonaPrestamos').append('<li class="list-group-item link-class"> ' + value.cli_Nombre + ' | <span> ' + value.cli_Celular + '</span> | <span> ' + value.cli_Id + '</span></li>');
 				});
-				console.log("success");
 			})
-			.fail(function(respuesta) {
+			.fail(function (respuesta) {
 				console.log("respuesta", respuesta.responseText);
 				console.log("error");
 			});
@@ -434,7 +453,7 @@ $('#modal-nuevo-prestamo').on('keyup', '#prestamoCliente', function(event) {
 ================================================================*/
 
 
-$('#livesearchPersonaPrestamos').on('click', 'li', function() {
+$('#livesearchPersonaPrestamos').on('click', 'li', function () {
 	const click_text = $(this).text().split('|');
 	$('#prestamoCliente').val($.trim(click_text[2]));
 	$("#livesearchPersonaPrestamos").html('');
