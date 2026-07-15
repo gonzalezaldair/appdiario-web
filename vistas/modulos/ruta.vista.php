@@ -1,4 +1,12 @@
+<?php
+if (!in_array($_SESSION["usuario_PERFIL"], [1, 4])) {
+  echo '<script> window.location = "inicio"; </script>';
+}
+
+?>
 <!-- Content Header (Page header) -->
+
+
 <div class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
@@ -6,7 +14,8 @@
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="inicio">Inicio</a></li>
+          <li class="breadcrumb-item"><a href="inicio">Inicio</a>
+          </li>
           <li class="breadcrumb-item active">Ruta</li>
         </ol>
       </div><!-- /.col -->

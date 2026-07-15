@@ -1,3 +1,10 @@
+<?php
+if (!in_array($_SESSION["usuario_PERFIL"], [1, 4])) {
+  echo '<script> window.location = "inicio"; </script>';
+}
+
+?>
+
 <!-- Content Header (Page header) -->
 <div class="content-header">
   <div class="container-fluid">
@@ -21,13 +28,19 @@
     <div class="row">
       <div class="col-12">
         <div class="card">
-            <div class="card-header">
-              <button type="button" id="btnmodalnuevocobro" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-nuevo-cobro"><i class="fas fa-plus"></i> Nuevo Cobro</button>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <table style="width: 100%" id="tablaCobros" class="table table-bordered table-hover dt-responsive">
-                <thead>
+          <div class="card-header">
+            <button type="button" id="btnmodalnuevocobro" class="btn btn-primary btn-sm" data-toggle="modal"
+              data-target="#modal-nuevo-cobro"><i class="fas fa-plus"></i> Nuevo Cobro</button>
+
+            <button type="button" id="btnmodalnuevomovimientocaja" class="btn btn-success btn-sm"
+              data-toggle="modal" data-target="#modal-nuevo-movimiento-caja"><i class="fas fa-plus"></i>
+              Nuevo Movimiento</button>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table style="width: 100%" id="tablaCobros"
+              class="table table-bordered table-hover dt-responsive">
+              <thead>
                 <tr>
                   <th>Id</th>
                   <th>Codigo</th>
@@ -36,13 +49,13 @@
                   <th>Activo</th>
                   <th>Acciones</th>
                 </tr>
-                </thead>
+              </thead>
 
-              </table>
-            </div>
-            <!-- /.card-body -->
+            </table>
           </div>
-          <!-- /.card -->
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
       </div>
     </div>
     <!-- /.row -->
@@ -50,6 +63,57 @@
 </div>
 <!-- /.content -->
 
+
+<div class="modal fade" id="modal-nuevo-movimiento-caja">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h4 class="modal-title">Nuevo Movimiento</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3 selectTipoMovimiento">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-eye-slash"></i></span>
+          </div>
+          <input type="hidden" id="cobroId">
+          <select id="tipoMovimiento" class="form-control form-control-lg">
+            <option value="0">Seleccionar Tipo: </option>
+            <option value="SALDO_INICIAL">SALDO INICIAL</option>
+            <option value="INYECCION_CAPITAL">INYECCION CAPITAL</option>
+            <option value="RETIRO">RETIRO</option>
+            <option value="AJUSTE">AJUSTE</option>
+          </select>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+          </div>
+          <input type="text" id="montoMovimiento" class="form-control form-control-lg"
+            placeholder="Ingresar Monto">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-layer-group"></i></span>
+          </div>
+
+          <textarea id="observacionMovimiento" class="form-control form-control-lg"
+            placeholder="Ingresar Observación"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>
+          Close</button>
+        <button type="button" class="btn btn-primary btn-guardar-movimiento">Guardar</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 <div class="modal fade" id="modal-nuevo-cobro">
   <div class="modal-dialog">
@@ -66,13 +130,15 @@
             <span class="input-group-text"><i class="fas fa-fingerprint"></i></span>
           </div>
           <input type="hidden" id="cobroId">
-          <input id="cobroCodigo" type="text" class="form-control form-control-lg" placeholder="Ingresar Codigo" readonly>
+          <input id="cobroCodigo" type="text" class="form-control form-control-lg"
+            placeholder="Ingresar Codigo" readonly>
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-layer-group"></i></span>
           </div>
-          <input id="cobroNombre" type="text" class="form-control form-control-lg" placeholder="Ingresar Nombre">
+          <input id="cobroNombre" type="text" class="form-control form-control-lg"
+            placeholder="Ingresar Nombre">
         </div>
         <div class="input-group mb-3 selectrutaActivo">
           <div class="input-group-prepend">
@@ -85,7 +151,8 @@
         </div>
       </div>
       <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>
+          Close</button>
         <button type="button" class="btn btn-primary btn-guardar-cobro">Guardar</button>
       </div>
     </div>
@@ -94,4 +161,3 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-

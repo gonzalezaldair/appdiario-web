@@ -1,3 +1,10 @@
+<?php
+if (!in_array($_SESSION["usuario_PERFIL"], [1, 4])) {
+  echo '<script> window.location = "inicio"; </script>';
+}
+
+?>
+
 <!-- Content Header (Page header) -->
 <div class="content-header">
   <div class="container-fluid">
@@ -21,13 +28,16 @@
     <div class="row">
       <div class="col-12">
         <div class="card">
-            <div class="card-header">
-              <button type="button" id="btnmodalnuevaformapago" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-nueva-forma-pago"><i class="fas fa-plus"></i> Nueva Forma de Pago</button>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <table style="width: 100%" id="tablaformapago" class="table table-bordered table-hover dt-responsive">
-                <thead>
+          <div class="card-header">
+            <button type="button" id="btnmodalnuevaformapago" class="btn btn-primary btn-sm"
+              data-toggle="modal" data-target="#modal-nueva-forma-pago"><i class="fas fa-plus"></i> Nueva
+              Forma de Pago</button>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table style="width: 100%" id="tablaformapago"
+              class="table table-bordered table-hover dt-responsive">
+              <thead>
                 <tr>
                   <th>Id</th>
                   <th>Codigo</th>
@@ -35,12 +45,12 @@
                   <th>Estado</th>
                   <th>Acciones</th>
                 </tr>
-                </thead>
-              </table>
-            </div>
-            <!-- /.card-body -->
+              </thead>
+            </table>
           </div>
-          <!-- /.card -->
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
       </div>
     </div>
     <!-- /.row -->
@@ -63,14 +73,16 @@
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-fingerprint"></i></span>
           </div>
-           <input type="text" id="FormaPagocodigo" class="form-control form-control-lg" placeholder="Ingresar Codigo" readonly>
-           <input type="hidden" id="FormaPagoid">
+          <input type="text" id="FormaPagocodigo" class="form-control form-control-lg"
+            placeholder="Ingresar Codigo" readonly>
+          <input type="hidden" id="FormaPagoid">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-money-check-alt"></i></span>
           </div>
-           <input id="FormaPagonombre" type="text" class="form-control form-control-lg" placeholder="Ingresar Nombre">
+          <input id="FormaPagonombre" type="text" class="form-control form-control-lg"
+            placeholder="Ingresar Nombre">
         </div>
         <div class="input-group mb-3 selectrutaActivo" style="display:none;">
           <div class="input-group-prepend">
@@ -83,7 +95,8 @@
         </div>
       </div>
       <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>
+          Close</button>
         <button type="button" class="btn btn-primary btn-guardar-formapago">Guardar</button>
       </div>
     </div>

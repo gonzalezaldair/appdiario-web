@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php
+if (!isset($_SESSION)) {
+  session_start();
+}
+?>
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -49,6 +53,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $_GET["action"] == "abonos" ||
             $_GET["action"] == "forma-pago" ||
             $_GET["action"] == "prestamos" ||
+            $_GET["action"] == "gastos" ||
             $_GET["action"] == "rol" ||
             $_GET["action"] == "ruta" ||
             $_GET["action"] == "salir" ||
@@ -113,6 +118,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script src="vistas/js/perfil.js?v=<?= filemtime("vistas/js/perfil.js"); ?>"></script>
   <script src="vistas/js/reportes.js?v=<?= filemtime("vistas/js/reportes.js"); ?>"></script>
   <script src="vistas/js/cajas.js?v=<?= filemtime("vistas/js/cajas.js"); ?>"></script>
+  <script src="vistas/js/gastos.js?v=<?= filemtime("vistas/js/gastos.js"); ?>"></script>
+  <script src="vistas/js/movimientos-caja.js?v=<?= filemtime("vistas/js/movimientos-caja.js"); ?>"></script>
 
 </body>
 

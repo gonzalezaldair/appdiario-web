@@ -8,7 +8,7 @@ $prestamos = PrestamosControlador::ctrMostrarPrestamos($item, $valor);
 $PrestamosTablaInicio = PrestamosControlador::ctrdatatableprestamos($_SESSION["usuario_Id"]);
 $usuario = UsuariosControlador::ctrMostrarUsuarios($item, $valor);
 $Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
- ?>
+?>
 <!-- Content Header (Page header) -->
 <div class="content-header">
   <div class="container-fluid">
@@ -123,14 +123,14 @@ $Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
                 </thead>
                 <tbody>
                   <?php
-                    if (is_array($PrestamosTablaInicio) && count($PrestamosTablaInicio) > 0) {
-                      $numrow = (count($PrestamosTablaInicio) > 7) ? 7 :  count($PrestamosTablaInicio);
-                     for ($i=0; $i < $numrow; $i++) {
+                  if (is_array($PrestamosTablaInicio) && count($PrestamosTablaInicio) > 0) {
+                    $numrow = (count($PrestamosTablaInicio) > 7) ? 7 :  count($PrestamosTablaInicio);
+                    for ($i = 0; $i < $numrow; $i++) {
                       echo '<tr>
-                      <td><a href="#">'.$PrestamosTablaInicio[$i]["pre_Id"].'</a></td>
-                      <td>'.$PrestamosTablaInicio[$i]["cli_Nombre"].'</td>
-                      <td>$ '.number_format($PrestamosTablaInicio[$i]["pre_MontoPrestado"], 2, ",",".").'</td>
-                      <td>'.$PrestamosTablaInicio[$i]["usu_Nombre"].'</td>
+                      <td><a href="#">' . $PrestamosTablaInicio[$i]["pre_Id"] . '</a></td>
+                      <td>' . $PrestamosTablaInicio[$i]["cli_Nombre"] . '</td>
+                      <td>$ ' . number_format($PrestamosTablaInicio[$i]["pre_MontoPrestado"], 2, ",", ".") . '</td>
+                      <td>' . $PrestamosTablaInicio[$i]["usu_Nombre"] . '</td>
                       </tr>';
                     }
                   }
@@ -142,7 +142,7 @@ $Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
           </div>
           <!-- /.card-body -->
           <div class="card-footer clearfix">
-           <!-- <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>-->
+            <!-- <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>-->
             <a href="prestamos" class="btn btn-sm btn-secondary float-right">Ver Todos Los Prestamos</a>
           </div>
           <!-- /.card-footer -->
@@ -168,28 +168,28 @@ $Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
           <div class="card-body p-0">
             <ul class="products-list product-list-in-card pl-2 pr-2">
               <?php
-                  if (is_array($Abonos) && count($Abonos) > 0) {
-                    $numrow = (count($Abonos) > 6) ? 6 :  count($Abonos);
-                   for ($i=0; $i < $numrow; $i++) {
-                    $monto =number_format($Abonos[$i]["abo_Monto"], 2, ",",".");
-                    echo '<li class="item">
+              if (is_array($Abonos) && count($Abonos) > 0) {
+                $numrow = (count($Abonos) > 6) ? 6 :  count($Abonos);
+                for ($i = 0; $i < $numrow; $i++) {
+                  $monto = number_format($Abonos[$i]["abo_Monto"], 2, ",", ".");
+                  echo '<li class="item">
                             <div class="product-img">
                               <img src="vistas/dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
                             </div>
                             <div class="product-info">
-                              <a href="javascript:void(0)" class="product-title">'.$Abonos[$i]["abo_Fecha"].'
-                              <span class="badge badge-warning float-right">$ '.$monto.'</span></a>
+                              <a href="javascript:void(0)" class="product-title">' . $Abonos[$i]["abo_Fecha"] . '
+                              <span class="badge badge-warning float-right">$ ' . $monto . '</span></a>
                               <span class="product-description">
-                              '.$Abonos[$i]["abo_Fecha"].'
+                              ' . $Abonos[$i]["abo_Fecha"] . '
                               </span>
                             </div>
                           </li>';
-                  }
                 }
+              }
 
 
-                  ?>
-                  <!--<li class="item">
+              ?>
+              <!--<li class="item">
                     <div class="product-img">
                       <img src="vistas/dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
                     </div>
@@ -201,19 +201,19 @@ $Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
                         </span>
                       </div>
                     </li>-->
-                    <!-- /.item -->
-                  </ul>
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer text-center">
-                  <a href="abonos" class="uppercase">Ver Abonos</a>
-                </div>
-                <!-- /.card-footer -->
-              </div>
-              <!-- /.card -->
-            </div>
-
+              <!-- /.item -->
+            </ul>
           </div>
-        </div><!-- /.container-fluid -->
+          <!-- /.card-body -->
+          <div class="card-footer text-center">
+            <a href="abonos" class="uppercase">Ver Abonos</a>
+          </div>
+          <!-- /.card-footer -->
+        </div>
+        <!-- /.card -->
       </div>
+
+    </div>
+  </div><!-- /.container-fluid -->
+</div>
 <!-- /.content -->

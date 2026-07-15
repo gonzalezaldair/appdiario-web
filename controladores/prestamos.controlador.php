@@ -53,6 +53,7 @@ class PrestamosControlador
 					$pre_USUARIO  = intval($_POST["pre_USUARIO"]);
 					$interes = ($pre_Interes > 9) ? "1." . $pre_Interes : "1.0" . $pre_Interes;
 					$pre_MontoInteres = $pre_MontoPrestado * $interes;
+					$pre_CajaId = intval($_SESSION["cajaAbiertaId"]);
 
 					$datosControlador = array(
 						'pre_Id' => $pre_Id,
@@ -64,16 +65,29 @@ class PrestamosControlador
 						'pre_Cuotas' => $pre_Cuotas,
 						'pre_Observaciones' => $pre_Observaciones,
 						'pre_USUARIO' => $pre_USUARIO,
-						'pre_MontoInteres' => $pre_MontoInteres
+						'pre_MontoInteres' => $pre_MontoInteres,
+						'pre_CUADRE_CAJA' => $pre_CajaId
 					);
 
 					if ($pre_Id > 0) {
 
-						return $respuestaModelo = PrestamosModelo::mdlactualizarPrestamo($tabla, $datosControlador);
-					} else {
-
-						return $respuestaModelo = PrestamosModelo::mdlguardarPrestamo($tabla, $datosControlador);
+						return PrestamosModelo::mdlactualizarPrestamo($tabla, $datosControlador);
 					}
+
+					$respuestaModelo = PrestamosModelo::mdlguardarPrestamo($tabla, $datosControlador);
+
+					if ($respuestaModelo["mensaje"] == "ok") {
+
+						return MovimientosCajaModelo::mdlRegistrarMovimientoCaja("movimiento_caja", [
+							"mov_Observacion" => "Préstamo Registrado: " . number_format($pre_MontoPrestado, 2, ",", ".") . " con interes de " . $pre_Interes . "% por " . $pre_Cuotas . " cuotas",
+							"mov_Monto" => $pre_MontoPrestado,
+							"mov_Tipo" => "PRESTAMO",
+							"mov_Usuario" => $pre_USUARIO,
+							"mov_Referencia" => $respuestaModelo["lastInsertId"],
+							"mov_Fecha" => date("Y-m-d H:i:s")
+						]);
+					}
+					return $respuestaModelo;
 				} else {
 					$arrayName = array('codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio');
 					return $arrayName;

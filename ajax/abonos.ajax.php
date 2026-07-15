@@ -1,6 +1,7 @@
 <?php
 
 require_once '../modelos/abonos.modelo.php';
+require_once '../modelos/movimientos-caja.modelo.php';
 require_once '../controladores/abonos.controlador.php';
 
 class MostrarAbonos

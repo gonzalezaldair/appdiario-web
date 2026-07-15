@@ -64,18 +64,24 @@ class AbonosModelo
 	{
 		try {
 
-			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (abo_PRESTAMO, abo_Monto, abo_Fecha) VALUES (:abo_PRESTAMO, :abo_Monto, :abo_Fecha)");
+			$conexion = Conexion::conectar();
+
+			$stmt = $conexion->prepare("INSERT INTO $tabla (abo_PRESTAMO, abo_Monto, abo_Fecha,abo_USUARIO,abo_CUADRE_CAJA) VALUES (:abo_PRESTAMO, :abo_Monto, :abo_Fecha, :abo_USUARIO, :abo_CUADRE_CAJA)");
 
 			$stmt->bindParam(":abo_PRESTAMO", $datosModelo["abo_PRESTAMO"], PDO::PARAM_INT);
 			$stmt->bindParam(":abo_Monto", $datosModelo["abo_Monto"], PDO::PARAM_INT);
 			$stmt->bindParam(":abo_Fecha", $datosModelo["abo_Fecha"], PDO::PARAM_STR);
+			$stmt->bindParam(":abo_USUARIO", $datosModelo["abo_USUARIO"], PDO::PARAM_INT);
+			$stmt->bindParam(":abo_CUADRE_CAJA", $datosModelo["abo_CUADRE_CAJA"], PDO::PARAM_INT);
 
 
 			$stmt->execute();
 
+			$lastInsertId = $conexion->lastInsertId();
+
 			$stmt = null;
 
-			return ["mensaje" => "ok"];
+			return ["mensaje" => "ok", "lastInsertId" => $lastInsertId];
 		} catch (PDOException $e) {
 
 			return [

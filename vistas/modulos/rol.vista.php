@@ -1,3 +1,9 @@
+<?php
+if ($_SESSION["usuario_PERFIL"] == 1) {
+  echo '<script> window.location = "inicio"; </script>';
+}
+
+?>
 <!-- Content Header (Page header) -->
 <div class="content-header">
   <div class="container-fluid">
@@ -22,13 +28,14 @@
     <div class="row">
       <div class="col-12">
         <div class="card">
-            <div class="card-header">
-              <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-nuevo-rol"><i class="fas fa-plus"></i> Nuevo Rol</button>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <table style="width: 100%;" id="example1" class="table table-bordered table-hover">
-                <thead>
+          <div class="card-header">
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+              data-target="#modal-nuevo-rol"><i class="fas fa-plus"></i> Nuevo Rol</button>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table style="width: 100%;" id="example1" class="table table-bordered table-hover">
+              <thead>
                 <tr>
                   <th>Rendering engine</th>
                   <th>Browser</th>
@@ -36,8 +43,8 @@
                   <th>Engine version</th>
                   <th>CSS grade</th>
                 </tr>
-                </thead>
-                <tbody>
+              </thead>
+              <tbody>
                 <tr>
                   <td>Trident</td>
                   <td>Internet
@@ -445,8 +452,8 @@
                   <td>-</td>
                   <td>U</td>
                 </tr>
-                </tbody>
-                <tfoot>
+              </tbody>
+              <tfoot>
                 <tr>
                   <th>Rendering engine</th>
                   <th>Browser</th>
@@ -454,12 +461,12 @@
                   <th>Engine version</th>
                   <th>CSS grade</th>
                 </tr>
-                </tfoot>
-              </table>
-            </div>
-            <!-- /.card-body -->
+              </tfoot>
+            </table>
           </div>
-          <!-- /.card -->
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
       </div>
     </div>
     <!-- /.row -->
@@ -494,7 +501,8 @@
         </div>
       </div>
       <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>
+          Close</button>
         <button type="button" class="btn btn-primary">Guardar</button>
       </div>
     </div>

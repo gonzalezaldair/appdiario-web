@@ -8,32 +8,17 @@ class ReportesModelo
 	{
 		try {
 
-			if ($fechaFinal == null) {
+			if ($fechaInicial == null) {
 
-				$stmt = Conexion::conectar()->prepare("SELECT sum(T1.pre_MontoInteres - T1.pre_MontoPrestado) as INTERES, sum(T1.pre_MontoPrestado) AS PRESTADO, sum(IFNULL(((T1.pre_MontoInteres) -(SELECT SUM(Abo_Monto) FROM abono WHERE abono.abo_PRESTAMO = T1.pre_Id ) ), T1.pre_MontoInteres ) )AS SALDO FROM prestamo T1");
-
-				$stmt->execute();
-
-				return $stmt->fetch();
-			} else if ($fechaInicial == $fechaFinal) {
-
-				$stmt = Conexion::conectar()->prepare("SELECT sum(T1.pre_MontoInteres - T1.pre_MontoPrestado) as INTERES, sum(T1.pre_MontoPrestado) AS PRESTADO, sum(IFNULL(((T1.pre_MontoInteres) -(SELECT SUM(Abo_Monto) FROM abono WHERE abono.abo_PRESTAMO = T1.pre_Id ) ), T1.pre_MontoInteres ) )AS SALDO FROM prestamo T1 WHERE T1.pre_Fecha LIKE '%$fechaFinal%'");
-
+				$stmt = Conexion::conectar()->prepare("CALL `sp_reporte_caja`(null, null);");
 				$stmt->execute();
 
 				return $stmt->fetch();
 			} else {
 
-				$fechaActual = new DateTime();
-				$fechaActual->add(new DateInterval("P1D"));
-				$fechaActualMasUno = $fechaActual->format("Y-m-d");
-
-				$fechaFinal2 = new DateTime($fechaFinal);
-				$fechaFinal2->add(new DateInterval("P1D"));
-				$fechaFinalMasUno = $fechaFinal2->format("Y-m-d");
-
-				$stmt = Conexion::conectar()->prepare("SELECT sum(T1.pre_MontoInteres - T1.pre_MontoPrestado) as INTERES, sum(T1.pre_MontoPrestado) AS PRESTADO, sum(IFNULL(((T1.pre_MontoInteres) -(SELECT SUM(Abo_Monto) FROM abono WHERE abono.abo_PRESTAMO = T1.pre_Id ) ), T1.pre_MontoInteres ) )AS SALDO FROM prestamo T1 WHERE T1.pre_Fecha BETWEEN '$fechaInicial' AND '$fechaFinalMasUno'");
-
+				$stmt = Conexion::conectar()->prepare("CALL `sp_reporte_caja`(:fechaInicial, :fechaFinal);");
+				$stmt->bindParam(":fechaInicial", $fechaInicial, PDO::PARAM_STR);
+				$stmt->bindParam(":fechaFinal", $fechaFinal, PDO::PARAM_STR);
 				$stmt->execute();
 
 				return $stmt->fetch();

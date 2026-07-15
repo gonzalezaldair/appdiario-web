@@ -87,9 +87,9 @@ class PrestamosModelo
 	public static function mdlguardarPrestamo($tabla, $datosModelo)
 	{
 		try {
-
+			$conexion = Conexion::conectar();
 			$fecha = date("Y-m-d H:i:s");
-			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(pre_Fecha,pre_CLIENTE, pre_FormaPago, pre_Interes, pre_MontoPrestado, pre_MontoInteres, pre_Cuotas, pre_Observaciones, pre_USUARIO) VALUES (:pre_Fecha,:pre_CLIENTE, :pre_FormaPago, :pre_Interes, :pre_MontoPrestado, :pre_MontoInteres, :pre_Cuotas, :pre_Observaciones, :pre_USUARIO)");
+			$stmt = $conexion->prepare("INSERT INTO $tabla(pre_Fecha,pre_CLIENTE, pre_FormaPago, pre_Interes, pre_MontoPrestado, pre_MontoInteres, pre_Cuotas, pre_Observaciones, pre_USUARIO, pre_CUADRE_CAJA) VALUES (:pre_Fecha,:pre_CLIENTE, :pre_FormaPago, :pre_Interes, :pre_MontoPrestado, :pre_MontoInteres, :pre_Cuotas, :pre_Observaciones, :pre_USUARIO,:pre_CUADRE_CAJA)");
 
 			$stmt->bindParam(":pre_Fecha", $fecha, PDO::PARAM_STR);
 			$stmt->bindParam(":pre_CLIENTE", $datosModelo["pre_CLIENTE"], PDO::PARAM_INT);
@@ -100,12 +100,15 @@ class PrestamosModelo
 			$stmt->bindParam(":pre_Cuotas", $datosModelo["pre_Cuotas"], PDO::PARAM_INT);
 			$stmt->bindParam(":pre_Observaciones", $datosModelo["pre_Observaciones"], PDO::PARAM_STR);
 			$stmt->bindParam(":pre_USUARIO", $datosModelo["pre_USUARIO"], PDO::PARAM_INT);
+			$stmt->bindParam(":pre_CUADRE_CAJA", $datosModelo["pre_CUADRE_CAJA"], PDO::PARAM_INT);
 
 			$stmt->execute();
 
+			$lastInsertId = $conexion->lastInsertId();
+
 			$stmt = null;
 
-			return ["mensaje" => "ok"];
+			return ["mensaje" => "ok", "lastInsertId" => $lastInsertId];
 		} catch (PDOException $e) {
 
 			return [
@@ -124,7 +127,9 @@ class PrestamosModelo
 
 		try {
 
-			$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET pre_FormaPago=:pre_FormaPago,pre_Interes=:pre_Interes,pre_MontoInteres=:pre_MontoInteres,pre_Cuotas=:pre_Cuotas,pre_Observaciones=:pre_Observaciones,pre_USUARIO=:pre_USUARIO WHERE pre_Id = :id");
+			$conexion = Conexion::conectar();
+
+			$stmt = $conexion->prepare("UPDATE $tabla SET pre_FormaPago=:pre_FormaPago,pre_Interes=:pre_Interes,pre_MontoInteres=:pre_MontoInteres,pre_Cuotas=:pre_Cuotas,pre_Observaciones=:pre_Observaciones,pre_USUARIO=:pre_USUARIO WHERE pre_Id = :id");
 
 			$stmt->bindParam(":pre_FormaPago", $datosModelo["pre_FormaPago"], PDO::PARAM_INT);
 			$stmt->bindParam(":pre_Interes", $datosModelo["pre_Interes"], PDO::PARAM_INT);

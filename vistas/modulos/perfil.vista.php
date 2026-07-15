@@ -1,3 +1,9 @@
+<?php
+if ($_SESSION["usuario_PERFIL"] == 1) {
+  echo '<script> window.location = "inicio"; </script>';
+}
+
+?>
 <!-- Content Header (Page header) -->
 <div class="content-header">
   <div class="container-fluid">
@@ -21,15 +27,16 @@
     <div class="row">
       <div class="col-12">
         <div class="card">
-            <div class="card-header">
-              <button type="button" id="btn-nuevo-perfil" class="btn btn-primary btn-sm">
-                <i class="fas fa-plus"></i> Nuevo Perfil
-              </button>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <table style="width: 100%;" id="tablaperfil" class="table table-bordered table-hover dt-responsive">
-                <thead>
+          <div class="card-header">
+            <button type="button" id="btn-nuevo-perfil" class="btn btn-primary btn-sm">
+              <i class="fas fa-plus"></i> Nuevo Perfil
+            </button>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table style="width: 100%;" id="tablaperfil"
+              class="table table-bordered table-hover dt-responsive">
+              <thead>
                 <tr>
                   <th>Id</th>
                   <th>Codigo</th>
@@ -37,12 +44,12 @@
                   <th>Estado</th>
                   <th>Accion</th>
                 </tr>
-                </thead>
-              </table>
-            </div>
-            <!-- /.card-body -->
+              </thead>
+            </table>
           </div>
-          <!-- /.card -->
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
       </div>
     </div>
     <!-- /.row -->
@@ -67,14 +74,16 @@
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-fingerprint"></i></span>
           </div>
-          <input type="text" class="form-control form-control-lg" placeholder="Ingresar Codigo" id="per_Codigo" readonly>
+          <input type="text" class="form-control form-control-lg" placeholder="Ingresar Codigo"
+            id="per_Codigo" readonly>
           <input type="hidden" class="form-control form-control-lg" id="per_Id">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-clipboard-list"></i></span>
           </div>
-          <input type="text" class="form-control form-control-lg" placeholder="Ingresar Nombre" id="per_Nombre">
+          <input type="text" class="form-control form-control-lg" placeholder="Ingresar Nombre"
+            id="per_Nombre">
         </div>
         <div class="input-group mb-3 selectrutaActivo">
           <div class="input-group-prepend">
@@ -87,7 +96,8 @@
         </div>
       </div>
       <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>
+          Close</button>
         <button type="button" class="btn btn-primary btnguardar-datos-perfil">Guardar</button>
       </div>
     </div>
@@ -108,22 +118,24 @@
         </button>
       </div>
       <div class="modal-body">
-        <?php  $modulos = UsuariosControlador::ctrModulosPermisos();
-              echo '<input type="hidden" id="modulos" class="modulos" value="'.htmlspecialchars (json_encode($modulos)).'">';
-         ?>
-        <table style="width: 100%;" id="tablapermisosperfil" class="table table-borderles table-hover table-sm text-center">
+        <?php $modulos = UsuariosControlador::ctrModulosPermisos();
+        echo '<input type="hidden" id="modulos" class="modulos" value="' . htmlspecialchars(json_encode($modulos)) . '">';
+        ?>
+        <table style="width: 100%;" id="tablapermisosperfil"
+          class="table table-borderles table-hover table-sm text-center">
           <thead>
             <tr>
               <th>Modulo</th>
               <th><input type="checkbox" class="checkall" name="CrearAll" value="crear"> Crear</th>
               <th><input type="checkbox" class="checkall" name="LeerAll" value="leer"> Leer</th>
-              <th><input type="checkbox" class="checkall" name="ActualizarAll" value="actualizar"> Actualizar</th>
+              <th><input type="checkbox" class="checkall" name="ActualizarAll" value="actualizar">
+                Actualizar</th>
               <th><input type="checkbox" class="checkall" name="BorrarAll" value="eliminar"> Borrar</th>
             </tr>
           </thead>
           <tbody id="bodytabpermisos">
             <?php
-              /*$i=1;
+            /*$i=1;
               foreach ($modulos as $key => $value) {
                 echo '<tr>
                         <td class="numero">'.$value["mod_Nombre"].'</td>
@@ -134,12 +146,13 @@
                       </tr>';
                       $i++;
               }*/
-             ?>
+            ?>
           </tbody>
         </table>
       </div>
       <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>
+          Close</button>
         <button type="button" class="btn btn-primary btn-guardar-permisosperfil">Guardar</button>
       </div>
     </div>
