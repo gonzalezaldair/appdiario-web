@@ -6,8 +6,9 @@
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="inicio">Inicio</a></li>
-                    <li class="breadcrumb-item active">Cajas <?= " CUADRE-" .  $_SESSION["cuandre_caja"]; ?></li>
+                    <li class="breadcrumb-item"><a href="inicio">Inicio - <?= $_SESSION["cajaAbiertaId"] ?></a></li>
+                    <li class="breadcrumb-item active">Cajas <?= $_SESSION["cuandre_caja"]["cuc_Id"]; ?>
+                    </li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->

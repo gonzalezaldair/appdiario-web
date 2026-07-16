@@ -1,0 +1,19 @@
+Cobrador ( solo los pertenecientes a su ruta )
+- Apertura y cierre de caja
+- Crear,Leer, modificar Clientes
+- Crear,Leer prestamos
+- Crear,Leer Abonos
+
+Supervisor ( todos )
+- Apertura y cierre de caja
+- Crear,Leer, modificar Clientes
+- Crear,Leer prestamos
+- Crear,Leer Abonos
+
+Secretaria
+- Apertura y cierre de caja
+- Crear,Leer, modificar rutas
+- Leer, modificar Clientes
+- Leer prestamos
+- Leer,cancelar Abonos
+

@@ -1,6 +1,11 @@
-<?php if (!$_SESSION["cuandre_caja"]) {
+<?php
+/*if (!$_SESSION["cuandre_caja"]) {
   echo '<script> window.location = "cajas"; </script>';
-}  ?>
+}*/
+
+echo "hola: " . $_SESSION["cuandre_caja"];
+
+?>
 <!-- Content Header (Page header) -->
 <div class="content-header">
   <div class="container-fluid">

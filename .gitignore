@@ -4,3 +4,5 @@
 
 #omitir archivo cofig
 /modelos/config.php
+
+*.log
