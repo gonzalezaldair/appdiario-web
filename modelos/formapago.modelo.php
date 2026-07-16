@@ -59,32 +59,6 @@ class FormaPagoModelo
 	}
 
 	/*=============================================
-				GENERAR CONSECUTIVO
-	=============================================*/
-
-	public static function mdlconsecutivo($tabla, $item)
-	{
-		try {
-
-			$stmt = Conexion::conectar()->prepare("SELECT IFNULL(MAX($item),0) as Consecutivo FROM $tabla LIMIT 1");
-
-			$stmt->execute();
-
-			return $stmt->fetch();
-		} catch (PDOException $e) {
-
-			return [
-				'mensaje'         => $e->getMessage(),
-				'codigo'          => $e->getCode(),
-				'script'          => $e->getFile(),
-				'linea'           => $e->getLine(),
-				'excepcionprevia' => $e->getPrevious(),
-				'cadena'          => $e->__toString()
-			];
-		}
-	}
-
-	/*=============================================
 				GUARDAR FORMA DE PAGO
 	=============================================*/
 
@@ -92,10 +66,10 @@ class FormaPagoModelo
 	{
 		try {
 
-			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(frm_Codigo, frm_Nombre) VALUES (:codigo, :nombre)");
+			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(frm_Nombre, created_by) VALUES ( :nombre, :created_by)");
 
-			$stmt->bindParam(":codigo", $datosModelo["frm_Codigo"], PDO::PARAM_STR);
 			$stmt->bindParam(":nombre", $datosModelo["frm_Nombre"], PDO::PARAM_STR);
+			$stmt->bindParam(":created_by", $datosModelo["created_by"], PDO::PARAM_INT);
 
 			$stmt->execute();
 
@@ -124,9 +98,10 @@ class FormaPagoModelo
 
 		try {
 
-			$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET frm_Codigo= :codigo, frm_Nombre= :nombre, frm_Activo = :estado WHERE frm_Id = :id");
+			$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET updated_by = :updated_by, frm_Nombre= :nombre, frm_Activo = :estado WHERE frm_Id = :id");
 
-			$stmt->bindParam(":codigo", $datosModelo["frm_Codigo"], PDO::PARAM_STR);
+
+			$stmt->bindParam(":updated_by", $datosModelo["updated_by"], PDO::PARAM_INT);
 			$stmt->bindParam(":nombre", $datosModelo["frm_Nombre"], PDO::PARAM_STR);
 			$stmt->bindParam(":estado", $datosModelo["frm_Activo"], PDO::PARAM_INT);
 			$stmt->bindParam(":id", $datosModelo["frm_Id"], PDO::PARAM_INT);
@@ -153,11 +128,12 @@ class FormaPagoModelo
 				ELIMINAR FORMA DE PAGO
 	=============================================*/
 
-	public static function mdlEliminarFormaPago($tabla, $item, $valor)
+	public static function mdlEliminarFormaPago($tabla, $item, $valor, $userId)
 	{
 		try {
 
-			$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET frm_Activo = 0 WHERE $item  = :$item");
+			$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET updated_by = :updated_by, frm_Activo = 0 WHERE $item  = :$item");
+			$stmt->bindParam(":updated_by", $userId, PDO::PARAM_INT);
 			$stmt->bindParam(":" . $item, $valor, PDO::PARAM_INT);
 
 			$stmt->execute();

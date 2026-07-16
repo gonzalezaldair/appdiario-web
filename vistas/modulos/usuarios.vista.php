@@ -43,7 +43,6 @@ if (!in_array($_SESSION["usuario_PERFIL"], [1, 4])) {
                   <th>Nombre</th>
                   <th>Celular</th>
                   <th>Direccion</th>
-                  <th>Ruta</th>
                   <th>Perfil</th>
                   <th>Estado</th>
                   <th>Acciones</th>
@@ -122,13 +121,6 @@ if (!in_array($_SESSION["usuario_PERFIL"], [1, 4])) {
           </div>
           <input id="usuarioDireccion" type="text" class="form-control form-control-lg"
             placeholder="Ingresar Direccion">
-        </div>
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-map-marked-alt"></i></span>
-          </div>
-          <select id="usuarioRUTA" class="form-control form-control-lg">
-          </select>
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">

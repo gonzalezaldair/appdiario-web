@@ -25,9 +25,7 @@ class ingresoControlador
 						$_SESSION["usuario_Id"] = $respuesta["usu_Id"];
 						$_SESSION["usuario_Nombre"] = $respuesta["usu_Nombre"];
 						$_SESSION["usuario_PERFIL"] = $respuesta["usu_Perfil"];
-						$_SESSION["usuario_RUTA"] = $respuesta["usu_RUTA"];
 						$permisos = ModulosControlador::ctrMostrarPermisos($respuesta["usu_Perfil"]);
-						$_SESSION["cuandre_caja"] = CajasControlador::ctrConsultarCajaAbierta($respuesta["usu_Id"]);
 						$_SESSION["permisos"] = array_column($permisos, "po_OPERACION");
 						echo '<script> window.location = "inicio"; </script>';
 					} else {

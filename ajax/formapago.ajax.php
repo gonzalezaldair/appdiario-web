@@ -25,11 +25,10 @@ class MostrarFormaPago
 		  "data": [';
 
 		for ($i = 0; $i < count($FormaPago); $i++) {
-			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdformapago' frmid='" . $FormaPago[$i]["frm_Id"] . "' frmcodigo='" . $FormaPago[$i]["frm_Codigo"] . "'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarformapago' frmid='" . $FormaPago[$i]["frm_Id"] . "'><i class='fas fa-trash'></i></button></div>";
+			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdformapago' frmid='" . $FormaPago[$i]["frm_Id"] . "'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarformapago' frmid='" . $FormaPago[$i]["frm_Id"] . "'><i class='fas fa-trash'></i></button></div>";
 			$activo = ($FormaPago[$i]["frm_Activo"] == 1) ? "<span class='badge badge-success'>Activo</span>" : "<span class='badge badge-danger'>Inactivo</span>";
 			$datosJson .= '[
 				  "' . $FormaPago[$i]["frm_Id"] . '",
-			      "' . $FormaPago[$i]["frm_Codigo"] . '",
 			      "' . $FormaPago[$i]["frm_Nombre"] . '",
 			      "' . $activo . '",
 			      "' . $botones . '"
@@ -81,13 +80,6 @@ switch ($acc) {
 		$valor = null;
 		$comboFormaPago = FormaPagoControlador::ctrMostrarFormaPago($item, $valor);
 		echo json_encode($comboFormaPago);
-		break;
-	case 'consecutivo':
-		$consecutivo = FormaPagoControlador::ctrConsecutivo();
-		//echo json_encode($consecutivo);
-		$consecutivo =  $consecutivo[0] + 1;
-		$prefijo = ($consecutivo >= 10) ? $consecutivo : "0" . $consecutivo;
-		echo json_encode($prefijo);
 		break;
 	default:
 		# code...

@@ -58,22 +58,17 @@ class GastoModelo
         }
     }
 
-    /*=============================================
-				GUARDAR COBROS
-	=============================================*/
-
     public static function mdlguardarGasto($tabla, $datosModelo)
     {
         try {
 
             $conexion = Conexion::conectar();
 
-            $stmt = $conexion->prepare("INSERT INTO $tabla (gas_Monto, gas_Fecha, gas_Tipo,gas_USUARIO,gas_CUADRE_CAJA) VALUES (:gas_Monto, :gas_Fecha, :gas_Tipo,:gas_USUARIO,:gas_CUADRE_CAJA)");
+            $stmt = $conexion->prepare("INSERT INTO $tabla (gas_Monto, gas_Fecha, gas_Tipo,created_by) VALUES (:gas_Monto, :gas_Fecha, :gas_Tipo,:created_by)");
             $stmt->bindParam(":gas_Monto", $datosModelo["gas_Monto"], PDO::PARAM_STR);
             $stmt->bindParam(":gas_Fecha", $datosModelo["gas_Fecha"], PDO::PARAM_STR);
             $stmt->bindParam(":gas_Tipo", $datosModelo["gas_Tipo"], PDO::PARAM_STR);
-            $stmt->bindParam(":gas_USUARIO", $datosModelo["gas_USUARIO"], PDO::PARAM_INT);
-            $stmt->bindParam(":gas_CUADRE_CAJA", $datosModelo["gas_CUADRE_CAJA"], PDO::PARAM_INT);
+            $stmt->bindParam(":created_by", $datosModelo["created_by"], PDO::PARAM_INT);
 
             $stmt->execute();
 
@@ -104,8 +99,10 @@ class GastoModelo
 
         try {
 
-            $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET gas_Cancelado= 'Y' WHERE gas_Id = :gas_Id");
-            $stmt->bindParam(":gas_Id", $datosModelo, PDO::PARAM_INT);
+            $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET updated_by = :updated_by, gas_Cancelado = 'Y' WHERE gas_Id = :gas_Id");
+
+            $stmt->bindParam(":updated_by", $datosModelo["updated_by"], PDO::PARAM_INT);
+            $stmt->bindParam(":gas_Id", $datosModelo["gas_Id"], PDO::PARAM_INT);
 
             $stmt->execute();
 

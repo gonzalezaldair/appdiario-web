@@ -1,16 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-08-2020 a las 23:41:51
--- Versión del servidor: 10.4.11-MariaDB
--- Versión de PHP: 7.4.3
+-- Tiempo de generación: 16-07-2026 a las 22:43:42
+-- Versión del servidor: 10.6.7-MariaDB
+-- Versión de PHP: 8.2.12
 SET
   SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-
-SET
-  AUTOCOMMIT = 0;
 
 START TRANSACTION;
 
@@ -32,6 +29,223 @@ SET
 --
 -- Base de datos: `appdiario`
 --
+DELIMITER $ $ --
+-- Procedimientos
+--
+CREATE DEFINER = `root` @`localhost` PROCEDURE `sp_reporte_caja` (IN `pFechaInicio` DATE, IN `pFechaFin` DATE) BEGIN
+SELECT
+  /* Préstamos entregados */
+  IFNULL(
+    (
+      SELECT
+        SUM(pre_MontoPrestado)
+      FROM
+        prestamo
+      WHERE
+        (
+          pFechaInicio IS NULL
+          AND pFechaFin IS NULL
+        )
+        OR (
+          pFechaInicio IS NULL
+          AND pFechaFin IS NOT NULL
+          AND pre_Fecha <= CONCAT(pFechaFin, ' 23:59:59')
+        )
+        OR (
+          pFechaInicio IS NOT NULL
+          AND pFechaFin IS NOT NULL
+          AND pre_Fecha BETWEEN CONCAT(pFechaInicio, ' 00:00:00')
+          AND CONCAT(pFechaFin, ' 23:59:59')
+        )
+    ),
+    0
+  ) AS PRESTAMOS,
+  /* Intereses generados */
+  IFNULL(
+    (
+      SELECT
+        SUM(pre_MontoInteres - pre_MontoPrestado)
+      FROM
+        prestamo
+      WHERE
+        (
+          pFechaInicio IS NULL
+          AND pFechaFin IS NULL
+        )
+        OR (
+          pFechaInicio IS NULL
+          AND pFechaFin IS NOT NULL
+          AND pre_Fecha <= CONCAT(pFechaFin, ' 23:59:59')
+        )
+        OR (
+          pFechaInicio IS NOT NULL
+          AND pFechaFin IS NOT NULL
+          AND pre_Fecha BETWEEN CONCAT(pFechaInicio, ' 00:00:00')
+          AND CONCAT(pFechaFin, ' 23:59:59')
+        )
+    ),
+    0
+  ) AS INTERESES,
+  /* Movimientos */
+  IFNULL(
+    (
+      SELECT
+        SUM(mov_Monto)
+      FROM
+        movimiento_caja
+      WHERE
+        mov_Tipo = 'SALDO_INICIAL'
+        AND (
+          (
+            pFechaInicio IS NULL
+            AND pFechaFin IS NULL
+          )
+          OR (
+            pFechaInicio IS NULL
+            AND mov_Fecha <= CONCAT(pFechaFin, ' 23:59:59')
+          )
+          OR (
+            pFechaInicio IS NOT NULL
+            AND mov_Fecha BETWEEN CONCAT(pFechaInicio, ' 00:00:00')
+            AND CONCAT(pFechaFin, ' 23:59:59')
+          )
+        )
+    ),
+    0
+  ) AS SALDO_INICIAL,
+  IFNULL(
+    (
+      SELECT
+        SUM(mov_Monto)
+      FROM
+        movimiento_caja
+      WHERE
+        mov_Tipo = 'INYECCION_CAPITAL'
+        AND (
+          (
+            pFechaInicio IS NULL
+            AND pFechaFin IS NULL
+          )
+          OR (
+            pFechaInicio IS NULL
+            AND mov_Fecha <= CONCAT(pFechaFin, ' 23:59:59')
+          )
+          OR (
+            pFechaInicio IS NOT NULL
+            AND mov_Fecha BETWEEN CONCAT(pFechaInicio, ' 00:00:00')
+            AND CONCAT(pFechaFin, ' 23:59:59')
+          )
+        )
+    ),
+    0
+  ) AS INYECCION_CAPITAL,
+  IFNULL(
+    (
+      SELECT
+        SUM(mov_Monto)
+      FROM
+        movimiento_caja
+      WHERE
+        mov_Tipo = 'ABONO'
+        AND (
+          (
+            pFechaInicio IS NULL
+            AND pFechaFin IS NULL
+          )
+          OR (
+            pFechaInicio IS NULL
+            AND mov_Fecha <= CONCAT(pFechaFin, ' 23:59:59')
+          )
+          OR (
+            pFechaInicio IS NOT NULL
+            AND mov_Fecha BETWEEN CONCAT(pFechaInicio, ' 00:00:00')
+            AND CONCAT(pFechaFin, ' 23:59:59')
+          )
+        )
+    ),
+    0
+  ) AS ABONOS,
+  IFNULL(
+    (
+      SELECT
+        SUM(mov_Monto)
+      FROM
+        movimiento_caja
+      WHERE
+        mov_Tipo = 'GASTO'
+        AND (
+          (
+            pFechaInicio IS NULL
+            AND pFechaFin IS NULL
+          )
+          OR (
+            pFechaInicio IS NULL
+            AND mov_Fecha <= CONCAT(pFechaFin, ' 23:59:59')
+          )
+          OR (
+            pFechaInicio IS NOT NULL
+            AND mov_Fecha BETWEEN CONCAT(pFechaInicio, ' 00:00:00')
+            AND CONCAT(pFechaFin, ' 23:59:59')
+          )
+        )
+    ),
+    0
+  ) AS GASTOS,
+  IFNULL(
+    (
+      SELECT
+        SUM(mov_Monto)
+      FROM
+        movimiento_caja
+      WHERE
+        mov_Tipo = 'RETIRO'
+        AND (
+          (
+            pFechaInicio IS NULL
+            AND pFechaFin IS NULL
+          )
+          OR (
+            pFechaInicio IS NULL
+            AND mov_Fecha <= CONCAT(pFechaFin, ' 23:59:59')
+          )
+          OR (
+            pFechaInicio IS NOT NULL
+            AND mov_Fecha BETWEEN CONCAT(pFechaInicio, ' 00:00:00')
+            AND CONCAT(pFechaFin, ' 23:59:59')
+          )
+        )
+    ),
+    0
+  ) AS RETIROS,
+  IFNULL(
+    (
+      SELECT
+        SUM(mov_Monto)
+      FROM
+        movimiento_caja
+      WHERE
+        mov_Tipo = 'AJUSTE'
+        AND (
+          (
+            pFechaInicio IS NULL
+            AND pFechaFin IS NULL
+          )
+          OR (
+            pFechaInicio IS NULL
+            AND mov_Fecha <= CONCAT(pFechaFin, ' 23:59:59')
+          )
+          OR (
+            pFechaInicio IS NOT NULL
+            AND mov_Fecha BETWEEN CONCAT(pFechaInicio, ' 00:00:00')
+            AND CONCAT(pFechaFin, ' 23:59:59')
+          )
+        )
+    ),
+    0
+  ) AS AJUSTES;
+
+END $ $ DELIMITER;
+
 -- --------------------------------------------------------
 --
 -- Estructura de tabla para la tabla `abono`
@@ -40,21 +254,13 @@ CREATE TABLE `abono` (
   `abo_Id` bigint(20) NOT NULL,
   `abo_PRESTAMO` bigint(20) NOT NULL,
   `abo_Monto` int(11) NOT NULL,
-  `abo_Fecha` datetime NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `abono`
---
-INSERT INTO
-  `abono` (
-    `abo_Id`,
-    `abo_PRESTAMO`,
-    `abo_Monto`,
-    `abo_Fecha`
-  )
-VALUES
-  (1, 1, 20000, '2020-08-19 23:14:39');
+  `abo_Fecha` datetime NOT NULL,
+  `abo_Cancelado` enum('N', 'Y') COLLATE utf8mb3_spanish_ci NOT NULL DEFAULT 'N',
+  `created_by` bigint(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` bigint(20) DEFAULT NULL
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb3 COLLATE = utf8mb3_spanish_ci;
 
 -- --------------------------------------------------------
 --
@@ -63,83 +269,18 @@ VALUES
 CREATE TABLE `cliente` (
   `cli_Id` bigint(20) NOT NULL,
   `cli_Cedula` int(11) NOT NULL,
-  `cli_Nombre` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `cli_Nombre` varchar(50) COLLATE utf8mb3_spanish_ci NOT NULL,
   `cli_Celular` bigint(20) NOT NULL,
-  `cli_Direccion` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `cli_Correo` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `cli_Direccion` varchar(50) COLLATE utf8mb3_spanish_ci NOT NULL,
+  `cli_Correo` varchar(50) COLLATE utf8mb3_spanish_ci NOT NULL,
   `cli_Posicion` int(11) NOT NULL,
-  `cli_RUTA` bigint(20) NOT NULL,
   `cli_DiaCobro` int(11) NOT NULL,
-  `cli_Activo` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `cliente`
---
-INSERT INTO
-  `cliente` (
-    `cli_Id`,
-    `cli_Cedula`,
-    `cli_Nombre`,
-    `cli_Celular`,
-    `cli_Direccion`,
-    `cli_Correo`,
-    `cli_Posicion`,
-    `cli_RUTA`,
-    `cli_DiaCobro`,
-    `cli_Activo`
-  )
-VALUES
-  (
-    251,
-    1090472103,
-    'ALDAIR JOSE',
-    3156888647,
-    'TUCUNARE',
-    'NOTIENE@NOTIENE.COM',
-    0,
-    1,
-    2,
-    1
-  ),
-  (
-    252,
-    1090472104,
-    'LIGIA SUAREZ',
-    3156694464,
-    'SIN DIRECCION',
-    'NOTIENE@NOTIENE.COM',
-    0,
-    1,
-    5,
-    1
-  );
-
--- --------------------------------------------------------
---
--- Estructura de tabla para la tabla `cobro`
---
-CREATE TABLE `cobro` (
-  `cob_Id` bigint(20) NOT NULL,
-  `cob_Codigo` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `cob_Nombre` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `cob_Fecha` date NOT NULL,
-  `cob_Activo` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `cobro`
---
-INSERT INTO
-  `cobro` (
-    `cob_Id`,
-    `cob_Codigo`,
-    `cob_Nombre`,
-    `cob_Fecha`,
-    `cob_Activo`
-  )
-VALUES
-  (1, 'COB-001', 'General', '2020-03-24', 1);
+  `cli_Activo` tinyint(1) NOT NULL DEFAULT 1,
+  `created_by` bigint(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` bigint(20) DEFAULT NULL
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb3 COLLATE = utf8mb3_spanish_ci;
 
 -- --------------------------------------------------------
 --
@@ -147,10 +288,13 @@ VALUES
 --
 CREATE TABLE `formapago` (
   `frm_Id` bigint(20) NOT NULL,
-  `frm_Codigo` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `frm_Nombre` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `frm_Activo` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_spanish_ci;
+  `frm_Nombre` varchar(50) COLLATE utf8mb3_spanish_ci NOT NULL,
+  `frm_Activo` tinyint(1) NOT NULL DEFAULT 1,
+  `created_by` bigint(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` bigint(20) DEFAULT NULL
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb3 COLLATE = utf8mb3_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `formapago`
@@ -158,12 +302,66 @@ CREATE TABLE `formapago` (
 INSERT INTO
   `formapago` (
     `frm_Id`,
-    `frm_Codigo`,
     `frm_Nombre`,
-    `frm_Activo`
+    `frm_Activo`,
+    `created_by`,
+    `created_at`,
+    `updated_at`,
+    `updated_by`
   )
 VALUES
-  (11, '01', 'DIARIO', 1);
+  (
+    11,
+    'DIARIO',
+    1,
+    0,
+    '2026-07-16 15:54:48',
+    NULL,
+    NULL
+  ),
+  (
+    12,
+    'MENSUAL',
+    1,
+    0,
+    '2026-07-16 15:54:48',
+    NULL,
+    NULL
+  ),
+  (
+    15,
+    'QUICENAL',
+    1,
+    0,
+    '2026-07-16 15:57:03',
+    NULL,
+    1
+  ),
+  (
+    16,
+    'SEMANAL',
+    1,
+    1,
+    '2026-07-16 19:03:32',
+    NULL,
+    NULL
+  );
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `gasto`
+--
+CREATE TABLE `gasto` (
+  `gas_Id` bigint(20) UNSIGNED NOT NULL,
+  `gas_Monto` decimal(10, 0) NOT NULL,
+  `gas_Fecha` datetime NOT NULL,
+  `gas_Tipo` varchar(50) NOT NULL,
+  `gas_Cancelado` enum('Y', 'N') NOT NULL DEFAULT 'N',
+  `created_by` bigint(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` bigint(20) DEFAULT NULL
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 -- --------------------------------------------------------
 --
@@ -171,11 +369,11 @@ VALUES
 --
 CREATE TABLE `modulos` (
   `mod_Id` bigint(20) NOT NULL,
-  `mod_Codigo` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `mod_Nombre` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `mod_Url` text COLLATE utf8_spanish_ci NOT NULL,
-  `mod_Icon` text COLLATE utf8_spanish_ci NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_spanish_ci;
+  `mod_Nombre` varchar(50) COLLATE utf8mb3_spanish_ci NOT NULL,
+  `mod_Url` text COLLATE utf8mb3_spanish_ci NOT NULL,
+  `mod_Icon` text COLLATE utf8mb3_spanish_ci NOT NULL,
+  `mod_Activo` enum('N', 'Y') COLLATE utf8mb3_spanish_ci NOT NULL DEFAULT 'Y'
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb3 COLLATE = utf8mb3_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `modulos`
@@ -183,69 +381,79 @@ CREATE TABLE `modulos` (
 INSERT INTO
   `modulos` (
     `mod_Id`,
-    `mod_Codigo`,
     `mod_Nombre`,
     `mod_Url`,
-    `mod_Icon`
+    `mod_Icon`,
+    `mod_Activo`
   )
 VALUES
-  (1, 'MOD-001', 'Abono', 'abonos', 'fas fa-coins'),
+  (1, 'Abono', 'abonos', 'fas fa-coins', 'Y'),
   (
     2,
-    'MOD-002',
     'Clientes',
     'clientes',
-    'fas fa-user-friends'
+    'fas fa-user-friends',
+    'Y'
   ),
-  (
-    3,
-    'MOD--003',
-    'Cobro',
-    'cobro',
-    'fas fa-layer-group'
-  ),
+  (3, 'Cobro', 'cobro', 'fas fa-layer-group', 'N'),
   (
     4,
-    'MOD-004',
     'Forma de Pago',
     'forma-pago',
-    'fas fa-money-check-alt'
+    'fas fa-money-check-alt',
+    'Y'
   ),
   (
     5,
-    'MOD-005',
     'Perfil',
     'perfil',
-    'fas fa-clipboard-list'
+    'fas fa-clipboard-list',
+    'Y'
   ),
-  (
-    6,
-    'MOD-006',
-    'Ruta',
-    'ruta',
-    'fas fa-map-marked-alt'
-  ),
-  (
-    7,
-    'MOD-007',
-    'Usuario',
-    'usuarios',
-    'fas fa-user'
-  ),
+  (6, 'Ruta', 'ruta', 'fas fa-map-marked-alt', 'N'),
+  (7, 'Usuario', 'usuarios', 'fas fa-user', 'Y'),
   (
     8,
-    'MOD-008',
     'Prestamos',
     'prestamos',
-    'fas fa-dollar-sign'
+    'fas fa-dollar-sign',
+    'Y'
   ),
+  (9, 'Reportes', 'reportes', 'fas fa-table', 'Y'),
+  (10, 'Caja', 'cajas', 'fas fa-wallet', 'N'),
+  (11, 'Gastos', 'gastos', 'fas fa-money-bill', 'Y'),
   (
-    9,
-    'MOD-009',
-    'Reportes',
-    'reportes',
-    'fas fa-table'
+    12,
+    'Movimientos caja',
+    'movimientos-caja',
+    'fas fa-wallet',
+    'Y'
   );
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `movimiento_caja`
+--
+CREATE TABLE `movimiento_caja` (
+  `mov_Id` bigint(20) UNSIGNED NOT NULL,
+  `mov_Fecha` datetime NOT NULL,
+  `mov_Tipo` enum(
+    'SALDO_INICIAL',
+    'INYECCION_CAPITAL',
+    'PRESTAMO',
+    'ABONO',
+    'GASTO',
+    'RETIRO',
+    'AJUSTE'
+  ) NOT NULL,
+  `mov_Monto` decimal(18, 2) NOT NULL,
+  `mov_Referencia` bigint(20) DEFAULT NULL,
+  `mov_Observacion` text DEFAULT NULL,
+  `created_by` bigint(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` bigint(20) DEFAULT NULL
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 -- --------------------------------------------------------
 --
@@ -253,9 +461,9 @@ VALUES
 --
 CREATE TABLE `operaciones` (
   `ope_Id` bigint(20) NOT NULL,
-  `ope_Nombre` text COLLATE utf8_spanish_ci NOT NULL,
+  `ope_Nombre` text COLLATE utf8mb3_spanish_ci NOT NULL,
   `ope_MODULO` bigint(20) NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_spanish_ci;
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb3 COLLATE = utf8mb3_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `operaciones`
@@ -295,7 +503,19 @@ VALUES
   (30, 'LEER', 8),
   (31, 'ACTUALIZAR', 8),
   (32, 'BORRAR', 8),
-  (33, 'LEER', 9);
+  (33, 'LEER', 9),
+  (34, 'CREAR', 10),
+  (35, 'LEER', 10),
+  (36, 'ACTUALIZAR', 10),
+  (37, 'BORRAR', 10),
+  (38, 'CREAR', 11),
+  (39, 'LEER', 11),
+  (40, 'ACTUALIZAR', 11),
+  (41, 'BORRAR', 11),
+  (42, 'CREAR', 12),
+  (43, 'LEER', 12),
+  (44, 'ACTUALIZAR', 12),
+  (45, 'BORRAR', 12);
 
 -- --------------------------------------------------------
 --
@@ -303,10 +523,10 @@ VALUES
 --
 CREATE TABLE `perfiles` (
   `per_Id` bigint(20) NOT NULL,
-  `per_Codigo` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `per_Nombre` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `per_Codigo` varchar(50) COLLATE utf8mb3_spanish_ci NOT NULL,
+  `per_Nombre` varchar(50) COLLATE utf8mb3_spanish_ci NOT NULL,
   `per_Activo` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_spanish_ci;
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb3 COLLATE = utf8mb3_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `perfiles`
@@ -323,7 +543,8 @@ VALUES
   (2, 'PER-002', 'COBRADOR', 1),
   (3, 'PER-003', 'Cliente', 1),
   (4, 'PER-004', 'Secretaria', 1),
-  (5, 'PER-5', 'SUPERVISOR', 1);
+  (5, 'PER-5', 'SUPERVISOR', 1),
+  (10, 'PER-6', 'PRUEBA', 1);
 
 -- --------------------------------------------------------
 --
@@ -333,7 +554,7 @@ CREATE TABLE `perfil_operaciones` (
   `po_Id` bigint(20) NOT NULL,
   `po_PERFIL` bigint(20) NOT NULL,
   `po_OPERACION` bigint(20) NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_spanish_ci;
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb3 COLLATE = utf8mb3_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `perfil_operaciones`
@@ -350,39 +571,51 @@ VALUES
   (42, 2, 1),
   (43, 2, 2),
   (44, 2, 3),
-  (742, 1, 1),
-  (743, 1, 2),
-  (744, 1, 3),
-  (745, 1, 4),
-  (746, 1, 5),
-  (747, 1, 6),
-  (748, 1, 7),
-  (749, 1, 8),
-  (750, 1, 9),
-  (751, 1, 10),
-  (752, 1, 11),
-  (753, 1, 12),
-  (754, 1, 13),
-  (755, 1, 14),
-  (756, 1, 15),
-  (757, 1, 16),
-  (758, 1, 17),
-  (759, 1, 18),
-  (760, 1, 19),
-  (761, 1, 20),
-  (762, 1, 21),
-  (763, 1, 22),
-  (764, 1, 23),
-  (765, 1, 24),
-  (766, 1, 25),
-  (767, 1, 26),
-  (768, 1, 27),
-  (769, 1, 28),
-  (770, 1, 29),
-  (771, 1, 30),
-  (772, 1, 31),
-  (773, 1, 32),
-  (774, 1, 33);
+  (987, 1, 1),
+  (988, 1, 2),
+  (989, 1, 3),
+  (990, 1, 4),
+  (991, 1, 5),
+  (992, 1, 6),
+  (993, 1, 7),
+  (994, 1, 8),
+  (995, 1, 9),
+  (996, 1, 10),
+  (997, 1, 11),
+  (998, 1, 12),
+  (999, 1, 13),
+  (1000, 1, 14),
+  (1001, 1, 15),
+  (1002, 1, 16),
+  (1003, 1, 17),
+  (1004, 1, 18),
+  (1005, 1, 19),
+  (1006, 1, 20),
+  (1007, 1, 21),
+  (1008, 1, 22),
+  (1009, 1, 23),
+  (1010, 1, 24),
+  (1011, 1, 25),
+  (1012, 1, 26),
+  (1013, 1, 27),
+  (1014, 1, 28),
+  (1015, 1, 29),
+  (1016, 1, 30),
+  (1017, 1, 31),
+  (1018, 1, 32),
+  (1019, 1, 33),
+  (1020, 1, 34),
+  (1021, 1, 35),
+  (1022, 1, 36),
+  (1023, 1, 37),
+  (1024, 1, 38),
+  (1025, 1, 39),
+  (1026, 1, 40),
+  (1027, 1, 41),
+  (1028, 1, 42),
+  (1029, 1, 43),
+  (1030, 1, 44),
+  (1031, 1, 45);
 
 -- --------------------------------------------------------
 --
@@ -397,65 +630,13 @@ CREATE TABLE `prestamo` (
   `pre_MontoPrestado` int(11) NOT NULL,
   `pre_MontoInteres` int(11) NOT NULL,
   `pre_Cuotas` int(11) NOT NULL,
-  `pre_Observaciones` text COLLATE utf8_spanish_ci NOT NULL,
-  `pre_USUARIO` bigint(20) NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `prestamo`
---
-INSERT INTO
-  `prestamo` (
-    `pre_Id`,
-    `pre_Fecha`,
-    `pre_CLIENTE`,
-    `pre_FormaPago`,
-    `pre_Interes`,
-    `pre_MontoPrestado`,
-    `pre_MontoInteres`,
-    `pre_Cuotas`,
-    `pre_Observaciones`,
-    `pre_USUARIO`
-  )
-VALUES
-  (
-    1,
-    '2020-08-19 16:12:51',
-    251,
-    11,
-    10,
-    25000,
-    27500,
-    5,
-    'SIN OBSERVACIONES',
-    1
-  );
-
--- --------------------------------------------------------
---
--- Estructura de tabla para la tabla `ruta`
---
-CREATE TABLE `ruta` (
-  `rut_Id` bigint(20) NOT NULL,
-  `rut_Codigo` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `rut_Nombre` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `rut_COBRO` bigint(20) NOT NULL,
-  `rut_Activo` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `ruta`
---
-INSERT INTO
-  `ruta` (
-    `rut_Id`,
-    `rut_Codigo`,
-    `rut_Nombre`,
-    `rut_COBRO`,
-    `rut_Activo`
-  )
-VALUES
-  (1, 'RUT-001', 'PRINCIPAL', 1, 1);
+  `pre_Observaciones` text COLLATE utf8mb3_spanish_ci NOT NULL,
+  `pre_Cancelado` enum('N', 'Y') COLLATE utf8mb3_spanish_ci NOT NULL DEFAULT 'N',
+  `created_by` bigint(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` bigint(20) DEFAULT NULL
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb3 COLLATE = utf8mb3_spanish_ci;
 
 -- --------------------------------------------------------
 --
@@ -463,17 +644,20 @@ VALUES
 --
 CREATE TABLE `usuario` (
   `usu_Id` bigint(20) NOT NULL,
-  `usu_Login` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `usu_Password` text COLLATE utf8_spanish_ci NOT NULL,
-  `usu_Nombre` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `usu_Login` varchar(50) COLLATE utf8mb3_spanish_ci NOT NULL,
+  `usu_Password` text COLLATE utf8mb3_spanish_ci NOT NULL,
+  `usu_Nombre` varchar(50) COLLATE utf8mb3_spanish_ci NOT NULL,
   `usu_Celular` bigint(20) NOT NULL,
-  `usu_Correo` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `usu_Direccion` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `usu_RUTA` bigint(20) NOT NULL,
-  `usu_Cedula` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `usu_Correo` varchar(50) COLLATE utf8mb3_spanish_ci NOT NULL,
+  `usu_Direccion` varchar(50) COLLATE utf8mb3_spanish_ci NOT NULL,
+  `usu_Cedula` varchar(50) COLLATE utf8mb3_spanish_ci NOT NULL,
   `usu_Perfil` bigint(20) NOT NULL,
-  `usu_Activo` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_spanish_ci;
+  `usu_Activo` tinyint(1) NOT NULL DEFAULT 1,
+  `created_by` bigint(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` bigint(20) DEFAULT NULL
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb3 COLLATE = utf8mb3_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
@@ -487,50 +671,62 @@ INSERT INTO
     `usu_Celular`,
     `usu_Correo`,
     `usu_Direccion`,
-    `usu_RUTA`,
     `usu_Cedula`,
     `usu_Perfil`,
-    `usu_Activo`
+    `usu_Activo`,
+    `created_by`,
+    `created_at`,
+    `updated_at`,
+    `updated_by`
   )
 VALUES
   (
     1,
-    '13500750',
+    '',
     '$2y$10$JyYTC.GYBWnhqVMxFaZ3E.5iGd/4YZf9j7XpBc8S3DtJTrPNN2LkK',
     'German Gonzalez',
     3134215929,
     '',
     'MZ 3 LOTE 11',
+    '',
     1,
-    '13500750',
     1,
-    1
+    0,
+    '2026-07-16 13:49:52',
+    NULL,
+    NULL
   ),
   (
     2,
-    '1090472103',
+    '',
     '$2y$10$JyYTC.GYBWnhqVMxFaZ3E.5iGd/4YZf9j7XpBc8S3DtJTrPNN2LkK',
     'ALDAIR GONZALEZ AMAYA',
     3156888647,
     'NOTIENE@NOTIENE.COM',
     'SIN DIRECCION',
-    1,
-    '1090472103',
+    '',
     2,
-    1
+    1,
+    0,
+    '2026-07-16 13:49:52',
+    NULL,
+    NULL
   ),
   (
     3,
-    '1090504494',
+    '',
     '$2y$10$JyYTC.GYBWnhqVMxFaZ3E.5iGd/4YZf9j7XpBc8S3DtJTrPNN2LkK',
     'YURLEY SUAREZ',
     3151234567,
     'NOTIENE@NOTIENE.COM',
     '456',
-    1,
-    '1090504494',
+    '',
     4,
-    1
+    1,
+    0,
+    '2026-07-16 13:49:52',
+    NULL,
+    NULL
   );
 
 --
@@ -560,19 +756,7 @@ ADD
 ADD
   UNIQUE KEY `cli_Cedula` (`cli_Cedula`),
 ADD
-  UNIQUE KEY `cli_Celular` (`cli_Celular`),
-ADD
-  KEY `cli_RUTA` (`cli_RUTA`);
-
---
--- Indices de la tabla `cobro`
---
-ALTER TABLE
-  `cobro`
-ADD
-  PRIMARY KEY (`cob_Id`),
-ADD
-  UNIQUE KEY `cob_Id` (`cob_Id`);
+  UNIQUE KEY `cli_Celular` (`cli_Celular`);
 
 --
 -- Indices de la tabla `formapago`
@@ -582,9 +766,17 @@ ALTER TABLE
 ADD
   PRIMARY KEY (`frm_Id`),
 ADD
-  UNIQUE KEY `frm_Id` (`frm_Id`),
+  UNIQUE KEY `frm_Id` (`frm_Id`);
+
+--
+-- Indices de la tabla `gasto`
+--
+ALTER TABLE
+  `gasto`
 ADD
-  UNIQUE KEY `frm_Codigo` (`frm_Codigo`);
+  PRIMARY KEY (`gas_Id`),
+ADD
+  UNIQUE KEY `gas_Id` (`gas_Id`);
 
 --
 -- Indices de la tabla `modulos`
@@ -594,9 +786,15 @@ ALTER TABLE
 ADD
   PRIMARY KEY (`mod_Id`),
 ADD
-  UNIQUE KEY `mod_Id` (`mod_Id`),
+  UNIQUE KEY `mod_Id` (`mod_Id`);
+
+--
+-- Indices de la tabla `movimiento_caja`
+--
+ALTER TABLE
+  `movimiento_caja`
 ADD
-  UNIQUE KEY `mod_Codigo` (`mod_Codigo`);
+  PRIMARY KEY (`mov_Id`);
 
 --
 -- Indices de la tabla `operaciones`
@@ -648,23 +846,7 @@ ADD
 ADD
   KEY `pre_CLIENTE` (`pre_CLIENTE`),
 ADD
-  KEY `pre_FormaPago` (`pre_FormaPago`),
-ADD
-  KEY `pre_USUARIO` (`pre_USUARIO`);
-
---
--- Indices de la tabla `ruta`
---
-ALTER TABLE
-  `ruta`
-ADD
-  PRIMARY KEY (`rut_Id`),
-ADD
-  UNIQUE KEY `rut_Id` (`rut_Id`),
-ADD
-  UNIQUE KEY `rut_Codigo` (`rut_Codigo`),
-ADD
-  KEY `rut_COBRO` (`rut_COBRO`);
+  KEY `pre_FormaPago` (`pre_FormaPago`);
 
 --
 -- Indices de la tabla `usuario`
@@ -682,8 +864,6 @@ ADD
 ADD
   UNIQUE KEY `usu_Celular` (`usu_Celular`),
 ADD
-  KEY `usu_RUTA` (`usu_RUTA`),
-ADD
   KEY `usu_Perfil` (`usu_Perfil`);
 
 --
@@ -695,8 +875,7 @@ ADD
 ALTER TABLE
   `abono`
 MODIFY
-  `abo_Id` bigint(20) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 2;
+  `abo_Id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `cliente`
@@ -704,17 +883,7 @@ MODIFY
 ALTER TABLE
   `cliente`
 MODIFY
-  `cli_Id` bigint(20) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 253;
-
---
--- AUTO_INCREMENT de la tabla `cobro`
---
-ALTER TABLE
-  `cobro`
-MODIFY
-  `cob_Id` bigint(20) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 6;
+  `cli_Id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `formapago`
@@ -723,7 +892,15 @@ ALTER TABLE
   `formapago`
 MODIFY
   `frm_Id` bigint(20) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 12;
+  AUTO_INCREMENT = 17;
+
+--
+-- AUTO_INCREMENT de la tabla `gasto`
+--
+ALTER TABLE
+  `gasto`
+MODIFY
+  `gas_Id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `modulos`
@@ -732,7 +909,15 @@ ALTER TABLE
   `modulos`
 MODIFY
   `mod_Id` bigint(20) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 10;
+  AUTO_INCREMENT = 13;
+
+--
+-- AUTO_INCREMENT de la tabla `movimiento_caja`
+--
+ALTER TABLE
+  `movimiento_caja`
+MODIFY
+  `mov_Id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `operaciones`
@@ -741,7 +926,7 @@ ALTER TABLE
   `operaciones`
 MODIFY
   `ope_Id` bigint(20) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 34;
+  AUTO_INCREMENT = 46;
 
 --
 -- AUTO_INCREMENT de la tabla `perfiles`
@@ -750,7 +935,7 @@ ALTER TABLE
   `perfiles`
 MODIFY
   `per_Id` bigint(20) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 10;
+  AUTO_INCREMENT = 11;
 
 --
 -- AUTO_INCREMENT de la tabla `perfil_operaciones`
@@ -759,7 +944,7 @@ ALTER TABLE
   `perfil_operaciones`
 MODIFY
   `po_Id` bigint(20) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 775;
+  AUTO_INCREMENT = 1032;
 
 --
 -- AUTO_INCREMENT de la tabla `prestamo`
@@ -767,17 +952,7 @@ MODIFY
 ALTER TABLE
   `prestamo`
 MODIFY
-  `pre_Id` bigint(20) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 2;
-
---
--- AUTO_INCREMENT de la tabla `ruta`
---
-ALTER TABLE
-  `ruta`
-MODIFY
-  `rut_Id` bigint(20) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 8;
+  `pre_Id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -800,14 +975,6 @@ ADD
   CONSTRAINT `abono_ibfk_1` FOREIGN KEY (`abo_PRESTAMO`) REFERENCES `prestamo` (`pre_Id`);
 
 --
--- Filtros para la tabla `cliente`
---
-ALTER TABLE
-  `cliente`
-ADD
-  CONSTRAINT `cliente_ibfk_1` FOREIGN KEY (`cli_RUTA`) REFERENCES `ruta` (`rut_Id`);
-
---
 -- Filtros para la tabla `operaciones`
 --
 ALTER TABLE
@@ -816,34 +983,14 @@ ADD
   CONSTRAINT `operaciones_ibfk_1` FOREIGN KEY (`ope_MODULO`) REFERENCES `modulos` (`mod_Id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `perfil_operaciones`
---
-ALTER TABLE
-  `perfil_operaciones`
-ADD
-  CONSTRAINT `perfil_operaciones_ibfk_1` FOREIGN KEY (`po_OPERACION`) REFERENCES `operaciones` (`ope_Id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-ADD
-  CONSTRAINT `perfil_operaciones_ibfk_2` FOREIGN KEY (`po_PERFIL`) REFERENCES `perfiles` (`per_Id`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
 -- Filtros para la tabla `prestamo`
 --
 ALTER TABLE
   `prestamo`
 ADD
-  CONSTRAINT `prestamo_ibfk_1` FOREIGN KEY (`pre_USUARIO`) REFERENCES `usuario` (`usu_Id`),
-ADD
   CONSTRAINT `prestamo_ibfk_2` FOREIGN KEY (`pre_CLIENTE`) REFERENCES `cliente` (`cli_Id`),
 ADD
   CONSTRAINT `prestamo_ibfk_3` FOREIGN KEY (`pre_FormaPago`) REFERENCES `formapago` (`frm_Id`);
-
---
--- Filtros para la tabla `ruta`
---
-ALTER TABLE
-  `ruta`
-ADD
-  CONSTRAINT `ruta_ibfk_1` FOREIGN KEY (`rut_COBRO`) REFERENCES `cobro` (`cob_Id`);
 
 --
 -- Filtros para la tabla `usuario`
@@ -851,8 +998,15 @@ ADD
 ALTER TABLE
   `usuario`
 ADD
-  CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`usu_Perfil`) REFERENCES `perfiles` (`per_Id`),
-ADD
-  CONSTRAINT `usuario_ibfk_2` FOREIGN KEY (`usu_RUTA`) REFERENCES `ruta` (`rut_Id`);
+  CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`usu_Perfil`) REFERENCES `perfiles` (`per_Id`);
 
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */
+;
+
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */
+;
+
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */
+;

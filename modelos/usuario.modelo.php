@@ -115,7 +115,7 @@ class UsuariosModelo
 
 		try {
 
-			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (usu_Login, usu_Password, usu_Nombre, usu_Celular, usu_Correo, usu_Direccion, usu_RUTA, usu_Cedula, usu_Perfil) VALUES (:usu_Login, :usu_Password, :usu_Nombre, :usu_Celular, :usu_Correo, :usu_Direccion, :usu_RUTA, :usu_Cedula, :usu_Perfil)");
+			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (usu_Login, usu_Password, usu_Nombre, usu_Celular, usu_Correo, usu_Direccion, usu_Cedula, usu_Perfil, created_by) VALUES (:usu_Login, :usu_Password, :usu_Nombre, :usu_Celular, :usu_Correo, :usu_Direccion, :usu_Cedula, :usu_Perfil, :created_by)");
 
 			$stmt->bindParam(":usu_Login", $datosModelo["usu_Login"], PDO::PARAM_STR);
 			$stmt->bindParam(":usu_Password", $datosModelo["usu_Password"], PDO::PARAM_STR);
@@ -123,9 +123,9 @@ class UsuariosModelo
 			$stmt->bindParam(":usu_Celular", $datosModelo["usu_Celular"], PDO::PARAM_INT);
 			$stmt->bindParam(":usu_Correo", $datosModelo["usu_Correo"], PDO::PARAM_STR);
 			$stmt->bindParam(":usu_Direccion", $datosModelo["usu_Direccion"], PDO::PARAM_STR);
-			$stmt->bindParam(":usu_RUTA", $datosModelo["usu_RUTA"], PDO::PARAM_INT);
 			$stmt->bindParam(":usu_Cedula", $datosModelo["usu_Cedula"], PDO::PARAM_STR);
 			$stmt->bindParam(":usu_Perfil", $datosModelo["usu_Perfil"], PDO::PARAM_INT);
+			$stmt->bindParam(":created_by", $datosModelo["created_by"], PDO::PARAM_INT);
 
 			$stmt->execute();
 
@@ -150,14 +150,13 @@ class UsuariosModelo
 
 		try {
 
-			$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET usu_Nombre=:usu_Nombre,usu_Celular=:usu_Celular,usu_Correo=:usu_Correo,usu_Direccion=:usu_Direccion,usu_RUTA=:usu_RUTA,usu_Perfil=:usu_Perfil,usu_Activo=:usu_Activo WHERE usu_Id = :id");
+			$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET updated_by = :updated_by, usu_Nombre=:usu_Nombre, usu_Celular=:usu_Celular, usu_Correo=:usu_Correo, usu_Direccion=:usu_Direccion, usu_Perfil=:usu_Perfil, usu_Activo=:usu_Activo WHERE usu_Id = :id");
 
-			//$stmt -> bindParam(":usu_Password", $datosModelo["usu_Password"], PDO::PARAM_STR);
+			$stmt->bindParam(":updated_by", $datosModelo["updated_by"], PDO::PARAM_INT);
 			$stmt->bindParam(":usu_Nombre", $datosModelo["usu_Nombre"], PDO::PARAM_STR);
 			$stmt->bindParam(":usu_Celular", $datosModelo["usu_Celular"], PDO::PARAM_INT);
 			$stmt->bindParam(":usu_Correo", $datosModelo["usu_Correo"], PDO::PARAM_STR);
 			$stmt->bindParam(":usu_Direccion", $datosModelo["usu_Direccion"], PDO::PARAM_STR);
-			$stmt->bindParam(":usu_RUTA", $datosModelo["usu_RUTA"], PDO::PARAM_INT);
 			$stmt->bindParam(":usu_Perfil", $datosModelo["usu_Perfil"], PDO::PARAM_INT);
 			$stmt->bindParam(":usu_Activo", $datosModelo["usu_Activo"], PDO::PARAM_INT);
 			$stmt->bindParam(":id", $datosModelo["usu_Id"], PDO::PARAM_INT);

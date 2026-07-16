@@ -52,7 +52,6 @@ class MostrarPrestamos
 			      "' . $Prestamos[$i]["pre_Cuotas"] . '",
 			      "' . number_format($valorCuotas, 2, ",", ".") . '",
 			      "' . $Prestamos[$i]["pre_Observaciones"] . '",
-			      "' . $Prestamos[$i]["usu_Nombre"] . '",
 			      "' . $saldo . '",
 			      "' . $botones . '"
 			    ],';

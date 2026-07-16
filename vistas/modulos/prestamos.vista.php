@@ -1,7 +1,3 @@
-<?php if (!$_SESSION["cuandre_caja"]) {
-    echo '<script> window.location = "cajas"; </script>';
-}  ?>
-
 <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
@@ -45,7 +41,6 @@
                                     <th>Cuotas</th>
                                     <th>Valor Cuota</th>
                                     <th>Observaciones</th>
-                                    <th>Cobrador</th>
                                     <th>Saldo</th>
                                     <th>Acciones</th>
                                 </tr>

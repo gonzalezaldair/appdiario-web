@@ -2,7 +2,8 @@
 
 
 
-class ModulosControlador{
+class ModulosControlador
+{
 
 
 
@@ -10,31 +11,22 @@ class ModulosControlador{
 	MOSTRAR MODULOS
 	=============================================*/
 
-	public static function ctrMostrarModulos($item, $valor, $orden){
+	public static function ctrMostrarModulos($item, $valor, $orden)
+	{
 
 		$tabla = "modulos";
 
-		$respuesta = ModulosModelo::mdlMostrarModulos($tabla, $item, $valor, $orden);
-
-		return $respuesta;
-
+		return ModulosModelo::mdlMostrarModulos($tabla, $item, $valor, $orden);
 	}
 
-	public static function ctrMostrarModulosPersonalizados($perrfil){
+	public static function ctrMostrarModulosPersonalizados($perrfil)
+	{
 
-		$respuesta = ModulosModelo::mdlMostrarModulosPersonalizados($perrfil);
-
-		return $respuesta;
-
+		return ModulosModelo::mdlMostrarModulosPersonalizados($perrfil);
 	}
 
-	public static function ctrMostrarPermisos($perrfil){
-
-		$respuesta = ModulosModelo::mdlMostrarPermisos($perrfil);
-
-		return $respuesta;
-
+	public static function ctrMostrarPermisos($perrfil)
+	{
+		return ModulosModelo::mdlMostrarPermisos($perrfil);
 	}
-
-
 }

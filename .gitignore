@@ -2,6 +2,8 @@
 #
 /artefactos/
 
+/docs/
+
 #omitir archivo cofig
 /modelos/config.php
 

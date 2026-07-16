@@ -14,7 +14,7 @@ if (!in_array($_SESSION["usuario_PERFIL"], [1, 4])) {
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="inicio">Inicio</a></li>
-                    <li class="breadcrumb-item active">Forma Pago</li>
+                    <li class="breadcrumb-item active">Movimientos Caja</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -29,22 +29,25 @@ if (!in_array($_SESSION["usuario_PERFIL"], [1, 4])) {
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <button type="button" id="btnmodalnuevaformapago" class="btn btn-primary btn-sm"
-                            data-toggle="modal" data-target="#modal-nueva-forma-pago"><i class="fas fa-plus"></i> Nueva
-                            Forma de Pago</button>
+
+                        <button type="button" id="btnmodalnuevomovimientocaja" class="btn btn-success btn-sm"
+                            data-toggle="modal" data-target="#modal-nuevo-movimiento-caja"><i class="fas fa-plus"></i>
+                            Nuevo Movimiento</button>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table style="width: 100%" id="tablaformapago"
+                        <table style="width: 100%" id="tablaMovimientosCaja"
                             class="table table-bordered table-hover dt-responsive">
                             <thead>
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Nombre</th>
-                                    <th>Activo</th>
+                                    <th>Fecha</th>
+                                    <th>Tipo</th>
+                                    <th>Monto</th>
+                                    <th>Referencia</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
+
                         </table>
                     </div>
                     <!-- /.card-body -->
@@ -58,37 +61,49 @@ if (!in_array($_SESSION["usuario_PERFIL"], [1, 4])) {
 <!-- /.content -->
 
 
-<div class="modal fade" id="modal-nueva-forma-pago">
+<div class="modal fade" id="modal-nuevo-movimiento-caja">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-primary">
-                <h4 class="modal-title">Nueva Forma de Pago</h4>
+                <h4 class="modal-title">Nuevo Movimiento</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fas fa-money-check-alt"></i></span>
-                    </div>
-                    <input id="FormaPagonombre" type="text" class="form-control form-control-lg"
-                        placeholder="Ingresar Nombre">
-                </div>
-                <div class="input-group mb-3 selectrutaActivo" style="display:none;">
+                <div class="input-group mb-3 selectTipoMovimiento">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-eye-slash"></i></span>
                     </div>
-                    <select id="FormaPagoActivo" class="form-control form-control-lg">
-                        <option value="0">Inactivo</option>
-                        <option value="1">Activo</option>
+                    <input type="hidden" id="cobroId">
+                    <select id="tipoMovimiento" class="form-control form-control-lg">
+                        <option value="0">Seleccionar Tipo: </option>
+                        <option value="SALDO_INICIAL">SALDO INICIAL</option>
+                        <option value="INYECCION_CAPITAL">INYECCION CAPITAL</option>
+                        <option value="RETIRO">RETIRO</option>
+                        <option value="AJUSTE">AJUSTE</option>
                     </select>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                    </div>
+                    <input type="text" id="montoMovimiento" class="form-control form-control-lg"
+                        placeholder="Ingresar Monto">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-layer-group"></i></span>
+                    </div>
+
+                    <textarea id="observacionMovimiento" class="form-control form-control-lg"
+                        placeholder="Ingresar Observación"></textarea>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>
                     Close</button>
-                <button type="button" class="btn btn-primary btn-guardar-formapago">Guardar</button>
+                <button type="button" class="btn btn-primary btn-guardar-movimiento">Guardar</button>
             </div>
         </div>
         <!-- /.modal-content -->

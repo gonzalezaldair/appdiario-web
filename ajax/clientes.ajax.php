@@ -3,9 +3,6 @@
 require_once '../modelos/clientes.modelo.php';
 require_once '../controladores/clientes.controlador.php';
 
-require_once '../modelos/rutas.modelo.php';
-require_once '../controladores/rutas.controlador.php';
-
 class MostrarClientes
 {
 
@@ -35,11 +32,6 @@ class MostrarClientes
 				$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdcliente' clienteid='" . $clientes[$i]["cli_Id"] . "' clientecedula='" . $clientes[$i]["cli_Cedula"] . "'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarcliente' clienteid='" . $clientes[$i]["cli_Id"] . "'><i class='fas fa-trash'></i></button></div>";
 			}
 
-
-
-			$item = "rut_Id";
-			$valor = $clientes[$i]["cli_RUTA"];
-			$Rutas = RutasControlador::ctrMostrarRutas($item, $valor);
 			$dia = match ($clientes[$i]["cli_DiaCobro"]) {
 				0 => "Domingo",
 				1 => "Lunes",
@@ -59,7 +51,6 @@ class MostrarClientes
 			      "' . $clientes[$i]["cli_Celular"] . '",
 			      "' . $clientes[$i]["cli_Direccion"] . '",
 			      "' . $clientes[$i]["cli_Correo"] . '",
-			      "' . $Rutas["rut_Nombre"] . '",
 			      "' . $dia . '",
 			      "' . $estado . '",
 			      "' . $botones . '"

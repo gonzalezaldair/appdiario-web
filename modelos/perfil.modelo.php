@@ -66,8 +66,7 @@ class PerfilModelo
 	{
 		try {
 
-			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (per_Codigo, per_Nombre) VALUES (:codigo, :nombre)");
-			$stmt->bindParam(":codigo", $datosModelo["per_Codigo"], PDO::PARAM_STR);
+			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (per_Nombre) VALUES (:nombre)");
 			$stmt->bindParam(":nombre", $datosModelo["per_Nombre"], PDO::PARAM_STR);
 
 			$stmt->execute();
@@ -137,32 +136,6 @@ class PerfilModelo
 			$stmt = null;
 
 			return ["mensaje" => "ok"];
-		} catch (PDOException $e) {
-
-			return [
-				'mensaje'         => $e->getMessage(),
-				'codigo'          => $e->getCode(),
-				'script'          => $e->getFile(),
-				'linea'           => $e->getLine(),
-				'excepcionprevia' => $e->getPrevious(),
-				'cadena'          => $e->__toString()
-			];
-		}
-	}
-
-	/*=============================================
-				GENERAR CONSECUTIVO
-	=============================================*/
-
-	public static function mdlconsecutivo($tabla, $item)
-	{
-		try {
-
-			$stmt = Conexion::conectar()->prepare("SELECT IFNULL(MAX($item),0) as Consecutivo FROM $tabla LIMIT 1");
-
-			$stmt->execute();
-
-			return $stmt->fetch();
 		} catch (PDOException $e) {
 
 			return [

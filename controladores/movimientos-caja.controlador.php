@@ -6,9 +6,7 @@ class MovimientosCajaControlador
     {
         $tabla = "movimiento_caja";
 
-        $respuesta = MovimientosCajaModelo::mdlMostrarMovimientosCaja($tabla, $item, $valor, ["usuario" => $_SESSION["usuario_Id"], "perfil" => $_SESSION["usuario_PERFIL"]]);
-
-        return $respuesta;
+        return MovimientosCajaModelo::mdlMostrarMovimientosCaja($tabla, $item, $valor);
     }
 
     public static function ctrRegistrarMovimientoCaja()
@@ -16,18 +14,25 @@ class MovimientosCajaControlador
         $tabla = "movimiento_caja";
 
 
+
         if (isset($_POST)) {
-            $datosMovimiento = array(
+
+
+            if (!(in_array(42, $_SESSION["permisos"]) || in_array(44, $_SESSION["permisos"])))  return ['codigo' => 'No tienes permisos para realizar esta accion'];
+
+            if (!(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ,. ]+$/', $_POST["observacionMovimiento"]) && preg_match('/^[0-9.,]+$/', $_POST["montoMovimiento"]))) return ['codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio'];
+
+            $datosMovimiento = [
                 "mov_Fecha" => date("Y-m-d H:i:s"),
                 "mov_Tipo" => $_POST["tipoMovimiento"],
                 "mov_Monto" => $_POST["montoMovimiento"],
                 "mov_Observacion" => $_POST["observacionMovimiento"],
-                "mov_Usuario" => $_SESSION["usuario_Id"]
-            );
+                "mov_Referencia" => $_POST["tipoMovimiento"],
+                "created_by" => $_SESSION["usuario_Id"],
+                "updated_by" => $_SESSION["usuario_Id"]
+            ];
 
-            $respuesta = MovimientosCajaModelo::mdlRegistrarMovimientoCaja($tabla, $datosMovimiento);
-
-            return $respuesta;
+            return MovimientosCajaModelo::mdlRegistrarMovimientoCaja($tabla, $datosMovimiento);
         }
     }
 }

@@ -3,9 +3,6 @@
 require_once '../modelos/usuario.modelo.php';
 require_once '../controladores/usuario.controlador.php';
 
-require_once '../modelos/rutas.modelo.php';
-require_once '../controladores/rutas.controlador.php';
-
 require_once '../modelos/perfil.modelo.php';
 require_once '../controladores/perfil.controlador.php';
 
@@ -31,13 +28,10 @@ class MostrarUsuarios
 		  "data": [';
 
 		for ($i = 0; $i < count($Usuarios); $i++) {
-			//$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdusuario' usuarioid='".$Usuarios[$i]["usu_Id"]."' usuariocedula='".$Usuarios[$i]["usu_Cedula"]."'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-warning btnpermisosusuario' usuarioid='".$Usuarios[$i]["usu_Id"]."'><i class='fas fa-user-lock'></i></button><button type='button' class='btn btn-danger btneliminarusuario' usuarioid='".$Usuarios[$i]["usu_Id"]."'><i class='fas fa-trash'></i></button></div>";
 
 			$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdusuario' usuarioid='" . $Usuarios[$i]["usu_Id"] . "' usuariocedula='" . $Usuarios[$i]["usu_Cedula"] . "'><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarusuario' usuarioid='" . $Usuarios[$i]["usu_Id"] . "'><i class='fas fa-trash'></i></button></div>";
 
-			$item = "rut_Id";
-			$valor = $Usuarios[$i]["usu_RUTA"];
-			$Rutas = RutasControlador::ctrMostrarRutas($item, $valor);
+
 			$item1 = "per_Id";
 			$valor1 = $Usuarios[$i]["usu_Perfil"];
 			$perfil = PerfilControlador::ctrMostrarPerfil($item1, $valor1);
@@ -51,7 +45,6 @@ class MostrarUsuarios
 			      "' . $Usuarios[$i]["usu_Nombre"] . '",
 			      "' . $Usuarios[$i]["usu_Celular"] . '",
 			      "' . $Usuarios[$i]["usu_Direccion"] . '",
-			      "' . $Rutas["rut_Nombre"] . '",
 			      "' . $perfil["per_Nombre"] . '",
 			      "' . $estado . '",
 			      "' . $botones . '"

@@ -19,11 +19,6 @@ class GastosControlador
         return GastoModelo::mdlMostrarGastos($tabla, $item, $valor);
     }
 
-    /*=============================================
-				GUARDAR COBRO
-	=============================================*/
-
-
     public static function ctrGuardarGasto()
     {
         $tabla = "gasto";
@@ -38,14 +33,13 @@ class GastosControlador
             }
 
             $gas_Monto = trim($_POST["gas_Monto"]);
-            $gas_CajaId = intval($_SESSION["cajaAbiertaId"]);
 
             $datosControlador = [
                 'gas_Monto' => $gas_Monto,
                 'gas_Fecha' => date("Y-m-d h:i:s"),
                 'gas_Tipo' => $_POST["gas_Tipo"],
-                'gas_USUARIO' => $_SESSION["usuario_Id"],
-                'gas_CUADRE_CAJA' => $gas_CajaId
+                'created_by' => $_SESSION["usuario_Id"],
+                'updated_by' => $_SESSION["usuario_Id"],
             ];
 
             $respuestaModelo = GastoModelo::mdlguardarGasto($tabla, $datosControlador);
@@ -56,7 +50,7 @@ class GastosControlador
                     "mov_Observacion" => "Gasto Registrado: " . number_format($gas_Monto, 2, ",", "."),
                     "mov_Monto" => $gas_Monto,
                     "mov_Tipo" => "GASTO",
-                    "mov_Usuario" => $_SESSION["usuario_Id"],
+                    "created_by" => $_SESSION["usuario_Id"],
                     "mov_Referencia" => $respuestaModelo["lastInsertId"],
                     "mov_Fecha" => date("Y-m-d H:i:s")
                 ]);
@@ -65,12 +59,6 @@ class GastosControlador
             return $respuestaModelo;
         }
     }
-
-
-    /*=============================================
-				ELIMINAR COBRO
-	=============================================*/
-
 
     public static function ctrEliminarGasto()
     {
@@ -81,7 +69,10 @@ class GastosControlador
                 return ['codigo' => 'No tienes permisos para realizar esta accion'];
             }
 
-            return GastoModelo::mdlActualizarGasto($tabla, intval($_POST["gas_Id"]));
+            return GastoModelo::mdlActualizarGasto($tabla, [
+                "gas_Id" => $_POST["gas_Id"],
+                "updated_by" => $_SESSION["usuario_Id"]
+            ]);
         }
     }
 }

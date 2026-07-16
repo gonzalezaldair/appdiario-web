@@ -21,18 +21,6 @@ class FormaPagoControlador
 		return $respuesta;
 	}
 
-	/*=============================================
-				GENERAR CONSECUTIVO
-	=============================================*/
-
-
-	public static function ctrConsecutivo()
-	{
-		$tabla = "formapago";
-		$respuestaModelo = FormaPagoModelo::mdlconsecutivo($tabla, "frm_Codigo");
-		return $respuestaModelo;
-	}
-
 
 	/*=============================================
 				GUARDAR FORMA DE PAGO
@@ -43,37 +31,30 @@ class FormaPagoControlador
 	{
 		$tabla = "formapago";
 		if (isset($_POST)) {
-			if (in_array(13, $_SESSION["permisos"]) || in_array(15, $_SESSION["permisos"])) {
-				if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["frm_Nombre"])) {
 
-					$frm_Id = intval($_POST["frm_Id"]);
-					$frm_Codigo = strtoupper(trim($_POST["frm_Codigo"]));
-					$frm_Nombre = strtoupper(trim($_POST["frm_Nombre"]));
-					$frm_Activo = intval($_POST["frm_Activo"]);
+			if (!(in_array(13, $_SESSION["permisos"]) || in_array(15, $_SESSION["permisos"]))) return ['codigo' => 'No tienes permisos para realizar esta accion'];
+
+			if (!preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["frm_Nombre"])) return ['codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio'];
+
+			$frm_Id = intval($_POST["frm_Id"]);
+			$frm_Nombre = strtoupper(trim($_POST["frm_Nombre"]));
+			$frm_Activo = intval($_POST["frm_Activo"]);
 
 
-					$datosControlador = array(
-						'frm_Codigo' => $frm_Codigo,
-						'frm_Id' => $frm_Id,
-						'frm_Nombre' => $frm_Nombre,
-						'frm_Activo' => $frm_Activo
-					);
+			$datosControlador = [
+				'frm_Id' => $frm_Id,
+				'frm_Nombre' => $frm_Nombre,
+				'frm_Activo' => $frm_Activo,
+				'created_by' => $_SESSION["usuario_Id"],
+				'updated_by' => $_SESSION["usuario_Id"]
+			];
 
-					if ($frm_Id > 0) {
+			if ($frm_Id > 0) {
 
-						return FormaPagoModelo::mdlactualizarFormaPago($tabla, $datosControlador);
-					} else {
-
-						return FormaPagoModelo::mdlguardarFormaPago($tabla, $datosControlador);
-					}
-				} else {
-
-					return ['codigo' => 'Revisar Campos Alguno debe contener un caracter no permitido o esta vacio'];
-				}
-			} else {
-
-				return ['codigo' => 'No tienes permisos para realizar esta accion'];
+				return FormaPagoModelo::mdlactualizarFormaPago($tabla, $datosControlador);
 			}
+
+			return FormaPagoModelo::mdlguardarFormaPago($tabla, $datosControlador);
 		}
 	}
 
@@ -87,14 +68,10 @@ class FormaPagoControlador
 	{
 		$tabla = "formapago";
 		if (isset($_POST["frm_Id"])) {
-			if (in_array(16, $_SESSION["permisos"])) {
-				$respuestaModelo = FormaPagoModelo::mdlEliminarFormaPago($tabla, "frm_Id", $_POST["frm_Id"]);
-				return $respuestaModelo;
-			} else {
-				$arrayName = array('codigo' => 'No tienes permisos para realizar esta accion');
 
-				return $arrayName;
-			}
+			if (!in_array(16, $_SESSION["permisos"])) return ['codigo' => 'No tienes permisos para realizar esta accion'];
+
+			return FormaPagoModelo::mdlEliminarFormaPago($tabla, "frm_Id", $_POST["frm_Id"], $_SESSION["usuario_Id"]);
 		}
 	}
 }
