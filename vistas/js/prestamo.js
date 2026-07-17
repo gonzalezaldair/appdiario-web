@@ -59,17 +59,19 @@ $("#btnmodalnuevoprestamo").on("click", function (event) {
   /* Act on the event */
   $("#errorPrestamos").html();
   $("#prestamoId").val("");
-  /*$("#prestamoFormaPago").val(1);*/
+  $("#prestamoFormaPago").val(0);
   $("#prestamoCliente").val("");
   //$("#prestamoInteres").val("20");
   $("#prestamoMontoPrestado").val("");
   $("#prestamoCuotas").val("");
   $("#prestamoObservaciones").val("");
   $("#prestamoUsuario").val("");
-  $("#prestamoInteres").attr("readonly", true);
+  $("#prestamoInteres").val("");
+  //$("#prestamoInteres").attr("readonly", true);
   $("#prestamoMontoPrestado").attr("readonly", false);
   $("#prestamoCliente").attr("readonly", false);
   $("#prestamoMontoInteres").val("");
+  $("#prestamoTotalPagar").val("");
 
   $("#modal-nuevo-prestamo .modal-title").text("Nuevo Prestamo");
   $("#modal-nuevo-prestamo .modal-header").removeClass("bg-success");
@@ -82,11 +84,49 @@ $("#prestamoFormaPago").on("change", function (event) {
   const valor = $("#prestamoFormaPago option:selected").text().toUpperCase();
 
   if (valor == "DIARIO") {
-    $("#prestamoCuotas").val(35);
+    $("#prestamoCuotas").val(30);
+  } else if (valor == "SEMANAL") {
+    $("#prestamoCuotas").val(4);
+  } else if (valor == "QUINCENAL") {
+    $("#prestamoCuotas").val(2);
+  } else if (valor == "MENSUAL") {
+    $("#prestamoCuotas").val(1);
   } else {
     $("#prestamoCuotas").val("");
   }
 });
+
+$("#prestamoInteres , #prestamoMontoPrestado, #prestamoCuotas").on(
+  "change",
+  function (event) {
+    event.preventDefault();
+    const valor = $("#prestamoFormaPago option:selected").text().toUpperCase();
+
+    const interes = $("#prestamoInteres").val();
+    const monto = $("#prestamoMontoPrestado").val();
+    const cuotas = $("#prestamoCuotas").val();
+
+    let interesReal = 0;
+
+    if (valor == "MENSUAL") {
+      factor = 1;
+      interesReal = interes * (cuotas * factor);
+    } else if (valor == "QUINCENAL") {
+      factor = 0.5;
+      interesReal = interes * (cuotas * factor);
+    } else if (valor == "SEMANAL") {
+      factor = 0.25;
+      interesReal = interes * (cuotas * factor);
+    } else if (valor == "DIARIO") {
+      factor = 0.03;
+      interesReal = interes * Math.ceil(cuotas * factor);
+    }
+
+    const totalPagar = monto * (1 + interesReal / 100);
+
+    $("#prestamoTotalPagar").val($.number(totalPagar, 0, ".", ","));
+  },
+);
 
 /*=============================================
 CARGAR LA TABLA DINÁMICA DE CLIENTES
@@ -116,6 +156,9 @@ $("#modal-nuevo-prestamo").on(
     const pre_Id = $("#prestamoId").val() != "" ? $("#prestamoId").val() : 0;
     const pre_Cliente = $("#prestamoCliente").val();
     const pre_FormaPago = $("#prestamoFormaPago").val();
+    const pre_FormaPagoTexto = $("#prestamoFormaPago option:selected")
+      .text()
+      .toUpperCase();
     const pre_Interes = $("#prestamoInteres").val();
     let expr = /^[0-9]+$/;
     if (pre_Interes === "" && !expr.test(pre_Interes)) {
@@ -143,8 +186,8 @@ $("#modal-nuevo-prestamo").on(
       datos.append("pre_Id", pre_Id);
       datos.append("pre_CLIENTE", pre_Cliente);
       datos.append("pre_FormaPago", pre_FormaPago);
+      datos.append("pre_FormaPagoTexto", pre_FormaPagoTexto);
       datos.append("pre_Interes", pre_Interes);
-      //datos.append("pre_MontoInteres", 100000);
       datos.append("pre_MontoPrestado", pre_MontoPrestado);
       datos.append("pre_Cuotas", pre_Cuotas);
       datos.append("pre_Observaciones", pre_Observaciones);
@@ -192,14 +235,6 @@ $("#modal-nuevo-prestamo").on(
     }
   },
 );
-
-/*=============================================
-	VALIDAR QUE SOLO INGRESEN VALORES PERMITIDOS
-=============================================*/
-
-$("input.validarNumero").on("input", function () {
-  this.value = this.value.replace(/[^0-9.]/g, "");
-});
 
 /*=============================================
 	ACTUALIZAR PRESTAMOS

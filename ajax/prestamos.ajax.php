@@ -30,10 +30,10 @@ class MostrarPrestamos
 
 			$saldo = $Prestamos[$i]["Saldo"];
 
-			$interes = number_format($Prestamos[$i]["interes"], 2, ",", ".");
-			$prestado = number_format($Prestamos[$i]["pre_MontoPrestado"], 2, ",", ".");
-			$prestadointeres = number_format($Prestamos[$i]["pre_MontoInteres"], 2, ",", ".");
-			$saldo = number_format($saldo, 2, ",", ".");
+			$interes = number_format($Prestamos[$i]["interes"], 0, ",", ".");
+			$prestado = number_format($Prestamos[$i]["pre_MontoPrestado"], 0, ",", ".");
+			$prestadointeres = number_format($Prestamos[$i]["pre_MontoInteres"], 0, ",", ".");
+			$saldo = number_format($saldo, 0, ",", ".");
 			$valorCuotas = round(($Prestamos[$i]["pre_MontoInteres"] / $Prestamos[$i]["pre_Cuotas"]) / 100) * 100;
 
 			if ($Prestamos[$i]["Saldo"] > 0) {
@@ -50,7 +50,7 @@ class MostrarPrestamos
 			      "' . $prestado . '",
 			      "' . $prestadointeres . '",
 			      "' . $Prestamos[$i]["pre_Cuotas"] . '",
-			      "' . number_format($valorCuotas, 2, ",", ".") . '",
+			      "' . number_format($valorCuotas, 0, ",", ".") . '",
 			      "' . $Prestamos[$i]["pre_Observaciones"] . '",
 			      "' . $saldo . '",
 			      "' . $botones . '"

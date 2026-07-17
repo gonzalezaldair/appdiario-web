@@ -45,12 +45,12 @@ class PrestamosControlador
                     $pre_Fecha = date('Y-m-d H:i:s');
                     $pre_CLIENTE = intval($_POST["pre_CLIENTE"]);
                     $pre_FormaPago = intval($_POST["pre_FormaPago"]);
+                    $pre_FormaPagoTexto = $_POST["pre_FormaPagoTexto"];
                     $pre_Interes = intval($_POST["pre_Interes"]);
                     $pre_MontoPrestado = intval($_POST["pre_MontoPrestado"]);
                     $pre_Cuotas = intval($_POST["pre_Cuotas"]);
                     $pre_Observaciones = strtoupper($Observaciones);
-                    $interes = ($pre_Interes > 9) ? "1." . $pre_Interes : "1.0" . $pre_Interes;
-                    $pre_MontoInteres = $pre_MontoPrestado * $interes;
+                    $pre_MontoInteres = self::generarInteresReal($pre_Interes, $pre_MontoPrestado, $pre_Cuotas, $pre_FormaPagoTexto);
 
                     $datosControlador = [
                         'pre_Id' => $pre_Id,
@@ -76,7 +76,7 @@ class PrestamosControlador
                     if ($respuestaModelo["mensaje"] == "ok") {
 
                         return MovimientosCajaModelo::mdlRegistrarMovimientoCaja("movimiento_caja", [
-                            "mov_Observacion" => "Préstamo Registrado: " . number_format($pre_MontoPrestado, 2, ",", ".") . " con interes de " . $pre_Interes . "% por " . $pre_Cuotas . " cuotas",
+                            "mov_Observacion" => "Préstamo Registrado: " . number_format($pre_MontoPrestado, 0, ",", ".") . " con interes de " . $pre_Interes . "% por " . $pre_Cuotas . " cuotas",
                             "mov_Monto" => $pre_MontoPrestado,
                             "mov_Tipo" => "PRESTAMO",
                             "created_by" => $_SESSION["usuario_Id"],
@@ -93,5 +93,29 @@ class PrestamosControlador
                 return ['codigo' => 'No tienes permisos para realizar esta accion'];
             }
         }
+    }
+
+    private static function generarInteresReal($interes, $montoPrestado, $cuotas, $formaPago)
+    {
+        $factor = 0;
+
+        switch ($formaPago) {
+            case "MENSUAL":
+                $factor = 1;
+                break;
+            case "QUINCENAL":
+                $factor = 0.5;
+                break;
+            case "SEMANAL":
+                $factor = 0.25;
+                break;
+            case "DIARIO":
+                $factor = 0.03;
+                break;
+        }
+
+        $interes = $interes * ceil($cuotas * $factor);
+
+        return $montoPrestado * (1 + $interes / 100);
     }
 }
