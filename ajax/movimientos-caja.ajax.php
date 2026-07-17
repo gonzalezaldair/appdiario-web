@@ -26,7 +26,7 @@ class MostrarMovimientosCaja
 
         for ($i = 0; $i < count($Movimientos); $i++) {
             //$botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdabono' aboid='".$Movimientos[$i]["mov_Id"]."' movprestamo='".$Movimientos[$i]["mov_PRESTAMO"]."' ><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminarabono' aboid='".$Movimientos[$i]["mov_Id"]."' movprestamo='".$Movimientos[$i]["mov_PRESTAMO"]."' ><i class='fas fa-trash'></i></button></div>";
-            $monto = number_format($Movimientos[$i]["mov_Monto"], 2, ",", ".");
+            $monto = number_format($Movimientos[$i]["mov_Monto"], 0, ",", ".");
             $datosJson .= '[
 			      "' . $Movimientos[$i]["mov_Fecha"] . '",
 			      "' . $Movimientos[$i]["mov_Tipo"] . '",

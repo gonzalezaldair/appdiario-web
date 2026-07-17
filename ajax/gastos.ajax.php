@@ -30,7 +30,7 @@ class MostrarGastos
 
         for ($i = 0; $i < count($Gastos); $i++) {
             $botones = "<div class='btn-group' role='group' aria-label='Basic example'><button type='button' class='btn btn-success btnupdgasto' aboid='" . $Gastos[$i]["gas_Id"] . "' gas_Fecha='" . $Gastos[$i]["gas_Fecha"] . "' ><i class='fas fa-edit'></i></button><button type='button' class='btn btn-danger btneliminargasto' aboid='" . $Gastos[$i]["gas_Id"] . "' gas_Fecha='" . $Gastos[$i]["gas_Fecha"] . "' ><i class='fas fa-trash'></i></button></div>";
-            $monto = number_format($Gastos[$i]["gas_Monto"], 2, ",", ".");
+            $monto = number_format($Gastos[$i]["gas_Monto"], 0, ",", ".");
             $datosJson .= '[
 			      "' . $monto . '",
 			      "' . $Gastos[$i]["gas_Fecha"] . '",

@@ -108,16 +108,16 @@ $Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
                                 <tbody>
 
                                     <?php if (is_array($PrestamosTablaInicio) && count($PrestamosTablaInicio) > 0) : ?>
-                                    <?php $numrow = (count($PrestamosTablaInicio) > 6) ? 6 :  count($PrestamosTablaInicio); ?>
-                                    <?php for ($i = 0; $i < $numrow; $i++): ?>
-                                    <tr>
-                                        <td><a href="#"><?= $PrestamosTablaInicio[$i]["pre_Id"] ?></a></td>
-                                        <td><?= $PrestamosTablaInicio[$i]["cli_Nombre"] ?></td>
-                                        <td>$
-                                            <?= number_format($PrestamosTablaInicio[$i]["pre_MontoPrestado"], 2, ",", ".") ?>
-                                        </td>
-                                    </tr>
-                                    <?php endfor; ?>
+                                        <?php $numrow = (count($PrestamosTablaInicio) > 6) ? 6 :  count($PrestamosTablaInicio); ?>
+                                        <?php for ($i = 0; $i < $numrow; $i++): ?>
+                                            <tr>
+                                                <td><a href="#"><?= $PrestamosTablaInicio[$i]["pre_Id"] ?></a></td>
+                                                <td><?= $PrestamosTablaInicio[$i]["cli_Nombre"] ?></td>
+                                                <td>$
+                                                    <?= number_format($PrestamosTablaInicio[$i]["pre_MontoPrestado"], 0, ",", ".") ?>
+                                                </td>
+                                            </tr>
+                                        <?php endfor; ?>
                                     <?php endif; ?>
                                 </tbody>
                             </table>
@@ -153,22 +153,22 @@ $Abonos = AbonosControlador::ctrMostrarAbonos($item, $valor);
                         <ul class="products-list product-list-in-card pl-2 pr-2">
 
                             <?php if (is_array($Abonos) && count($Abonos) > 0): ?>
-                            <?php $numrow = (count($Abonos) > 6) ? 6 :  count($Abonos); ?>
-                            <?php for ($i = 0; $i < $numrow; $i++): ?>
-                            <li class="item">
-                                <div class="product-img">
-                                    <img src="vistas/img/abono.png" alt="Abono Image" class="img-size-50">
-                                </div>
-                                <div class="product-info">
-                                    <a href="javascript:void(0)" class="product-title"><?= $Abonos[$i]["abo_Fecha"] ?>
-                                        <span class="badge badge-warning float-right">$
-                                            <?= number_format($Abonos[$i]["abo_Monto"], 2, ",", ".") ?></span></a>
-                                    <span class="product-description">
-                                        <?= $Abonos[$i]["abo_Fecha"] ?>
-                                    </span>
-                                </div>
-                            </li>
-                            <?php endfor; ?>
+                                <?php $numrow = (count($Abonos) > 6) ? 6 :  count($Abonos); ?>
+                                <?php for ($i = 0; $i < $numrow; $i++): ?>
+                                    <li class="item">
+                                        <div class="product-img">
+                                            <img src="vistas/img/abono.png" alt="Abono Image" class="img-size-50">
+                                        </div>
+                                        <div class="product-info">
+                                            <a href="javascript:void(0)" class="product-title"><?= $Abonos[$i]["abo_Fecha"] ?>
+                                                <span class="badge badge-warning float-right">$
+                                                    <?= number_format($Abonos[$i]["abo_Monto"], 0, ",", ".") ?></span></a>
+                                            <span class="product-description">
+                                                <?= $Abonos[$i]["abo_Fecha"] ?>
+                                            </span>
+                                        </div>
+                                    </li>
+                                <?php endfor; ?>
                             <?php endif; ?>
                         </ul>
                     </div>

@@ -60,7 +60,7 @@ class AbonosControlador
             if ($respuestaModelo["mensaje"] == "ok") {
 
                 return MovimientosCajaModelo::mdlRegistrarMovimientoCaja("movimiento_caja", [
-                    "mov_Observacion" => "Abono Registrado: " . number_format($abo_Monto, 2, ",", "."),
+                    "mov_Observacion" => "Abono Registrado: " . number_format($abo_Monto, 0, ",", "."),
                     "mov_Monto" => $abo_Monto,
                     "mov_Tipo" => "ABONO",
                     "created_by" => $_SESSION["usuario_Id"],

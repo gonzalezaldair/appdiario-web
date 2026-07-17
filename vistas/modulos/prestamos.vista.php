@@ -83,18 +83,6 @@
                     <select id="prestamoFormaPago" class="form-control form-control-lg">
                     </select>
                 </div>
-                <!--<div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-          </div>
-          <select class="form-control form-control-lg">
-            <option>option 1</option>
-            <option>option 2</option>
-            <option>option 3</option>
-            <option>option 4</option>
-            <option>option 5</option>
-          </select>
-        </div>-->
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-id-card"></i></span>
@@ -107,15 +95,44 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                     </div>
-                    <input id="prestamoMontoPrestado" type="text" class="form-control form-control-lg validarNumero"
-                        placeholder="Ingresar Suma">
+                    <input id="prestamoMontoPrestado" type="text"
+                        class="form-control form-control-lg validarNumero formatoMoneda" placeholder="Ingresar Suma">
                 </div>
-                <div class="input-group mb-3">
+                <div class="row">
+
+                    <div class="col-md-6 col-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-percent"></i>
+                                </span>
+                            </div>
+
+                            <input id="prestamoInteres" type="text" class="form-control form-control-lg validarNumero"
+                                placeholder="Ingresar Interes">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-sort-numeric-up"></i>
+                                </span>
+                            </div>
+
+                            <input id="prestamoCuotas" type="text" class="form-control form-control-lg validarNumero"
+                                placeholder="Ingresar Cuotas">
+                        </div>
+                    </div>
+
+                </div>
+                <!-- <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-percent"></i></span>
                     </div>
                     <input id="prestamoInteres" type="text" class="form-control form-control-lg validarNumero"
-                        placeholder="Ingresar Interes" value="20" readonly>
+                        placeholder="Ingresar Interes">
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -123,6 +140,13 @@
                     </div>
                     <input id="prestamoCuotas" type="text" class="form-control form-control-lg validarNumero"
                         placeholder="Ingresar Cuotas">
+                </div>-->
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-sort-numeric-up"></i></span>
+                    </div>
+                    <input id="prestamoTotalPagar" type="text" class="form-control form-control-lg"
+                        placeholder="Total a Pagar" readonly>
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -167,8 +191,8 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-coins"></i></span>
                     </div>
-                    <input id="prestamosabonoSuma" type="text" class="form-control form-control-lg validarNumero"
-                        placeholder="Ingresar Suma">
+                    <input id="prestamosabonoSuma" type="text"
+                        class="form-control form-control-lg validarNumero formatoMoneda" placeholder="Ingresar Suma">
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">

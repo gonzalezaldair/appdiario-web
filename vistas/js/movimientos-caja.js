@@ -53,8 +53,6 @@ $("#modal-nuevo-movimiento-caja").on(
       dataType: "json",
     })
       .done(function (respuesta) {
-        console.log("respuesta ", respuesta);
-
         if (respuesta.mensaje === "ok") {
           Swal.fire({
             title: "Guardar Datos",
@@ -64,7 +62,7 @@ $("#modal-nuevo-movimiento-caja").on(
             confirmButtonText: "! Cerrar ¡",
           }).then((result) => {
             if (result.value) {
-              tablacudreCaja.ajax.reload();
+              tablaMovimientosCaja.ajax.reload();
             }
           });
           $("#modal-nuevo-movimiento-caja").modal("hide");

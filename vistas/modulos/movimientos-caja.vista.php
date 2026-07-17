@@ -88,8 +88,8 @@ if (!in_array($_SESSION["usuario_PERFIL"], [1, 4])) {
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                     </div>
-                    <input type="text" id="montoMovimiento" class="form-control form-control-lg"
-                        placeholder="Ingresar Monto">
+                    <input type="text" id="montoMovimiento"
+                        class="form-control form-control-lg validarNumero formatoMoneda" placeholder="Ingresar Monto">
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">

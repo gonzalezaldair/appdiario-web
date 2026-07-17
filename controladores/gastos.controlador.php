@@ -47,7 +47,7 @@ class GastosControlador
             if ($respuestaModelo["mensaje"] == "ok") {
 
                 return MovimientosCajaModelo::mdlRegistrarMovimientoCaja("movimiento_caja", [
-                    "mov_Observacion" => "Gasto Registrado: " . number_format($gas_Monto, 2, ",", "."),
+                    "mov_Observacion" => "Gasto Registrado: " . number_format($gas_Monto, 0, ",", "."),
                     "mov_Monto" => $gas_Monto,
                     "mov_Tipo" => "GASTO",
                     "created_by" => $_SESSION["usuario_Id"],

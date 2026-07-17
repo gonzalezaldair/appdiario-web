@@ -228,24 +228,15 @@ $("#tablaclientes").on("click", ".btnupdcliente", function (event) {
 });
 
 /*=============================================
-	VALIDAR QUE SOLO INGRESEN VALORES PERMITIDOS
-=============================================*/
-
-$("input.validarNumero").on("input", function () {
-  this.value = this.value.replace(/[^0-9.]/g, "");
-});
-
-/*=============================================
 	MOSTRAR EN FORMATO DINERO prestamoMontoPrestado
 =============================================*/
 
-$("#modal-nuevo-prestamo").on("change", "#sumaPrestamo", function (event) {
+/*$("#modal-nuevo-prestamo").on("change", "#sumaPrestamo", function (event) {
   event.preventDefault();
-  /* Act on the event */
 
   $("#sumaPrestamo").attr("MontoReal", $("#sumaPrestamo").val());
   $("#sumaPrestamo").val($.number($("#sumaPrestamo").val(), 2, ".", ","));
-});
+});*/
 
 /*=============================================
 	NUEVO PRESTAMO

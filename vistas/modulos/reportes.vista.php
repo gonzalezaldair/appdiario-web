@@ -3,6 +3,23 @@ if ($_SESSION["usuario_PERFIL"] <> 1) {
   echo '<script> window.location = "inicio"; </script>';
 }
 
+
+$fechaInicial = null;
+$fechaFinal = null;
+
+if (isset($_GET["fechaInicial"])) {
+  $fechaInicial = $_GET["fechaInicial"];
+  $fechaFinal = $_GET["fechaFinal"];
+}
+
+$reporte = ReportesControlador::ctrReportePrestamosTotal($fechaInicial, $fechaFinal);
+
+$salidas = $reporte["GASTOS"] + $reporte["RETIROS"] + $reporte["AJUSTES"] + $reporte["PRESTAMOS"];
+$entradas = $reporte["SALDO_INICIAL"]  + $reporte["ABONOS"] + $reporte["INYECCION_CAPITAL"];
+
+$cajaActual = $entradas  - $salidas;
+$abonos = $reporte["ABONOS"];
+
 ?>
 
 <!-- Content Header (Page header) -->
@@ -55,35 +72,40 @@ if ($_SESSION["usuario_PERFIL"] <> 1) {
                 </tr>
               </thead>
               <tbody>
-                <?php
 
-                if (isset($_GET["fechaInicial"])) {
-                  $fechaInicial = $_GET["fechaInicial"];
-                  $fechaFinal = $_GET["fechaFinal"];
-                } else {
-                  $fechaInicial = null;
-                  $fechaFinal = null;
-                }
-
-                $reporte = ReportesControlador::ctrReportePrestamosTotal($fechaInicial, $fechaFinal);
-
-                $salidas = $reporte["GASTOS"] + $reporte["RETIROS"] + $reporte["AJUSTES"] + $reporte["PRESTAMOS"];
-                $entradas = $reporte["SALDO_INICIAL"]  + $reporte["ABONOS"] + $reporte["INYECCION_CAPITAL"];
-
-                $cajaActual = $entradas  - $salidas;
-                $abonos = $reporte["ABONOS"];
-
-                echo '<tr>
-                            <td><span class="badge badge-primary">$ ' . number_format($reporte["SALDO_INICIAL"] + $reporte["INYECCION_CAPITAL"], 2, ",", ".") . '</span></td>
-                            <td><span class="badge badge-danger">$ ' . number_format($reporte["RETIROS"], 2, ",", ".") . '</span></td>
-                            <td><span class="badge badge-success">$ ' . number_format($reporte["PRESTAMOS"], 2, ",", ".") . '</span></td>
-                            <td><span class="badge badge-warning">$ ' . number_format($reporte["INTERESES"], 2, ",", ".") . '</span></td>
-                            <td><span class="badge badge-info">$ ' . number_format($reporte["GASTOS"], 2, ",", ".") . '</span></td>
-                            <td><span class="badge badge-primary">$ ' . number_format($abonos, 2, ",", ".") . '</span></td>
-                            <td><span class="badge badge-danger">$ ' . number_format($cajaActual, 2, ",", ".") . '</span></td>
-                          </tr>';
-
-                ?>
+                <tr>
+                  <td><span class="badge badge-primary">$ <?= number_format($reporte["SALDO_INICIAL"]
+                                                            + $reporte["INYECCION_CAPITAL"], 0, ",", ".") ?></span>
+                  </td>
+                  <td><span class="badge badge-danger">$ <?= number_format(
+                                                            $reporte["RETIROS"],
+                                                            0,
+                                                            ",",
+                                                            "."
+                                                          ) ?></span></td>
+                  <td><span class="badge badge-success">$ <?= number_format(
+                                                            $reporte["PRESTAMOS"],
+                                                            0,
+                                                            ",",
+                                                            "."
+                                                          ) ?></span></td>
+                  <td><span class="badge badge-warning">$ <?= number_format(
+                                                            $reporte["INTERESES"],
+                                                            0,
+                                                            ",",
+                                                            "."
+                                                          ) ?></span></td>
+                  <td><span class="badge badge-info">$ <?= number_format(
+                                                          $reporte["GASTOS"],
+                                                          0,
+                                                          ",",
+                                                          "."
+                                                        ) ?></span></td>
+                  <td><span class="badge badge-primary">$
+                      <?= number_format($abonos, 0, ",", ".")  ?></span></td>
+                  <td><span class="badge badge-danger">$
+                      <?= number_format($cajaActual, 0, ",", ".")  ?></span></td>
+                </tr>
               </tbody>
             </table>
           </div>
