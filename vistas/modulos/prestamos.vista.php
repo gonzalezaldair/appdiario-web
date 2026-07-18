@@ -109,7 +109,9 @@
                             </div>
 
                             <input id="prestamoInteres" type="text" class="form-control form-control-lg validarNumero"
-                                placeholder="Ingresar Interes">
+                                placeholder="Ingresar Interes"
+                                value="<?= $_SESSION["configuraciones"]["conf_InteresManual"] == "Y" ? $_SESSION["configuraciones"]["conf_InteresNumero"] : "" ?>"
+                                <?= $_SESSION["configuraciones"]["conf_InteresManual"] == "N" ? "readonly" : "" ?>>
                         </div>
                     </div>
 

@@ -52,6 +52,10 @@ class PrestamosControlador
                     $pre_Observaciones = strtoupper($Observaciones);
                     $pre_MontoInteres = self::generarInteresReal($pre_Interes, $pre_MontoPrestado, $pre_Cuotas, $pre_FormaPagoTexto);
 
+                    $interesBoletas = $_SESSION["configuraciones"]["conf_ActivoBoletas"] == "Y" ? $_SESSION["configuraciones"]["conf_BoletasNumero"] : 0;
+
+                    $montoBoletas = self::generarMontoBoleta($interesBoletas, $pre_MontoPrestado);
+
                     $datosControlador = [
                         'pre_Id' => $pre_Id,
                         'pre_Fecha' => $pre_Fecha,
@@ -60,7 +64,7 @@ class PrestamosControlador
                         'pre_Interes' => $pre_Interes,
                         'pre_MontoPrestado' => $pre_MontoPrestado,
                         'pre_Cuotas' => $pre_Cuotas,
-                        'pre_Observaciones' => $pre_Observaciones,
+                        'pre_Observaciones' => $pre_Observaciones . " Monto Boleta: " . number_format($montoBoletas, 0, ",", "."),
                         'created_by' => $_SESSION["usuario_Id"],
                         'updated_by' => $_SESSION["usuario_Id"],
                         'pre_MontoInteres' => $pre_MontoInteres
@@ -77,7 +81,7 @@ class PrestamosControlador
 
                         return MovimientosCajaModelo::mdlRegistrarMovimientoCaja("movimiento_caja", [
                             "mov_Observacion" => "Préstamo Registrado: " . number_format($pre_MontoPrestado, 0, ",", ".") . " con interes de " . $pre_Interes . "% por " . $pre_Cuotas . " cuotas",
-                            "mov_Monto" => $pre_MontoPrestado,
+                            "mov_Monto" => $pre_MontoPrestado - $montoBoletas,
                             "mov_Tipo" => "PRESTAMO",
                             "created_by" => $_SESSION["usuario_Id"],
                             "mov_Referencia" => $respuestaModelo["lastInsertId"],
@@ -93,6 +97,13 @@ class PrestamosControlador
                 return ['codigo' => 'No tienes permisos para realizar esta accion'];
             }
         }
+    }
+
+
+    private static function generarMontoBoleta($interes, $montoPrestado)
+    {
+        if ($interes == 0) return 0;
+        return ($montoPrestado * ($interes / 100));
     }
 
     private static function generarInteresReal($interes, $montoPrestado, $cuotas, $formaPago)

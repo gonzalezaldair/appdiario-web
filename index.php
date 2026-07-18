@@ -15,6 +15,7 @@ date_default_timezone_set('America/Bogota');
 
 
 require_once 'modelos/ingreso.modelo.php';
+require_once 'modelos/configuraciones.modelo.php';
 require_once 'modelos/clientes.modelo.php';
 require_once 'modelos/usuario.modelo.php';
 require_once 'modelos/prestamos.modelo.php';
@@ -26,6 +27,7 @@ require_once 'modelos/reportes.modelo.php';
 
 
 require_once 'controladores/ingreso.controlador.php';
+require_once 'controladores/configuraciones.controlador.php';
 require_once 'controladores/plantilla.controlador.php';
 require_once 'controladores/clientes.controlador.php';
 require_once 'controladores/usuario.controlador.php';

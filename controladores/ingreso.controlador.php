@@ -20,6 +20,9 @@ class ingresoControlador
 						if (!isset($_SESSION)) {
 							session_start();
 						}
+
+						$_SESSION["configuraciones"] = ConfiguracionesControlador::ctrMostrarConfiguraciones();
+
 						$_SESSION["validar"] = true;
 						$_SESSION["usuario_Login"] = $respuesta["usu_Login"];
 						$_SESSION["usuario_Id"] = $respuesta["usu_Id"];
