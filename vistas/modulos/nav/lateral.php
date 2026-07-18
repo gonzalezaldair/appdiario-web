@@ -7,7 +7,7 @@ $modulos = ModulosControlador::ctrMostrarModulosPersonalizados($_SESSION["usuari
     <!-- Brand Logo -->
     <a href="inicio" class="brand-link logo-inicio">
         <!--<img src="vistas/adminlte/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"style="opacity: .8">-->
-        <img src="vistas/adminlte/dist/img/fav-icon.png" alt="Logo App" class="brand-image img-circle elevation-3"
+        <img src="vistas/img/icon_sidebard.png" alt="Logo App" class="brand-image img-circle elevation-3"
             style="opacity: .8">
         <span class="brand-text font-weight-light">COMERC. El Gato</span>
     </a>
@@ -39,17 +39,17 @@ $modulos = ModulosControlador::ctrMostrarModulosPersonalizados($_SESSION["usuari
                     </a>
                 </li>
                 <?php for ($i = 0; $i < count($modulos); $i++) : ?>
-                <?php if ($modulos[$i]["mod_Activo"] == 'Y') : ?>
-                <li class="nav-item">
-                    <a href="<?= $modulos[$i]["mod_Url"] ?>" class="nav-link">
-                        <i class="nav-icon <?= $modulos[$i]["mod_Icon"] ?>"></i>
-                        <p>
-                            <?= ucwords(strtolower($modulos[$i]["mod_Nombre"])) ?>
-                            <!--<span class="right badge badge-danger">New</span>-->
-                        </p>
-                    </a>
-                </li>
-                <?php endif; ?>
+                    <?php if ($modulos[$i]["mod_Activo"] == 'Y') : ?>
+                        <li class="nav-item">
+                            <a href="<?= $modulos[$i]["mod_Url"] ?>" class="nav-link">
+                                <i class="nav-icon <?= $modulos[$i]["mod_Icon"] ?>"></i>
+                                <p>
+                                    <?= ucwords(strtolower($modulos[$i]["mod_Nombre"])) ?>
+                                    <!--<span class="right badge badge-danger">New</span>-->
+                                </p>
+                            </a>
+                        </li>
+                    <?php endif; ?>
 
                 <?php endfor; ?>
             </ul>

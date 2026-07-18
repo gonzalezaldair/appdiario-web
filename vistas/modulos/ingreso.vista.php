@@ -1,7 +1,9 @@
 <div class="login-page">
 	<div class="login-box">
 		<div class="login-logo">
-			<a href="#"><b>Admin</b>LTE</a>
+			<a href="#">
+				<img src="vistas/img/iso_logo.png" width="90%">
+			</a>
 		</div>
 		<!-- /.login-logo -->
 		<div class="card">

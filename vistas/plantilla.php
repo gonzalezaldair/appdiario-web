@@ -33,16 +33,16 @@ if (!isset($_SESSION)) {
         href="vistas/adminlte/dist/css/masestilos.css?v=<?= filemtime("vistas/adminlte/dist/css/masestilos.css"); ?>">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    <link rel="icon" type="image/png" href="vistas/adminlte/dist/img/fav-icon.png">
+    <link rel="icon" type="image/png" href="vistas/img/fav_icon.png">
 </head>
 
 <body class="hold-transition sidebar-mini">
     <?php if (isset($_SESSION["validar"]) && $_SESSION["validar"] === true) : ?>
-    <div class="wrapper">
-        <?php include 'modulos/navegador.php'; ?>
-        <div class="content-wrapper">
-            <?php if (isset($_GET["action"])) : ?>
-            <?php if (
+        <div class="wrapper">
+            <?php include 'modulos/navegador.php'; ?>
+            <div class="content-wrapper">
+                <?php if (isset($_GET["action"])) : ?>
+                    <?php if (
                         $_GET["action"] == "inicio" ||
                         $_GET["action"] == "clientes" ||
                         $_GET["action"] == "abonos" ||
@@ -57,13 +57,13 @@ if (!isset($_SESSION)) {
                         $_GET["action"] == "movimientos-caja"
 
                     ) : include "modulos/" . $_GET["action"] . ".vista.php"; ?>
-            <?php else :  include 'modulos/error404.php';  ?>
-            <?php endif; ?>
-            <?php else : include 'modulos/salir.vista.php'; ?>
-            <?php endif; ?>
+                    <?php else :  include 'modulos/error404.php';  ?>
+                    <?php endif; ?>
+                <?php else : include 'modulos/salir.vista.php'; ?>
+                <?php endif; ?>
+            </div>
+            <?php include 'modulos/footer.php'; ?>
         </div>
-        <?php include 'modulos/footer.php'; ?>
-    </div>
     <?php else : include 'modulos/ingreso.vista.php'; ?>
     <?php endif; ?>
     <input type="hidden" value="<?= $_SESSION["usuario_Id"]; ?>" id="user_Id">
