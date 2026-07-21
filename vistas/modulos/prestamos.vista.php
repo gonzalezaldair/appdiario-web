@@ -96,7 +96,8 @@
                         <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                     </div>
                     <input id="prestamoMontoPrestado" type="text"
-                        class="form-control form-control-lg validarNumero formatoMoneda" placeholder="Ingresar Suma">
+                        class="form-control form-control-lg validarNumero formatoMoneda" placeholder="Ingresar Suma"
+                        montoreal="">
                 </div>
                 <div class="row">
 
@@ -129,20 +130,6 @@
                     </div>
 
                 </div>
-                <!-- <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fas fa-percent"></i></span>
-                    </div>
-                    <input id="prestamoInteres" type="text" class="form-control form-control-lg validarNumero"
-                        placeholder="Ingresar Interes">
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fas fa-sort-numeric-up"></i></span>
-                    </div>
-                    <input id="prestamoCuotas" type="text" class="form-control form-control-lg validarNumero"
-                        placeholder="Ingresar Cuotas">
-                </div>-->
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-sort-numeric-up"></i></span>

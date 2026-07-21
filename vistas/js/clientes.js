@@ -235,7 +235,7 @@ $("#tablaclientes").on("click", ".btnupdcliente", function (event) {
   event.preventDefault();
 
   $("#sumaPrestamo").attr("MontoReal", $("#sumaPrestamo").val());
-  $("#sumaPrestamo").val($.number($("#sumaPrestamo").val(), 2, ".", ","));
+  $("#sumaPrestamo").val($.number($("#sumaPrestamo").val(), 0, separadorDecimal, separadorMiles));
 });*/
 
 /*=============================================

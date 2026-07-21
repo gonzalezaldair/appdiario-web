@@ -1,13 +1,13 @@
 /*=============================================
 CARGAR LA TABLA DINÁMICA DE ABONOS
 =============================================*/
-
+/*
 $.ajax({
   url: "ajax/movimientos-caja.ajax.php",
   success: function (respuesta) {
     console.log("respuesta", respuesta);
   },
-});
+});*/
 
 let tablaMovimientosCaja = $("#tablaMovimientosCaja").DataTable({
   order: [[2, "desc"]],

@@ -1,5 +1,9 @@
 let user_Id = $("#user_Id").val();
 
+const separadorMiles = ".";
+const separadorDecimal = ",";
+//const simboloMoneda = "$";
+
 let lenguajeTabla = {
   sProcessing: "Procesando...",
   sLengthMenu: "Mostrar _MENU_ registros",
@@ -77,4 +81,12 @@ $("input.validarNumero").on("input", function () {
   this.value = this.value.replace(/[^0-9.]/g, "");
 });
 
-$("input.formatoMoneda").number(true, 0, ".", ",");
+//$("input.formatoMoneda").number(true, 0, separadorDecimal, separadorMiles);
+
+$("#prestamoMontoPrestado").on("blur", function () {
+  const valor = $(this).val();
+
+  $(this).attr("montoreal", valor);
+
+  $(this).val($.number(valor, 0, separadorDecimal, separadorMiles));
+});

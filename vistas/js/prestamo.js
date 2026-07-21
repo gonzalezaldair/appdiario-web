@@ -63,6 +63,7 @@ $("#btnmodalnuevoprestamo").on("click", function (event) {
   $("#prestamoCliente").val("");
   //$("#prestamoInteres").val("20");
   $("#prestamoMontoPrestado").val("");
+  $("#prestamoMontoPrestado").attr("montoreal", 0);
   $("#prestamoCuotas").val("");
   $("#prestamoObservaciones").val("");
   $("#prestamoUsuario").val("");
@@ -124,7 +125,9 @@ $("#prestamoInteres , #prestamoMontoPrestado, #prestamoCuotas").on(
 
     const totalPagar = monto * (1 + interesReal / 100);
 
-    $("#prestamoTotalPagar").val($.number(totalPagar, 0, ".", ","));
+    $("#prestamoTotalPagar").val(
+      $.number(totalPagar, 0, separadorDecimal, separadorMiles),
+    );
   },
 );
 
@@ -163,22 +166,21 @@ $("#modal-nuevo-prestamo").on(
     let expr = /^[0-9]+$/;
     if (pre_Interes === "" && !expr.test(pre_Interes)) {
       mensajesError.push(
-        "Error Interes: Revisar Campo debe contener un caracter no permitido o esta vacio",
+        "El campo interes solo puede contener numeros enteros",
       );
     }
-    const pre_MontoPrestado = $("#prestamoMontoPrestado").attr("MontoReal");
+
+    const pre_MontoPrestado = $("#prestamoMontoPrestado").attr("montoreal");
     expr = /^[0-9]+$/;
     if (pre_MontoPrestado === "" && !expr.test(pre_MontoPrestado)) {
       mensajesError.push(
-        "Error MontoPrestado: Revisar Campo debe contener un caracter no permitido o esta vacio",
+        "El campo monto prestado solo puede contener numeros enteros o decimales",
       );
     }
     const pre_Cuotas = $("#prestamoCuotas").val();
     expr = /^[0-9]+$/;
     if (pre_Cuotas === "" && !expr.test(pre_Cuotas)) {
-      mensajesError.push(
-        "Error Cuotas: Revisar Campo debe contener un caracter no permitido o esta vacio",
-      );
+      mensajesError.push("El campo cuotas solo puede contener numeros enteros");
     }
     const pre_Observaciones = $("#prestamoObservaciones").val();
     if (mensajesError.length == 0) {
@@ -265,10 +267,15 @@ $("#tablaPrestamos").on("click", ".btnupdprestamo", function (event) {
       $("#prestamoMontoPrestado").attr("readonly", true);
       $("#prestamoCliente").attr("readonly", true);
       $("#prestamoMontoPrestado").val(
-        $.number(respuesta["pre_MontoPrestado"], 2, ".", ","),
+        $.number(
+          respuesta["pre_MontoPrestado"],
+          0,
+          separadorMiles,
+          separadorDecimal,
+        ),
       );
       $("#prestamoMontoPrestado").attr(
-        "MontoReal",
+        "montoreal",
         respuesta["pre_MontoPrestado"],
       );
       $("#prestamoCuotas").val(respuesta["pre_Cuotas"]);
@@ -307,7 +314,9 @@ $("#tablaPrestamos").on("click", ".btnabono", function (event) {
   });
   $("#prestamosabonoSuma").val(valorAbono);
   $("#prestamoabonoid").val(prestamoid);
-  $("#prestamosabonosaldo").val($.number(saldo, 2, ".", ","));
+  $("#prestamosabonosaldo").val(
+    $.number(saldo, 0, separadorDecimal, separadorMiles),
+  );
   $("#prestamosabonosaldo").attr("saldo", saldo);
 
   $("#modal-nuevo-abono").modal("show");
@@ -381,22 +390,11 @@ $("#modal-nuevo-abono").on("click", ".btn-guardar-abono", function (event) {
 	MOSTRAR EN FORMATO DINERO prestamoMontoPrestado
 =============================================*/
 
-$("#modal-nuevo-prestamo").on(
-  "change",
-  "#prestamoMontoPrestado",
-  function (event) {
-    event.preventDefault();
-    /* Act on the event */
+$("#modal-nuevo-prestamo").on("change", "#prestamoMontoPrestado", function () {
+  const $input = $(this);
 
-    $("#prestamoMontoPrestado").attr(
-      "MontoReal",
-      $("#prestamoMontoPrestado").val(),
-    );
-    $("#prestamoMontoPrestado").val(
-      $.number($("#prestamoMontoPrestado").val(), 2, ".", ","),
-    );
-  },
-);
+  $input.attr("montoreal", $input.val().trim());
+});
 
 /*=============================================
 	MOSTRAR EN FORMATO DINERO prestamosabonoSuma
@@ -407,7 +405,7 @@ $("#modal-nuevo-abono").on("change", "#prestamosabonoSuma", function (event) {
   /* Act on the event */
 
   $(this).attr("AbonoReal", $(this).val());
-  $(this).val($.number($(this).val(), 2, ".", ","));
+  $(this).val($.number($(this).val(), 0, separadorDecimal, separadorMiles));
 
   const abonomax = parseInt($("#prestamosabonoSuma").attr("max"));
   const abonoreal = parseInt($("#prestamosabonoSuma").attr("AbonoReal"));
@@ -429,7 +427,12 @@ $("#modal-nuevo-abono").on("change", "#prestamosabonoSuma", function (event) {
     const abonoReal = $(this).attr("AbonoReal");
     $("#prestamosabonosaldo").val(saldo - abonoReal);
     $("#prestamosabonosaldo").val(
-      $.number($("#prestamosabonosaldo").val(), 2, ".", ","),
+      $.number(
+        $("#prestamosabonosaldo").val(),
+        0,
+        separadorMiles,
+        separadorDecimal,
+      ),
     );
   }
 });
